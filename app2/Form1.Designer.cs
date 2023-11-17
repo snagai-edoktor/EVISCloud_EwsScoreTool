@@ -627,7 +627,6 @@
             this.cmb11.Name = "cmb11";
             this.cmb11.Size = new System.Drawing.Size(40, 20);
             this.cmb11.TabIndex = 11;
-            this.cmb11.SelectedIndexChanged += new System.EventHandler(this.cmb11_SelectedIndexChanged);
             // 
             // txtCriteiaValue11B
             // 

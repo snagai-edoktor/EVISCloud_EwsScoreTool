@@ -219,7 +219,225 @@ namespace app2
             InitComboBox();
             InitEwsName();
         }
-        //app起動時にEwdNameをDBから取得する ID,EwsName
+        /// <summary>
+        /// DB->app スコア表示用関数
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnConnectSql_Click(object sender, EventArgs e)
+        {
+            AllClear();
+            //GetRecords初期化
+            for (int i=0; i<11; i++)
+            {
+                for(int j = 0; j<7; j++)
+                {
+                    GetRecords[i,j] = new List<Record>();
+                }
+            }
+            //EwsNameに対応するEwsidのレコードを取得しtxtに出力する
+            string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
+            SqlConnection con = new SqlConnection(constr);
+            con.Open();
+            try
+            {
+                //SQL文作成:
+                string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]} AND InvalidFlag = 0";
+                sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]})";
+                SqlCommand com = new SqlCommand(sqlstr, con);
+                SqlDataReader sdr = com.ExecuteReader();
+
+                txtOutSql.Text += "Get record -------------------------------------------\r\n";
+                while (sdr.Read() == true)
+                {
+                    //EVIS                   
+                    int EwsId = (int)sdr["EwsId"];
+                    int SeqNo = (int)sdr["SeqNo"];
+                    string VitalCode = (string)sdr["VitalCode"];
+                    int Score = (int)sdr["Score"];
+                    string CriteriaValue = (string)sdr["CriteriaValue"];
+                    int CriteriaSign = (int)sdr["CriteriaSign"];
+                    int Target = (int)sdr["Target"];
+                    int Displayorder = (int)sdr["DisplayOrder"];
+                    //txtOutSql.Text += string.Format($"{EwsId}, {SeqNo}, {VitalCode}, {Score}, {CriteriaValue}, {CriteriaSign}, {Target}, {Displayorder} \r\n");
+
+                    var record = new Record(EwsId.ToString());
+                    record.EWSId = EwsId;
+                    record.SeqNo = SeqNo;
+                    record.VitalCode = VitalCode;
+                    record.Score = Score;
+                    record.CriteriaValue = CriteriaValue;  
+                    record.CriteriaSign = CriteriaSign;
+                    record.Target = Target;
+                    record.DisplayOrder = Displayorder;
+
+                    //各VitalTytpeのDisplayOrderを求める
+                    if (DicVitalcodeandDisplayOrder.ContainsKey(VitalCode))
+                    {
+                        if (DicVitalcodeandDisplayOrder[VitalCode] <= Displayorder)
+                        {
+                            DicVitalcodeandDisplayOrder[VitalCode] = Displayorder;
+                        }
+                    }
+                    else
+                    {
+                        DicVitalcodeandDisplayOrder.Add(VitalCode, Displayorder);
+                    }
+
+                    //GetRecordリストにDBから受けた情報をスコア別に格納
+                    if (Target == 0)
+                    {
+                        if(Score <=3)
+                        {
+                            GetRecords[Displayorder, 3 - Score].Add(record);
+                        }
+                        
+                    }
+                    else
+                    {
+                        if(Score <=3)
+                        {
+                            GetRecords[Displayorder, 3 + Score].Add(record);
+                        }
+                        else
+                        {
+                            //error文出したい
+                        }
+                    }
+                }
+                sdr.Close();
+                com.Dispose();
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            //******修正して！！二重forするようなこと？？？？
+            //cmbvitalcodeを更新
+            for (int i = 0; i < 10; i++)
+            {
+                //cmbvitalcode クリアする
+                _vitalcode[i].Items.Clear();
+                bool fl = false;
+                //Vitalcode追加,選択
+                for (int j = 0; j < 7; j++)
+                {
+                    if (GetRecords[i,j].Count != 0)
+                    {
+                        _vitalcode[i].Items.Add(GetRecords[i, j].First().VitalCode);
+                        _vitalcode[i].SelectedIndex = 0;
+                        fl = true;
+                    }
+                    if (fl) break;
+                }
+                
+            }
+            //GetRecords[0][]に入ってしまった分をvitalcodeをもとにi<=1に振り分ける
+            for(int i=0; i < 7; i++)
+            {
+                foreach (var record in GetRecords[0,i])
+                {
+                    GetRecords[DicVitalcodeandDisplayOrder[record.VitalCode], i].Add(record);
+                }
+            }
+
+            //suhndbg 振り分けたレコードが正しいか確認
+            for (int i = 1;i < 11; i++)
+            {
+                for(int j = 0;j < 7; j++)
+                {
+                    foreach(var s in GetRecords[i, j])
+                    {
+                        OutRecord(s);
+                    }
+                    txtOutSql.Text += "|||||||||||||||||||||||||||\r\n";
+                }
+                txtOutSql.Text += "*******************\r\n";
+            }
+
+            //レコード表示処理
+            OutScore();
+
+
+        }
+
+        private void OutScore ()
+        {
+
+            for(int i=0; i< 11; i++) 
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    if (GetRecords[i, j].Count() == 0)
+                    {
+                        continue;
+                    }
+                    else if (GetRecords[i, j].First().CriteriaSign == 2)
+                    {
+                        //case 1 ","
+                        if (GetRecords[i, j].Count() >= 2)
+                        {
+                            foreach (var record in GetRecords[i, j])
+                            {
+                                _txtCriteiaValueA[i, j].Text += record.CriteriaValue + ",";
+                            }
+                            _txtCriteiaValueA[i, j].Text.Remove(_txtCriteiaValueA[i, j].Text.Length - 1);
+                            _cmb[i, j].SelectedIndex = 1;
+                        }
+                        //case 0 " "
+                        else
+                        {
+                            _txtCriteiaValueA[i, j].Text += GetRecords[i, j].First().CriteriaValue;
+                            _cmb[i, j].SelectedIndex = 0;
+                        }
+                    }
+                    //case2 "～"
+                    else if (GetRecords[i, j].Count() == 2)
+                    {
+                        foreach (var record in GetRecords[i, j])
+                        {
+                            if (record.CriteriaSign == 1)
+                            {
+                                _txtCriteiaValueA[i, j].Text += record.CriteriaValue;
+                            }
+                            else
+                            {
+                                _txtCriteiaValueB[i, j].Text += record.CriteriaValue;
+                            }
+                        }
+                        _cmb[i, j].SelectedIndex = 2;
+                    }
+                    //case4,5 "<=" or ">="
+                    else if (GetRecords[i, j].Count() == 1)
+                    {
+                        if (GetRecords[i, j].First().CriteriaSign == 0)
+                        {
+                            _txtCriteiaValueB[i, j].Text += GetRecords[i, j].First().CriteriaValue;
+                            _cmb[i, j].SelectedIndex = 3;
+                        }
+                        else
+                        {
+                            _txtCriteiaValueB[i, j].Text += GetRecords[i, j].First().CriteriaValue;
+                            _cmb[i, j].SelectedIndex = 4;
+                        }
+                    }
+                    //error
+                    else
+                    {
+                        txtOutSql.Text += string.Format($"OutScore error {i} {j} \r\n");
+                    }
+                }
+            }
+        }
+        private void OutRecord (Record record)
+        {
+            string outstr = "";
+
+            outstr += string.Format($"EwsId:{record.EWSId}, SeqNo:{record.SeqNo}, VitalCode:{record.VitalCode}, Score:{record.Score}, CriteriaValue:{record.CriteriaValue}, CriteriaSign:{record.CriteriaSign}, Target:{record.Target}, DisplayOrder:{record.DisplayOrder}  \r\n");
+            txtOutSql.Text += outstr;
+        }
+
         private void InitEwsName()
         {
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
@@ -234,7 +452,7 @@ namespace app2
 
                 while (sdr.Read() == true)
                 {
-                    EwsName.Add( (string)sdr["EwsName"], (int)sdr["Id"]);
+                    EwsName.Add((string)sdr["EwsName"], (int)sdr["Id"]);
                     string str = (string)sdr["EwsName"];
                     txtOutSql.Text += string.Format($"name{str},id{EwsName[str]} \r\n");
                     cmbEwsName.Items.Add(str);
@@ -249,13 +467,13 @@ namespace app2
         }
         private void InitComboBox()
         {
-            for(int i = 0; i < 10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 //A,Bの間のコンボボックス初期化
-                for(int j = 0; j < 7; j++)
+                for (int j = 0; j < 7; j++)
                 {
-                    _cmb[i,j].SelectedIndex = 0;
-                    _cmb[i,j].Items.Clear();
+                    _cmb[i, j].SelectedIndex = 0;
+                    _cmb[i, j].Items.Clear();
                     _cmb[i, j].Items.Add("");
                     _cmb[i, j].Items.Add(",");
                     _cmb[i, j].Items.Add("～");
@@ -271,7 +489,7 @@ namespace app2
                 string[] VitalTypeFile = File.ReadAllLines("..\\..\\VitalType.txt");
                 var splits = new List<string>();
                 int ele = 0;
-                foreach (string s in VitalTypeFile) 
+                foreach (string s in VitalTypeFile)
                 {
                     _vitalcode[i].Items.Add(s);
                     ele++;
@@ -283,7 +501,7 @@ namespace app2
                     VitalCodeName.Add("...");
                     //コンボボックス_vitalcodeの要素からVitalNameを抜き出す
                     foreach (string word in _vitalcode[i].Items)
-                    {          
+                    {
                         //()に囲まれた文字列をサーチ
                         var Matches = new Regex(@"\((.+?)\)").Matches(word);
                         //VitalCodeName[]に追加
@@ -291,7 +509,7 @@ namespace app2
                         {
                             string s = word2.ToString();
                             //抜き出した文字列が(****)となっているため()を外す
-                            string[] charDelete = new string[] { "(", ")"};
+                            string[] charDelete = new string[] { "(", ")" };
                             foreach (var c in charDelete)
                             {
                                 s = s.Replace(c, "");
@@ -299,12 +517,12 @@ namespace app2
                             //VitalNameを追加
                             VitalCodeName.Add(s);
                         }
-                       
+
                     }
                 }
             }
             //shundbg
-            foreach(string s in VitalCodeName)
+            foreach (string s in VitalCodeName)
             {
                 txtOutSql.Text += s + "\r\n";
             }
@@ -312,10 +530,10 @@ namespace app2
 
         private void InitControl()
         {
-            _txtCriteiaValueA = new TextBox[10,7];//vitaltype, score
-            _txtCriteiaValueB = new TextBox[10,7];//vitaltype, score
-            _cmb              = new ComboBox[10,7];//vitaltype, score
-            _vitalcode        = new ComboBox[10];
+            _txtCriteiaValueA = new TextBox[10, 7];//vitaltype, score
+            _txtCriteiaValueB = new TextBox[10, 7];//vitaltype, score
+            _cmb = new ComboBox[10, 7];//vitaltype, score
+            _vitalcode = new ComboBox[10];
 
             //A 1行目
             _txtCriteiaValueA[0, 0] = txtCriteiaValue11A;
@@ -573,258 +791,6 @@ namespace app2
             _vitalcode[7] = cmbVitalCode8;
             _vitalcode[8] = cmbVitalCode9;
             _vitalcode[9] = cmbVitalCode10;
-
-        }
-        /// <summary>
-        /// SQLサーバー接続確認用関数
-        /// EwsIdが１のレコードがテキストボックスに表示される
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnConnectSql_Click(object sender, EventArgs e)
-        {
-            //EwsId=1の分をDBからとってくる
-            /*string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
-
-            SqlConnection con = new SqlConnection(constr);
-            con.Open();
-            try
-            {
-                string sqlstr = "SELECT EwsId, VitalCode, Score, CriteriaValue, CriteriaSign, Target  FROM T_EwsScoreCriteria WHERE EwsId = 1";
-                SqlCommand com = new SqlCommand(sqlstr, con);
-                SqlDataReader sdr = com.ExecuteReader();
-
-                while (sdr.Read() == true)
-                { 
-                    //EVIS                   
-                    int EwsId = (int)sdr["EwsId"];
-                    string VitalCode = (string)sdr["VitalCode"];
-                    int Score = (int)sdr["Score"];
-                    string CriteriaValue = (string)sdr["CriteriaValue"];
-                    int CriteriaSign = (int)sdr["CriteriaSign"];
-                    int Target = (int)sdr["Target"];
-
-
-                    txtOutSql.Text += string.Format("{0} / {1} /{2} / {3} / {4} / {5}  \r\n", EwsId, VitalCode, Score, CriteriaValue, CriteriaSign, Target);
-
-                }
-                sdr.Close();
-                com.Dispose();
-            }
-            finally
-            {
-                con.Close();
-            }*/
-
-
-            AllClear();
-            for (int i=0; i<11; i++)
-            {
-                for(int j = 0; j<7; j++)
-                {
-                    GetRecords[i,j] = new List<Record>();
-                }
-            }
-            //EwsNameに対応するEwsidのレコードを取得しtxtに出力する
-            string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
-            SqlConnection con = new SqlConnection(constr);
-            con.Open();
-            try
-            {
-                string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]} AND InvalidFlag = 0";
-                sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]})";
-                SqlCommand com = new SqlCommand(sqlstr, con);
-                SqlDataReader sdr = com.ExecuteReader();
-
-                txtOutSql.Text += "Get record -------------------------------------------\r\n";
-                while (sdr.Read() == true)
-                {
-                    //EVIS                   
-                    int EwsId = (int)sdr["EwsId"];
-                    int SeqNo = (int)sdr["SeqNo"];
-                    string VitalCode = (string)sdr["VitalCode"];
-                    int Score = (int)sdr["Score"];
-                    string CriteriaValue = (string)sdr["CriteriaValue"];
-                    int CriteriaSign = (int)sdr["CriteriaSign"];
-                    int Target = (int)sdr["Target"];
-                    int Displayorder = (int)sdr["DisplayOrder"];
-                    //txtOutSql.Text += string.Format($"{EwsId}, {SeqNo}, {VitalCode}, {Score}, {CriteriaValue}, {CriteriaSign}, {Target}, {Displayorder} \r\n");
-
-                    var record = new Record(EwsId.ToString());
-                    record.EWSId = EwsId;
-                    record.SeqNo = SeqNo;
-                    record.VitalCode = VitalCode;
-                    record.Score = Score;
-                    record.CriteriaValue = CriteriaValue;  
-                    record.CriteriaSign = CriteriaSign;
-                    record.Target = Target;
-                    record.DisplayOrder = Displayorder;
-
-                    if (DicVitalcodeandDisplayOrder.ContainsKey(VitalCode))
-                    {
-                        if (DicVitalcodeandDisplayOrder[VitalCode] <= Displayorder)
-                        {
-                            DicVitalcodeandDisplayOrder[VitalCode] = Displayorder;
-                        }
-                    }
-                    else
-                    {
-                        DicVitalcodeandDisplayOrder.Add(VitalCode, Displayorder);
-                    }
-
-                    //GetRecordリストにDBから受けた情報をスコア別に格納
-                    if (Target == 0)
-                    {
-                        if(Score <=3)
-                        {
-                            GetRecords[Displayorder, 3 - Score].Add(record);
-                        }
-                        
-                    }
-                    else
-                    {
-                        if(Score <=3)
-                        {
-                            GetRecords[Displayorder, 3 + Score].Add(record);
-                        }
-                        else
-                        {
-                            //error文出したい
-                        }
-                    }
-                }
-                sdr.Close();
-                com.Dispose();
-            }
-            finally
-            {
-                con.Close();
-            }
-
-            //cmbvitalodedを更新
-            for (int i = 0; i < 10; i++)
-            {
-                //cmbvitaloded クリアする
-                _vitalcode[i].Items.Clear();
-                bool fl = false;
-                //Vitalcode追加,選択
-                for (int j = 0; j < 7; j++)
-                {
-                    if (GetRecords[i,j].Count != 0)
-                    {
-                        _vitalcode[i].Items.Add(GetRecords[i, j].First().VitalCode);
-                        _vitalcode[i].SelectedIndex = 0;
-                        fl = true;
-                    }
-                    if (fl) break;
-                }
-                
-            }
-            for(int i=0; i < 7; i++)
-            {
-                foreach (var record in GetRecords[0,i])
-                {
-                    GetRecords[DicVitalcodeandDisplayOrder[record.VitalCode], i].Add(record);
-                }
-            }
-
-            //suhndbg 振り分けたレコードが正しいか確認
-            for (int i = 1;i < 11; i++)
-            {
-                for(int j = 0;j < 7; j++)
-                {
-                    foreach(var s in GetRecords[i, j])
-                    {
-                        OutRecord(s);
-                    }
-                    txtOutSql.Text += "|||||||||||||||||||||||||||\r\n";
-                }
-                txtOutSql.Text += "*******************\r\n";
-            }
-
-            //レコード表示処理
-            OutScore();
-
-
-        }
-
-        private void OutScore ()
-        {
-
-            for(int i=0; i< 11; i++) 
-            {
-                for (int j = 0; j < 7; j++)
-                {
-                    if (GetRecords[i, j].Count() == 0)
-                    {
-                        continue;
-                    }
-                    else if (GetRecords[i, j].First().CriteriaSign == 2)
-                    {
-                        //case 1 ","
-                        if (GetRecords[i, j].Count() >= 2)
-                        {
-                            foreach (var record in GetRecords[i, j])
-                            {
-                                _txtCriteiaValueA[i, j].Text += record.CriteriaValue + ",";
-                            }
-                            _txtCriteiaValueA[i, j].Text.Remove(_txtCriteiaValueA[i, j].Text.Length - 1);
-                            _cmb[i, j].SelectedIndex = 1;
-                        }
-                        //case 0 " "
-                        else
-                        {
-                            _txtCriteiaValueA[i, j].Text += GetRecords[i, j].First().CriteriaValue;
-                            _cmb[i, j].SelectedIndex = 0;
-                        }
-                    }
-                    //case2 "～"
-                    else if (GetRecords[i, j].Count() == 2)
-                    {
-                        foreach (var record in GetRecords[i, j])
-                        {
-                            if (record.CriteriaSign == 1)
-                            {
-                                _txtCriteiaValueA[i, j].Text += record.CriteriaValue;
-                            }
-                            else
-                            {
-                                _txtCriteiaValueB[i, j].Text += record.CriteriaValue;
-                            }
-                        }
-                        _cmb[i, j].SelectedIndex = 2;
-                    }
-                    //case4,5 "<=" or ">="
-                    else if (GetRecords[i, j].Count() == 1)
-                    {
-                        if (GetRecords[i, j].First().CriteriaSign == 0)
-                        {
-                            _txtCriteiaValueB[i, j].Text += GetRecords[i, j].First().CriteriaValue;
-                            _cmb[i, j].SelectedIndex = 3;
-                        }
-                        else
-                        {
-                            _txtCriteiaValueB[i, j].Text += GetRecords[i, j].First().CriteriaValue;
-                            _cmb[i, j].SelectedIndex = 4;
-                        }
-                    }
-                    //error
-                    else
-                    {
-                        txtOutSql.Text += string.Format($"OutScore error {i} {j} \r\n");
-                    }
-                }
-            }
-        }
-        private void OutRecord (Record record)
-        {
-            string outstr = "";
-
-            outstr += string.Format($"EwsId:{record.EWSId}, SeqNo:{record.SeqNo}, VitalCode:{record.VitalCode}, Score:{record.Score}, CriteriaValue:{record.CriteriaValue}, CriteriaSign:{record.CriteriaSign}, Target:{record.Target}, DisplayOrder:{record.DisplayOrder}  \r\n");
-            txtOutSql.Text += outstr;
-        }
-        private void cmb11_SelectedIndexChanged(object sender, EventArgs e)
-        {
 
         }
         private void AllClear()
