@@ -1,0 +1,17 @@
+----------
+呼吸数(rr)
+SpO2(spo2)
+酸素投与(oxygen)
+最高血圧(sbp)
+脈拍数(pulse)
+意識レベル(loc)
+体温(temperture)
+最低血圧(dbp)
+第六感(6th_sense)
+Respiration rate(rr_eng)
+Air or oxygen(oxygen_eng)
+Systolic blood pressure(sbp_eng)
+Pulse(pulse_eng)
+Conscluseness(loc_eng)
+Temperature(temperature_eng)
+shunshunsuhusn
