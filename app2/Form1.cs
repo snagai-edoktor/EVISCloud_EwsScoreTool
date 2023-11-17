@@ -26,6 +26,8 @@ namespace app2
         private int[] _score = new int[] { 3, 2, 1, 0, 1, 2, 3 };
         private int[] tarval = new int[] { 0, 0, 0, 1, 1, 1, 1 };
         private SortedDictionary<string, int> EwsName= new SortedDictionary<string, int>();
+        private SortedDictionary<string, int> DicVitalcodeandDisplayOrder = new SortedDictionary<string, int>();
+
         //vital配列10、score配列7、リストを作りたい
         List<Record>[,] GetRecords = new List<Record>[11, 7];
         /*private string[] VitalCodeName = new string[]
@@ -249,6 +251,7 @@ namespace app2
         {
             for(int i = 0; i < 10; i++)
             {
+                //A,Bの間のコンボボックス初期化
                 for(int j = 0; j < 7; j++)
                 {
                     _cmb[i,j].SelectedIndex = 0;
@@ -262,6 +265,8 @@ namespace app2
 
                 _vitalcode[i].SelectedIndex = 0;
                 _vitalcode[i].Items.Clear();
+
+
 
                 string[] VitalTypeFile = File.ReadAllLines("..\\..\\VitalType.txt");
                 var splits = new List<string>();
@@ -610,10 +615,6 @@ namespace app2
             {
                 con.Close();
             }*/
-            //定義場所未定
-            //List<List<Record>> GetRecords = new List<List<Record>>();
-
-            //List<List<Record>>[] GetRecords = new List<List<Record>>[11];
 
 
             AllClear();
@@ -631,6 +632,7 @@ namespace app2
             try
             {
                 string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]} AND InvalidFlag = 0";
+                sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]})";
                 SqlCommand com = new SqlCommand(sqlstr, con);
                 SqlDataReader sdr = com.ExecuteReader();
 
@@ -658,10 +660,20 @@ namespace app2
                     record.Target = Target;
                     record.DisplayOrder = Displayorder;
 
-                    //GetRecords[Displayorder].Add(record);
+                    if (DicVitalcodeandDisplayOrder.ContainsKey(VitalCode))
+                    {
+                        if (DicVitalcodeandDisplayOrder[VitalCode] <= Displayorder)
+                        {
+                            DicVitalcodeandDisplayOrder[VitalCode] = Displayorder;
+                        }
+                    }
+                    else
+                    {
+                        DicVitalcodeandDisplayOrder.Add(VitalCode, Displayorder);
+                    }
 
                     //GetRecordリストにDBから受けた情報をスコア別に格納
-                    if(Target == 0)
+                    if (Target == 0)
                     {
                         if(Score <=3)
                         {
@@ -708,9 +720,16 @@ namespace app2
                 }
                 
             }
+            for(int i=0; i < 7; i++)
+            {
+                foreach (var record in GetRecords[0,i])
+                {
+                    GetRecords[DicVitalcodeandDisplayOrder[record.VitalCode], i].Add(record);
+                }
+            }
 
             //suhndbg 振り分けたレコードが正しいか確認
-            for (int i = 0;i < 11; i++)
+            for (int i = 1;i < 11; i++)
             {
                 for(int j = 0;j < 7; j++)
                 {
