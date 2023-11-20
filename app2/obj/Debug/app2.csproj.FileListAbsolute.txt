@@ -18,3 +18,4 @@ C:\github\EVISCloud_EwsScoreTool\app2\obj\Debug\app2.csproj.GenerateResource.cac
 C:\github\EVISCloud_EwsScoreTool\app2\obj\Debug\app2.csproj.CoreCompileInputs.cache
 C:\github\EVISCloud_EwsScoreTool\app2\obj\Debug\app2.exe
 C:\github\EVISCloud_EwsScoreTool\app2\obj\Debug\app2.pdb
+C:\github\EVISCloud_EwsScoreTool\app2\obj\Debug\app2.Form2.resources
