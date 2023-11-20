@@ -51,13 +51,8 @@ namespace app2
         /// <param name="txtB"></param>
         /// <param name="score"></param>
         /// <param name="tarval"></param>
-        public bool CreatRecord(List<Record> RecList, int vitalcode, string txtA, int symb, string txtB, int score, int tarval, bool fl, int displayorder)
+        public void CreatRecord(List<Record> RecList, int vitalcode, string txtA, int symb, string txtB, int score, int tarval, int displayorder, int seqno)
         {
-            if((vitalcode == 0) || (txtA =="" && txtB == ""))
-            {
-                return fl;
-            }
-
             //string[] words;
             switch (symb)
             {
@@ -68,11 +63,9 @@ namespace app2
                     record0.CriteriaValue = txtA;
                     record0.CriteriaSign = 2;
                     record0.Target = tarval;
-                    if (!fl)
-                    {
-                        record0.DisplayOrder = displayorder;
-                        fl = true;
-                    }
+                    record0.SeqNo = seqno;
+                    record0.DisplayOrder = displayorder;
+
                     RecList.Add(record0);
                     break;
                 case 1:// , memo レコード数に限りない
@@ -85,11 +78,9 @@ namespace app2
                         record1.CriteriaValue = word;
                         record1.CriteriaSign = 2;
                         record1.Target = tarval;
-                        if (!fl)
-                        {
-                            record1.DisplayOrder = displayorder;
-                            fl = true;
-                        }
+                        record1.SeqNo = seqno;
+                        record1.DisplayOrder = displayorder;
+
                         RecList.Add(record1);
                     }
                     break;
@@ -100,11 +91,9 @@ namespace app2
                     record21.CriteriaValue = txtA;
                     record21.CriteriaSign = 1;
                     record21.Target = tarval;
-                    if (!fl)
-                    {
-                        record21.DisplayOrder = displayorder;
-                        fl = true;
-                    }
+                    record21.SeqNo = seqno;
+                    record21.DisplayOrder = displayorder;
+
                     RecList.Add(record21);
 
                     var record22 = new Record(EWSID.Text);
@@ -113,6 +102,8 @@ namespace app2
                     record22.CriteriaValue = txtB;
                     record22.CriteriaSign = 0;
                     record22.Target = tarval;
+                    record22.SeqNo = seqno;
+                    record22.DisplayOrder = displayorder;
 
                     RecList.Add(record22);
                     break;
@@ -123,11 +114,9 @@ namespace app2
                     record3.CriteriaValue = txtB;
                     record3.CriteriaSign = 0;
                     record3.Target = tarval;
-                    if (!fl)
-                    {
-                        record3.DisplayOrder = displayorder;
-                        fl = true;
-                    }
+                    record3.SeqNo = seqno;
+                    record3.DisplayOrder = displayorder;
+
                     RecList.Add(record3);
                     break;
                 case 4:// >= memo １つレコード：A,Bが空かどうか判別が必要一回聞きたいそういう表記になってるだけで入力するときの感覚的にはおかしいかもしれない
@@ -137,27 +126,31 @@ namespace app2
                     record4.CriteriaValue = txtB;
                     record4.CriteriaSign = 1;//shundbg 
                     record4.Target = tarval;
-                    if (!fl)
-                    {
-                        record4.DisplayOrder = displayorder;
-                        fl = true;
-                    }
+                    record4.SeqNo = seqno;
+                    record4.DisplayOrder = displayorder;
+
                     RecList.Add(record4);
                     break;
             }
-            return fl;
         }
  
         private void button1_Click(object sender, EventArgs e)
         {
             var RecordList = new List<Record>();
 
-            for (int i = 0; i < 5; i++)//iは行数 5の部分を定数にしたほうがきれいかも
+            for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
             {
-                bool Ordered = false;//DisplayOrderが設定されていたらTrue,まだされていなければFalse
                 for (int j = 0; j < 7; j++)//jは列数　７の部分を定数にしたほうがきれいかも
                 {
-                    Ordered = CreatRecord(RecordList, _vitalcode[i].SelectedIndex, _txtCriteiaValueA[i, j].Text, _cmb[i, j].SelectedIndex, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], Ordered, i+1);
+                    if (_txtCriteiaValueA[i, j].Text == "" && _txtCriteiaValueB[i, j].Text == "")
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        CreatRecord(RecordList, _vitalcode[i].SelectedIndex, _txtCriteiaValueA[i, j].Text, _cmb[i, j].SelectedIndex, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, Convert.ToInt32(txtSeqNo.Text));
+                    }
+                    
                 }
             }
 
@@ -181,12 +174,13 @@ namespace app2
                     txtOutSql.Text += string.Format("{0} / {1} /{2} / {3} / {4} / {5} / {6}  \r\n", EwsId, VitalCode, Score, CriteriaValue, CriteriaSign, Target, record.DisplayOrder);
                     //test 
 
-                    //SQL文作成 SeqNoは検索しやすいように10で固定
                     var sb = new StringBuilder();
                     sb.Append("INSERT INTO T_EwsScoreCriteria(EwsId, SeqNo, VitalCode, Score, CriteriaValue, CriteriaSign, Target, DisplayOrder)");
-                    sb.Append($"VALUES({record.EWSId}, 10, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
+                    //sb.Append($"VALUES({record.EWSId}, {record.SeqNo}, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
+                    sb.Append($"VALUES( {record.EWSId}, {record.SeqNo}, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
                     SqlCommand com  = new SqlCommand(sb.ToString(), con);
 
+                    //過去分のinvalidflagを立てる必要がある
                     var result = com.ExecuteNonQuery();
 
                 }
@@ -200,7 +194,7 @@ namespace app2
         {
             public int EWSId;
             public int Score;
-            public int SeqNo;//shundbg creat時の処理が出来ない
+            public int SeqNo;
             public string VitalCode;
             public string CriteriaValue;
             public int CriteriaSign;
@@ -242,8 +236,12 @@ namespace app2
             try
             {
                 //SQL文作成:
-                string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]} AND InvalidFlag = 0";
-                sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]})";
+                //string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]} AND InvalidFlag = 0";
+                //sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]})";
+
+                //test shundbg 
+                string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId =3000 AND InvalidFlag = 0";
+                sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = 3000)";
                 SqlCommand com = new SqlCommand(sqlstr, con);
                 SqlDataReader sdr = com.ExecuteReader();
 
@@ -271,6 +269,9 @@ namespace app2
                     record.Target = Target;
                     record.DisplayOrder = Displayorder;
 
+                    //EWSID,SeqNo保存 
+                    EWSID.Text = EwsId.ToString();
+                    txtSeqNo.Text = SeqNo.ToString();
                     //各VitalTytpeのDisplayOrderを求める
                     if (DicVitalcodeandDisplayOrder.ContainsKey(VitalCode))
                     {
@@ -475,13 +476,13 @@ namespace app2
                 //A,Bの間のコンボボックス初期化
                 for (int j = 0; j < 7; j++)
                 {
-                    _cmb[i, j].SelectedIndex = 0;
                     _cmb[i, j].Items.Clear();
                     _cmb[i, j].Items.Add("");
                     _cmb[i, j].Items.Add(",");
                     _cmb[i, j].Items.Add("～");
                     _cmb[i, j].Items.Add("≦");
                     _cmb[i, j].Items.Add("≧");
+                    _cmb[i, j].SelectedIndex = 0;
                 }
 
                 _vitalcode[i].SelectedIndex = 0;
@@ -807,6 +808,153 @@ namespace app2
                     _cmb[i, j].SelectedIndex = 0;
                 }
                 _vitalcode[i].Items.Clear();
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var RecordList = new List<Record>();
+
+            for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
+            {
+                for (int j = 0; j < 7; j++)//jは列数　７の部分を定数にしたほうがきれいかも
+                {
+                    if (_txtCriteiaValueA[i, j].Text == "" && _txtCriteiaValueB[i, j].Text == "")
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        CreatRecord_Update(RecordList, i, _txtCriteiaValueA[i, j].Text, _cmb[i, j].SelectedIndex, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, Convert.ToInt32(txtSeqNo.Text));
+                    }
+                }
+            }
+
+            //EVISCloudに接続
+            string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
+
+            SqlConnection con = new SqlConnection(constr);
+            con.Open();
+            try
+            {
+                bool first = true;
+                foreach (var record in RecordList)
+                {
+                    //test　テキストボックスに登録する情報を出力、確認用 shundbg
+                    int EwsId = record.EWSId;
+                    string VitalCode = record.VitalCode;
+                    int Score = record.Score;
+                    string CriteriaValue = record.CriteriaValue;
+                    int CriteriaSign = record.CriteriaSign;
+                    int Target = record.Target;
+                    txtOutSql.Text += string.Format("{0} / {1} /{2} / {3} / {4} / {5} / {6}  \r\n", EwsId, VitalCode, Score, CriteriaValue, CriteriaSign, Target, record.DisplayOrder);
+                    //test 
+
+                    var sb = new StringBuilder();
+                    sb.Append("INSERT INTO T_EwsScoreCriteria(EwsId, SeqNo, VitalCode, Score, CriteriaValue, CriteriaSign, Target, DisplayOrder)");
+                    //sb.Append($"VALUES( {record.EWSId}, {record.SeqNo}, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
+                    sb.Append($"VALUES( 3000, {record.SeqNo}, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
+                    SqlCommand com = new SqlCommand(sb.ToString(), con);
+
+                    var result = com.ExecuteNonQuery();
+
+                    if (first)
+                    {
+                        //過去分のinvalidflagを立てる必要がある
+                        string sqlreststr = $"UPDATE T_EwsScoreCriteria SET InvalidFlag = 1 WHERE EwsId = {record.EWSId} AND SeqNo = {record.SeqNo -1}";
+                        SqlCommand comreset = new SqlCommand(sqlreststr, con);
+                        var resultreset = comreset.ExecuteNonQuery();
+                        first = false;
+                    }
+                }
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public void CreatRecord_Update(List<Record> RecList, int vitalcode, string txtA, int symb, string txtB, int score, int tarval, int displayorder, int seqno)
+        {
+            //string[] words;
+            switch (symb)
+            {
+                case 0://   memo 1つのレコード作成
+                    var record0 = new Record(EWSID.Text);
+                    
+                    record0.Score = score;
+                    record0.VitalCode = _vitalcode[vitalcode].Items[0].ToString();
+                    record0.CriteriaValue = txtA;
+                    record0.CriteriaSign = 2;
+                    record0.Target = tarval;
+                    record0.SeqNo = seqno + 1;
+                    record0.DisplayOrder = displayorder;
+
+                    RecList.Add(record0);
+                    break;
+                case 1:// , memo レコード数に限りない
+                    string[] words = txtA.Split(',');
+                    foreach (var word in words)
+                    {
+                        var record1 = new Record(EWSID.Text);
+                        record1.Score = score;
+                        record1.VitalCode = _vitalcode[vitalcode].Items[0].ToString();
+                        record1.CriteriaValue = word;
+                        record1.CriteriaSign = 2;
+                        record1.Target = tarval;
+                        record1.SeqNo = seqno + 1;
+                        record1.DisplayOrder = displayorder;
+
+                        RecList.Add(record1);
+                    }
+                    break;
+                case 2:// ~ memo 2つレコードを作ればいい
+                    var record21 = new Record(EWSID.Text);
+                    record21.Score = score;
+                    record21.VitalCode = _vitalcode[vitalcode].Items[0].ToString();
+                    record21.CriteriaValue = txtA;
+                    record21.CriteriaSign = 1;
+                    record21.Target = tarval;
+                    record21.SeqNo = seqno + 1;
+                    record21.DisplayOrder = displayorder;
+
+                    RecList.Add(record21);
+
+                    var record22 = new Record(EWSID.Text);
+                    record22.Score = score;
+                    record22.VitalCode = _vitalcode[vitalcode].Items[0].ToString();
+                    record22.CriteriaValue = txtB;
+                    record22.CriteriaSign = 0;
+                    record22.Target = tarval;
+                    record22.SeqNo = seqno + 1;
+                    record22.DisplayOrder = displayorder;
+
+                    RecList.Add(record22);
+                    break;
+                case 3:// <= memo １つレコード：A,Bが空かどうか判別が必要かな一回ききたい
+                    var record3 = new Record(EWSID.Text);
+                    record3.Score = score;
+                    record3.VitalCode = _vitalcode[vitalcode].Items[0].ToString();
+                    record3.CriteriaValue = txtB;
+                    record3.CriteriaSign = 0;
+                    record3.Target = tarval;
+                    record3.SeqNo = seqno + 1;
+                    record3.DisplayOrder = displayorder;
+
+                    RecList.Add(record3);
+                    break;
+                case 4:// >= memo １つレコード：A,Bが空かどうか判別が必要一回聞きたいそういう表記になってるだけで入力するときの感覚的にはおかしいかもしれない
+                    var record4 = new Record(EWSID.Text);
+                    record4.Score = score;
+                    record4.VitalCode = _vitalcode[vitalcode].Items[0].ToString();
+                    record4.CriteriaValue = txtB;
+                    record4.CriteriaSign = 1;//shundbg 
+                    record4.Target = tarval;
+                    record4.SeqNo = seqno + 1;
+                    record4.DisplayOrder = displayorder;
+
+                    RecList.Add(record4);
+                    break;
             }
         }
     }

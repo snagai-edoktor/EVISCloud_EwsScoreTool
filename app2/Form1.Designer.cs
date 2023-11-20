@@ -401,6 +401,9 @@
             this.txtCriteiaValue101A = new System.Windows.Forms.TextBox();
             this.cmbVitalCode10 = new System.Windows.Forms.ComboBox();
             this.cmbEwsName = new System.Windows.Forms.ComboBox();
+            this.txtSeqNo = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -475,15 +478,15 @@
             // 
             // EWSID
             // 
-            this.EWSID.Location = new System.Drawing.Point(16, 27);
+            this.EWSID.Location = new System.Drawing.Point(3, 27);
             this.EWSID.Name = "EWSID";
-            this.EWSID.Size = new System.Drawing.Size(40, 19);
+            this.EWSID.Size = new System.Drawing.Size(35, 19);
             this.EWSID.TabIndex = 0;
             // 
             // lb_ewsid
             // 
             this.lb_ewsid.AutoSize = true;
-            this.lb_ewsid.Location = new System.Drawing.Point(17, 12);
+            this.lb_ewsid.Location = new System.Drawing.Point(1, 12);
             this.lb_ewsid.Name = "lb_ewsid";
             this.lb_ewsid.Size = new System.Drawing.Size(39, 12);
             this.lb_ewsid.TabIndex = 1;
@@ -521,7 +524,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(172, 49);
             this.button1.TabIndex = 8;
-            this.button1.Text = "SQL登録";
+            this.button1.Text = "新規登録（仮）";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -2343,7 +2346,7 @@
             this.btnConnectSql.Name = "btnConnectSql";
             this.btnConnectSql.Size = new System.Drawing.Size(167, 49);
             this.btnConnectSql.TabIndex = 78;
-            this.btnConnectSql.Text = "SQL接続テスト";
+            this.btnConnectSql.Text = "DB読込";
             this.btnConnectSql.UseVisualStyleBackColor = true;
             this.btnConnectSql.Click += new System.EventHandler(this.btnConnectSql_Click);
             // 
@@ -4134,16 +4137,45 @@
             // cmbEwsName
             // 
             this.cmbEwsName.FormattingEnabled = true;
-            this.cmbEwsName.Location = new System.Drawing.Point(73, 27);
+            this.cmbEwsName.Location = new System.Drawing.Point(80, 26);
             this.cmbEwsName.Name = "cmbEwsName";
             this.cmbEwsName.Size = new System.Drawing.Size(101, 20);
             this.cmbEwsName.TabIndex = 96;
+            // 
+            // txtSeqNo
+            // 
+            this.txtSeqNo.Location = new System.Drawing.Point(44, 27);
+            this.txtSeqNo.Name = "txtSeqNo";
+            this.txtSeqNo.Size = new System.Drawing.Size(30, 19);
+            this.txtSeqNo.TabIndex = 97;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(42, 12);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(38, 12);
+            this.label5.TabIndex = 98;
+            this.label5.Text = "SeqNo";
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(1275, 694);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(172, 49);
+            this.button2.TabIndex = 99;
+            this.button2.Text = "更新分登録（仮）";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1476, 818);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.txtSeqNo);
             this.Controls.Add(this.cmbEwsName);
             this.Controls.Add(this.panel64);
             this.Controls.Add(this.panel57);
@@ -4760,6 +4792,9 @@
         private System.Windows.Forms.TextBox txtCriteiaValue101A;
         private System.Windows.Forms.ComboBox cmbVitalCode10;
         private System.Windows.Forms.ComboBox cmbEwsName;
+        private System.Windows.Forms.TextBox txtSeqNo;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button button2;
     }
 }
 
