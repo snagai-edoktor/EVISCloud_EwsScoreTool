@@ -63,7 +63,6 @@ namespace app2
                     record0.CriteriaValue = txtA;
                     record0.CriteriaSign = 2;
                     record0.Target = tarval;
-                    record0.SeqNo = seqno;
                     record0.DisplayOrder = displayorder;
 
                     RecList.Add(record0);
@@ -78,7 +77,6 @@ namespace app2
                         record1.CriteriaValue = word;
                         record1.CriteriaSign = 2;
                         record1.Target = tarval;
-                        record1.SeqNo = seqno;
                         record1.DisplayOrder = displayorder;
 
                         RecList.Add(record1);
@@ -91,7 +89,6 @@ namespace app2
                     record21.CriteriaValue = txtA;
                     record21.CriteriaSign = 1;
                     record21.Target = tarval;
-                    record21.SeqNo = seqno;
                     record21.DisplayOrder = displayorder;
 
                     RecList.Add(record21);
@@ -102,7 +99,6 @@ namespace app2
                     record22.CriteriaValue = txtB;
                     record22.CriteriaSign = 0;
                     record22.Target = tarval;
-                    record22.SeqNo = seqno;
                     record22.DisplayOrder = displayorder;
 
                     RecList.Add(record22);
@@ -114,7 +110,6 @@ namespace app2
                     record3.CriteriaValue = txtB;
                     record3.CriteriaSign = 0;
                     record3.Target = tarval;
-                    record3.SeqNo = seqno;
                     record3.DisplayOrder = displayorder;
 
                     RecList.Add(record3);
@@ -126,7 +121,6 @@ namespace app2
                     record4.CriteriaValue = txtB;
                     record4.CriteriaSign = 1;//shundbg 
                     record4.Target = tarval;
-                    record4.SeqNo = seqno;
                     record4.DisplayOrder = displayorder;
 
                     RecList.Add(record4);
