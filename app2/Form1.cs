@@ -313,7 +313,16 @@ namespace app2
                 con.Close();
             }
 
-            //******修正して！！二重forするようなこと？？？？
+            //GetRecords[0][]に入ってしまった分をvitalcodeをもとに1<=iに振り分ける
+            for(int i=0; i < 7; i++)
+            {
+                foreach (var record in GetRecords[0,i])
+                {
+                    GetRecords[DicVitalcodeandDisplayOrder[record.VitalCode], i].Add(record);
+                }
+            }
+
+            //******修正して！！二重forするようなこと？？？？->record配列のどこに要素が入っているかわからないから２重で回すしかない。フラグで早くぬけてるからそんな回してるわけでもない
             //cmbvitalcodeを更新
             for (int i = 0; i < 10; i++)
             {
@@ -323,23 +332,16 @@ namespace app2
                 //Vitalcode追加,選択
                 for (int j = 0; j < 7; j++)
                 {
-                    if (GetRecords[i,j].Count != 0)
+                    if (GetRecords[i+1, j].Count != 0)
                     {
-                        _vitalcode[i].Items.Add(GetRecords[i, j].First().VitalCode);
+                        //Getrecordsにはi=1から実データが入ってる
+                        _vitalcode[i].Items.Add(GetRecords[i+1, j].First().VitalCode);
                         _vitalcode[i].SelectedIndex = 0;
                         fl = true;
                     }
                     if (fl) break;
                 }
-                
-            }
-            //GetRecords[0][]に入ってしまった分をvitalcodeをもとにi<=1に振り分ける
-            for(int i=0; i < 7; i++)
-            {
-                foreach (var record in GetRecords[0,i])
-                {
-                    GetRecords[DicVitalcodeandDisplayOrder[record.VitalCode], i].Add(record);
-                }
+
             }
 
             //suhndbg 振り分けたレコードが正しいか確認
@@ -365,37 +367,38 @@ namespace app2
         private void OutScore ()
         {
 
-            for(int i=0; i< 11; i++) 
+            for(int i=0; i< 10; i++) 
             {
                 for (int j = 0; j < 7; j++)
                 {
-                    if (GetRecords[i, j].Count() == 0)
+                    if (GetRecords[i+1, j].Count() == 0)
                     {
                         continue;
                     }
-                    else if (GetRecords[i, j].First().CriteriaSign == 2)
+                    else if (GetRecords[i+1, j].First().CriteriaSign == 2)
                     {
                         //case 1 ","
-                        if (GetRecords[i, j].Count() >= 2)
+                        if (GetRecords[i + 1, j].Count() >= 2)
                         {
-                            foreach (var record in GetRecords[i, j])
+                            foreach (var record in GetRecords[i+1, j])
                             {
                                 _txtCriteiaValueA[i, j].Text += record.CriteriaValue + ",";
                             }
-                            _txtCriteiaValueA[i, j].Text.Remove(_txtCriteiaValueA[i, j].Text.Length - 1);
+                            _txtCriteiaValueA[i, j].Text = _txtCriteiaValueA[i, j].Text.Remove(_txtCriteiaValueA[i, j].Text.Length-1);
+                            
                             _cmb[i, j].SelectedIndex = 1;
                         }
                         //case 0 " "
                         else
                         {
-                            _txtCriteiaValueA[i, j].Text += GetRecords[i, j].First().CriteriaValue;
+                            _txtCriteiaValueA[i, j].Text += GetRecords[i+1, j].First().CriteriaValue;
                             _cmb[i, j].SelectedIndex = 0;
                         }
                     }
                     //case2 "～"
-                    else if (GetRecords[i, j].Count() == 2)
+                    else if (GetRecords[i+1, j].Count() == 2)
                     {
-                        foreach (var record in GetRecords[i, j])
+                        foreach (var record in GetRecords[i+1, j])
                         {
                             if (record.CriteriaSign == 1)
                             {
@@ -409,16 +412,16 @@ namespace app2
                         _cmb[i, j].SelectedIndex = 2;
                     }
                     //case4,5 "<=" or ">="
-                    else if (GetRecords[i, j].Count() == 1)
+                    else if (GetRecords[i+1, j].Count() == 1)
                     {
-                        if (GetRecords[i, j].First().CriteriaSign == 0)
+                        if (GetRecords[i+1, j].First().CriteriaSign == 0)
                         {
-                            _txtCriteiaValueB[i, j].Text += GetRecords[i, j].First().CriteriaValue;
+                            _txtCriteiaValueB[i, j].Text += GetRecords[i + 1, j].First().CriteriaValue;
                             _cmb[i, j].SelectedIndex = 3;
                         }
                         else
                         {
-                            _txtCriteiaValueB[i, j].Text += GetRecords[i, j].First().CriteriaValue;
+                            _txtCriteiaValueB[i, j].Text += GetRecords[i+1, j].First().CriteriaValue;
                             _cmb[i, j].SelectedIndex = 4;
                         }
                     }
