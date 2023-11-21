@@ -41,7 +41,7 @@ namespace app2
         }
         /// <summary>
         /// 受け取った入力情報からレコードを作りRecListに追加する
-        ///
+        /// 新規追加用
         /// </summary>
         /// <param name="RecList"></param>
         /// <param name="vitalcode"></param>
@@ -131,6 +131,7 @@ namespace app2
         {
             var RecordList = new List<Record>();
 
+            //入力情報をレコードに変換する
             for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
             {
                 for (int j = 0; j < 7; j++)//jは列数　７の部分を定数にしたほうがきれいかも
@@ -149,7 +150,6 @@ namespace app2
 
             //EVISCloudに接続
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
-
             SqlConnection con = new SqlConnection(constr);
             con.Open();
             try
@@ -161,7 +161,6 @@ namespace app2
                 if (result1 == 0) MessageBox.Show("M_EwsType INSERT Failed in CreatButton_Click()");
                 foreach (var record in RecordList)
                 {
-
                     //test　テキストボックスに登録する情報を出力、確認用 shundbg
                     int EwsId = record.EWSId;
                     string VitalCode = record.VitalCode;
@@ -172,12 +171,9 @@ namespace app2
                     txtOutSql.Text += string.Format("{0} / {1} /{2} / {3} / {4} / {5} / {6}  \r\n", EwsId, VitalCode, Score, CriteriaValue, CriteriaSign, Target, record.DisplayOrder);
                     //test 
 
-
-
                     //T_EwsScoreCriteriaへレコード追加
                     var sb = new StringBuilder();
                     sb.Append("INSERT INTO T_EwsScoreCriteria(EwsId, SeqNo, VitalCode, Score, CriteriaValue, CriteriaSign, Target, DisplayOrder)");
-                    //sb.Append($"VALUES( {record.EWSId}, {record.SeqNo}, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
                     //seqno=1固定でいいんじゃないか？新規追加だし
                     sb.Append($"VALUES( {record.EWSId},1, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
                     SqlCommand com = new SqlCommand(sb.ToString(), con);
@@ -212,7 +208,6 @@ namespace app2
         private void Form2_Load(object sender, EventArgs e)
         {
             InitControl();
-            InitBControl();
             InitComboBox();
             InitEwsName();
         }
@@ -221,7 +216,7 @@ namespace app2
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnConnectSql_Click(object sender, EventArgs e)
+        private void btnReadDB_Click(object sender, EventArgs e)
         {
             AllClear();
             //GetRecords初期化
@@ -242,9 +237,10 @@ namespace app2
                 //string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]} AND InvalidFlag = 0";
                 //sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]})";
 
-                //test shundbg 
+                //shundbg 引っ張ってくるのを3000に固定している
                 string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId =3000 AND InvalidFlag = 0";
                 sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = 3000)";
+                //shundbg
                 SqlCommand com = new SqlCommand(sqlstr, con);
                 SqlDataReader sdr = com.ExecuteReader();
 
@@ -260,7 +256,6 @@ namespace app2
                     int CriteriaSign = (int)sdr["CriteriaSign"];
                     int Target = (int)sdr["Target"];
                     int Displayorder = (int)sdr["DisplayOrder"];
-                    //txtOutSql.Text += string.Format($"{EwsId}, {SeqNo}, {VitalCode}, {Score}, {CriteriaValue}, {CriteriaSign}, {Target}, {Displayorder} \r\n");
 
                     var record = new Record(EwsId.ToString());
                     record.EWSId = EwsId;
@@ -326,7 +321,7 @@ namespace app2
                 }
             }
 
-            //******修正して！！二重forするようなこと？？？？->record配列のどこに要素が入っているかわからないから２重で回すしかない。フラグで早くぬけてるからそんな回してるわけでもない
+            //******修正いる？！！二重forするようなこと？？？？->record配列のどこに要素が入っているかわからないから２重で回すしかない。フラグで早くぬけてるからそんな回してるわけでもない
             //cmbvitalcodeを更新
             for (int i = 0; i < 10; i++)
             {
@@ -348,7 +343,7 @@ namespace app2
 
             }
 
-            //suhndbg 振り分けたレコードが正しいか確認
+            //shundbg 振り分けたレコードが正しいか確認
             for (int i = 1; i < 11; i++)
             {
                 for (int j = 0; j < 7; j++)
@@ -361,11 +356,15 @@ namespace app2
                 }
                 txtOutSql.Text += "*******************\r\n";
             }
+            //shundbg
 
             //レコード表示処理
             OutScore();
         }
 
+        /// <summary>
+        /// GetRecordsを表形式に表示
+        /// </summary>
         private void OutScore()
         {
 
@@ -435,6 +434,10 @@ namespace app2
                 }
             }
         }
+        /// <summary>
+        /// txtboxに表示テスト用
+        /// </summary>
+        /// <param name="record"></param>
         private void OutRecord(Record record)
         {
             string outstr = "";
@@ -443,6 +446,9 @@ namespace app2
             txtOutSql.Text += outstr;
         }
 
+        /// <summary>
+        /// 起動時EwsNameコンボボックスにＤＢからEwsName一覧を取ってきて設定
+        /// </summary>
         private void InitEwsName()
         {
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
@@ -470,6 +476,9 @@ namespace app2
                 con.Close();
             }
         }
+        /// <summary>
+        /// VitalName,各記号の初期化
+        /// </summary>
         private void InitComboBox()
         {
             for (int i = 0; i < 10; i++)
@@ -543,12 +552,21 @@ namespace app2
             }
         }
 
+        /// <summary>
+        /// コントロールを設定
+        /// </summary>
         private void InitControl()
         {
             _txtCriteiaValueA = new TextBox[10, 7];//vitaltype, score
             _txtCriteiaValueB = new TextBox[10, 7];//vitaltype, score
             _cmb = new ComboBox[10, 7];//vitaltype, score
             _vitalcode = new ComboBox[10];
+
+            _BtxtCriteiaValueA = new TextBox[10, 7];//vitaltype, score
+            _BtxtCriteiaValueB = new TextBox[10, 7];//vitaltype, score
+            _Bcmb = new ComboBox[10, 7];//vitaltype, score
+            _Bvitalcode = new ComboBox[10];
+
 
             //A 1行目
             _txtCriteiaValueA[0, 0] = txtCriteiaValue11A;
@@ -807,15 +825,9 @@ namespace app2
             _vitalcode[8] = cmbVitalCode9;
             _vitalcode[9] = cmbVitalCode10;
 
-        }
 
-        private void InitBControl()
-        {
-            _BtxtCriteiaValueA = new TextBox[10, 7];//vitaltype, score
-            _BtxtCriteiaValueB = new TextBox[10, 7];//vitaltype, score
-            _Bcmb = new ComboBox[10, 7];//vitaltype, score
-            _Bvitalcode = new ComboBox[10];
 
+            //BControl----------------------------------------------------------
             //A 1行目
             _BtxtCriteiaValueA[0, 0] = BtxtCriteiaValue11A;
             _BtxtCriteiaValueA[0, 1] = BtxtCriteiaValue12A;
@@ -1073,7 +1085,10 @@ namespace app2
             _Bvitalcode[8] = BcmbVitalCode9;
             _Bvitalcode[9] = BcmbVitalCode10;
         }
-            private void AllClear()
+        /// <summary>
+        /// 表示中の表を削除
+        /// </summary>
+        private void AllClear()
         {
             for (int i = 0; i < 10; i++)
             {
@@ -1087,6 +1102,12 @@ namespace app2
             }
         }
 
+        /// <summary>
+        /// btnUPDATEクリック時処理
+        /// 選択されたEwsNameの情報をＤＢから取ってきて表示
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UPDATE_Click(object sender, EventArgs e)
         {
             var RecordList = new List<Record>();
@@ -1153,6 +1174,18 @@ namespace app2
             }
         }
 
+        /// <summary>
+        /// UPDATE用レコード作成
+        /// </summary>
+        /// <param name="RecList"></param>
+        /// <param name="vitalcode"></param>
+        /// <param name="txtA"></param>
+        /// <param name="symb"></param>
+        /// <param name="txtB"></param>
+        /// <param name="score"></param>
+        /// <param name="tarval"></param>
+        /// <param name="displayorder"></param>
+        /// <param name="seqno"></param>
         public void CreatRecord_Update(List<Record> RecList, int vitalcode, string txtA, int symb, string txtB, int score, int tarval, int displayorder, int seqno)
         {
             //string[] words;
@@ -1236,17 +1269,12 @@ namespace app2
                     break;
             }
         }
-
-        private void btnConnectSql_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BcmbVitalCode2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
+        /// <summary>
+        /// Createページ移行時初期処理
+        /// 登録可能なEwsID取得・表示
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Selected_CreatPage(object sender, EventArgs e)
         {
             //EwsNameに対応するEwsidのレコードを取得しtxtに出力する

@@ -215,7 +215,7 @@
             this.txtCriteiaValue61A = new System.Windows.Forms.TextBox();
             this.cmbVitalCode6 = new System.Windows.Forms.ComboBox();
             this.txtOutSql = new System.Windows.Forms.TextBox();
-            this.btnConnectSql = new System.Windows.Forms.Button();
+            this.btnReadDB = new System.Windows.Forms.Button();
             this.panel29 = new System.Windows.Forms.Panel();
             this.textBox71 = new System.Windows.Forms.TextBox();
             this.cmb57 = new System.Windows.Forms.ComboBox();
@@ -985,7 +985,7 @@
             this.tabPage1.Controls.Add(this.panel42);
             this.tabPage1.Controls.Add(this.cmbVitalCode6);
             this.tabPage1.Controls.Add(this.txtOutSql);
-            this.tabPage1.Controls.Add(this.btnConnectSql);
+            this.tabPage1.Controls.Add(this.btnReadDB);
             this.tabPage1.Controls.Add(this.panel29);
             this.tabPage1.Controls.Add(this.panel30);
             this.tabPage1.Controls.Add(this.panel31);
@@ -2861,15 +2861,15 @@
             this.txtOutSql.Size = new System.Drawing.Size(1018, 117);
             this.txtOutSql.TabIndex = 154;
             // 
-            // btnConnectSql
+            // btnReadDB
             // 
-            this.btnConnectSql.Location = new System.Drawing.Point(1096, 757);
-            this.btnConnectSql.Name = "btnConnectSql";
-            this.btnConnectSql.Size = new System.Drawing.Size(167, 49);
-            this.btnConnectSql.TabIndex = 151;
-            this.btnConnectSql.Text = "DB読込";
-            this.btnConnectSql.UseVisualStyleBackColor = true;
-            this.btnConnectSql.Click += new System.EventHandler(this.btnConnectSql_Click);
+            this.btnReadDB.Location = new System.Drawing.Point(1096, 757);
+            this.btnReadDB.Name = "btnReadDB";
+            this.btnReadDB.Size = new System.Drawing.Size(167, 49);
+            this.btnReadDB.TabIndex = 151;
+            this.btnReadDB.Text = "DB読込";
+            this.btnReadDB.UseVisualStyleBackColor = true;
+            this.btnReadDB.Click += new System.EventHandler(this.btnReadDB_Click);
             // 
             // panel29
             // 
@@ -8065,7 +8065,6 @@
             this.BcmbVitalCode2.Name = "BcmbVitalCode2";
             this.BcmbVitalCode2.Size = new System.Drawing.Size(90, 20);
             this.BcmbVitalCode2.TabIndex = 118;
-            this.BcmbVitalCode2.SelectedIndexChanged += new System.EventHandler(this.BcmbVitalCode2_SelectedIndexChanged);
             // 
             // panel134
             // 
@@ -8999,7 +8998,7 @@
         private System.Windows.Forms.TextBox txtCriteiaValue61A;
         private System.Windows.Forms.ComboBox cmbVitalCode6;
         private System.Windows.Forms.TextBox txtOutSql;
-        private System.Windows.Forms.Button btnConnectSql;
+        private System.Windows.Forms.Button btnReadDB;
         private System.Windows.Forms.Panel panel29;
         private System.Windows.Forms.TextBox textBox71;
         private System.Windows.Forms.ComboBox cmb57;
