@@ -1255,9 +1255,9 @@ namespace app2
             con.Open();
             try
             {
-                //test shundbg 
-                //string sqlstr = $"SELECT Id FROM M_EwsType WHERE Id = (SELECT MAX(Id) FROM M_EwsType)";
-                string sqlstr = $"SELECT MAX(Id) FROM M_EwsType";
+                 
+                string sqlstr = $"SELECT Id FROM M_EwsType WHERE Id = (SELECT MAX(Id) FROM M_EwsType)";
+                //string sqlstr = $"SELECT MAX(Id) FROM M_EwsType";
                 SqlCommand com = new SqlCommand(sqlstr, con);
                 SqlDataReader sdr = com.ExecuteReader();
 
