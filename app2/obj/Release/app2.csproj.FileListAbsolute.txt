@@ -1,0 +1,11 @@
+C:\github\EVISCloud_EwsScoreTool\app2\bin\Release\app2.exe.config
+C:\github\EVISCloud_EwsScoreTool\app2\bin\Release\app2.exe
+C:\github\EVISCloud_EwsScoreTool\app2\bin\Release\app2.pdb
+C:\github\EVISCloud_EwsScoreTool\app2\obj\Release\app2.csproj.AssemblyReference.cache
+C:\github\EVISCloud_EwsScoreTool\app2\obj\Release\app2.Form1.resources
+C:\github\EVISCloud_EwsScoreTool\app2\obj\Release\app2.Form2.resources
+C:\github\EVISCloud_EwsScoreTool\app2\obj\Release\app2.Properties.Resources.resources
+C:\github\EVISCloud_EwsScoreTool\app2\obj\Release\app2.csproj.GenerateResource.cache
+C:\github\EVISCloud_EwsScoreTool\app2\obj\Release\app2.csproj.CoreCompileInputs.cache
+C:\github\EVISCloud_EwsScoreTool\app2\obj\Release\app2.exe
+C:\github\EVISCloud_EwsScoreTool\app2\obj\Release\app2.pdb

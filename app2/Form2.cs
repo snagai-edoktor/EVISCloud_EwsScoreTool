@@ -234,12 +234,12 @@ namespace app2
             try
             {
                 //SQL文作成:
-                //string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]} AND InvalidFlag = 0";
-                //sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]})";
+                string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]} AND InvalidFlag = 0";
+                sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]})";
 
                 //shundbg 引っ張ってくるのを3000に固定している
-                string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId =3000 AND InvalidFlag = 0";
-                sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = 3000)";
+                //string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId =3000 AND InvalidFlag = 0";
+                //sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = 3000)";
                 //shundbg
                 SqlCommand com = new SqlCommand(sqlstr, con);
                 SqlDataReader sdr = com.ExecuteReader();
