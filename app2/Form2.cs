@@ -13,7 +13,7 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 
 namespace app2
-{ 
+{
     public partial class Form2 : Form
     {
         //UPDATE用
@@ -50,8 +50,10 @@ namespace app2
         /// <param name="txtB"></param>
         /// <param name="score"></param>
         /// <param name="tarval"></param>
-        public void CreatRecord(List<Record> RecList, int vitalcode, string txtA, int symb, string txtB, int score, int tarval, int displayorder)
+        public void CreatRecord(List<Record> RecList, List<int> intlist, List<double> doublelist, int vitalcode, string txtA, int symb, string txtB, int score, int tarval, int displayorder)
         {
+            double d;
+            int i;
             //string[] words;
             switch (symb)
             {
@@ -101,6 +103,36 @@ namespace app2
                     record22.DisplayOrder = displayorder;
 
                     RecList.Add(record22);
+                    if (double.TryParse(txtB, out d) && txtB.Contains('.'))
+                    {
+                        double da;
+                        double.TryParse(txtA, out da);
+                        for (double start = da; start < d+0.1; start += 0.10)
+                        {
+                            doublelist.Add(start);
+                        }
+
+                        int a = (int)da * 10;
+                        int b = (int)d * 10;
+                        for(int k=a; k<=b; k++)
+                        {
+                            doublelist.Add( ((double)k) / 10);
+                        }
+
+                    }//int
+                    else if (int.TryParse(txtB, out i))
+                    {
+                        int ia;
+                        int.TryParse(txtA, out ia);
+                        for (int start = ia; start <= i; start++)
+                        {
+                            intlist.Add(start);
+                        }
+                    }
+                    else
+                    {
+                        //stringは処理なし
+                    }
                     break;
                 case 3:// <= memo １つレコード：A,Bが空かどうか判別が必要かな一回ききたい
                     var record3 = new Record(txtCreateEWSID.Text);
@@ -112,17 +144,44 @@ namespace app2
                     record3.DisplayOrder = displayorder;
 
                     RecList.Add(record3);
+
+                    if (double.TryParse(txtB, out d) && txtB.Contains('.'))
+                    {
+                        doublelist.Add(d);
+                    }//int
+                    else if (int.TryParse(txtB, out i))
+                    {
+                        intlist.Add(i);
+                    }
+                    else
+                    {
+                        //stringは処理なし
+                    }
+
                     break;
                 case 4:// >= memo １つレコード：A,Bが空かどうか判別が必要一回聞きたいそういう表記になってるだけで入力するときの感覚的にはおかしいかもしれない
                     var record4 = new Record(txtCreateEWSID.Text);
                     record4.Score = score;
                     record4.VitalCode = VitalCodeName[vitalcode];
                     record4.CriteriaValue = txtB;
-                    record4.CriteriaSign = 1;//shundbg 
+                    record4.CriteriaSign = 1;
                     record4.Target = tarval;
                     record4.DisplayOrder = displayorder;
 
                     RecList.Add(record4);
+
+                    if (double.TryParse(txtB, out d) && txtB.Contains('.'))
+                    {
+                        doublelist.Add(d);
+                    }//int
+                    else if (int.TryParse(txtB, out i))
+                    {
+                        intlist.Add(i);
+                    }
+                    else
+                    {
+                        //stringは処理なし
+                    }
                     break;
             }
         }
@@ -134,6 +193,10 @@ namespace app2
             //入力情報をレコードに変換する
             for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
             {
+                var RecordList_Vital = new List<Record>();
+                var doublelist = new List<double>();
+                var intlist = new List<int>();
+
                 for (int j = 0; j < 7; j++)//jは列数　７の部分を定数にしたほうがきれいかも
                 {
                     if (_BtxtCriteiaValueA[i, j].Text == "" && _BtxtCriteiaValueB[i, j].Text == "")
@@ -142,12 +205,53 @@ namespace app2
                     }
                     else
                     {
-                        CreatRecord(RecordList, _Bvitalcode[i].SelectedIndex, _BtxtCriteiaValueA[i, j].Text, _Bcmb[i, j].SelectedIndex, _BtxtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1);
+                        CreatRecord(RecordList, intlist, doublelist, _Bvitalcode[i].SelectedIndex, _BtxtCriteiaValueA[i, j].Text, _Bcmb[i, j].SelectedIndex, _BtxtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1);
                     }
 
                 }
-            }
 
+                double d;
+                int num;
+                //double
+                if (doublelist.Count != 0)
+                {
+                    bool fl = true;
+                    for(int s=0; s < doublelist.Count-1; s++)
+                    {
+                        if (doublelist[i+1] - doublelist[i] <= 0.1)
+                        {
+                            fl = false; break;
+                        }
+                    }
+                    //エラー処理
+                    if (!fl)
+                    {
+                        MessageBox.Show("double error");
+                    }
+                }//int
+                else if (intlist.Count != 0)
+                {
+                    bool fl = true;
+                    for (int s = 0; s < intlist.Count - 1; s++)
+                    {
+                        if (intlist[i + 1] - intlist[i] != 1)
+                        {
+                            fl = false; break;
+                        }
+                    }
+                    //エラー処理
+                    if (!fl)
+                    {
+                        MessageBox.Show("int error");
+                    }
+                }//string
+                else
+                {
+                    break;
+                }
+            }
+        
+    
             //EVISCloudに接続
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
             SqlConnection con = new SqlConnection(constr);
@@ -155,7 +259,7 @@ namespace app2
             try
             {
                 //M_EwsTypeへレコード登録
-                string sqlstr = $"INSERT INTO M_EwsType (EwsName, WarningThresholds) VALUES('{txtCreateEwsName.Text}','{txtCreateWarningThresolds.Text}')";
+                string sqlstr = $"INSERT INTO M_EwsType (Id, EwsName, WarningThresholds) VALUES('{txtCreateEwsName.Text}','{txtCreateWarningThresolds.Text}')";
                 SqlCommand createEwsTypecom = new SqlCommand(sqlstr, con);
                 var result1 = createEwsTypecom.ExecuteNonQuery();
                 if (result1 == 0) MessageBox.Show("M_EwsType INSERT Failed in CreatButton_Click()");
@@ -1114,6 +1218,7 @@ namespace app2
 
             for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
             {
+
                 for (int j = 0; j < 7; j++)//jは列数　７の部分を定数にしたほうがきれいかも
                 {
                     if (_txtCriteiaValueA[i, j].Text == "" && _txtCriteiaValueB[i, j].Text == "")
