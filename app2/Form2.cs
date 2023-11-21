@@ -50,13 +50,13 @@ namespace app2
         /// <param name="txtB"></param>
         /// <param name="score"></param>
         /// <param name="tarval"></param>
-        public void CreatRecord(List<Record> RecList, int vitalcode, string txtA, int symb, string txtB, int score, int tarval, int displayorder, int seqno)
+        public void CreatRecord(List<Record> RecList, int vitalcode, string txtA, int symb, string txtB, int score, int tarval, int displayorder)
         {
             //string[] words;
             switch (symb)
             {
                 case 0://   memo 1つのレコード作成
-                    var record0 = new Record(EWSID.Text);
+                    var record0 = new Record(txtCreateEWSID.Text);
                     record0.Score = score;
                     record0.VitalCode = VitalCodeName[vitalcode];
                     record0.CriteriaValue = txtA;
@@ -70,7 +70,7 @@ namespace app2
                     string[] words = txtA.Split(',');
                     foreach (var word in words)
                     {
-                        var record1 = new Record(EWSID.Text);
+                        var record1 = new Record(txtCreateEWSID.Text);
                         record1.Score = score;
                         record1.VitalCode = VitalCodeName[vitalcode];
                         record1.CriteriaValue = word;
@@ -82,7 +82,7 @@ namespace app2
                     }
                     break;
                 case 2:// ~ memo 2つレコードを作ればいい
-                    var record21 = new Record(EWSID.Text);
+                    var record21 = new Record(txtCreateEWSID.Text);
                     record21.Score = score;
                     record21.VitalCode = VitalCodeName[vitalcode];
                     record21.CriteriaValue = txtA;
@@ -92,7 +92,7 @@ namespace app2
 
                     RecList.Add(record21);
 
-                    var record22 = new Record(EWSID.Text);
+                    var record22 = new Record(txtCreateEWSID.Text);
                     record22.Score = score;
                     record22.VitalCode = VitalCodeName[vitalcode];
                     record22.CriteriaValue = txtB;
@@ -103,7 +103,7 @@ namespace app2
                     RecList.Add(record22);
                     break;
                 case 3:// <= memo １つレコード：A,Bが空かどうか判別が必要かな一回ききたい
-                    var record3 = new Record(EWSID.Text);
+                    var record3 = new Record(txtCreateEWSID.Text);
                     record3.Score = score;
                     record3.VitalCode = VitalCodeName[vitalcode];
                     record3.CriteriaValue = txtB;
@@ -114,7 +114,7 @@ namespace app2
                     RecList.Add(record3);
                     break;
                 case 4:// >= memo １つレコード：A,Bが空かどうか判別が必要一回聞きたいそういう表記になってるだけで入力するときの感覚的にはおかしいかもしれない
-                    var record4 = new Record(EWSID.Text);
+                    var record4 = new Record(txtCreateEWSID.Text);
                     record4.Score = score;
                     record4.VitalCode = VitalCodeName[vitalcode];
                     record4.CriteriaValue = txtB;
@@ -135,13 +135,13 @@ namespace app2
             {
                 for (int j = 0; j < 7; j++)//jは列数　７の部分を定数にしたほうがきれいかも
                 {
-                    if (_txtCriteiaValueA[i, j].Text == "" && _txtCriteiaValueB[i, j].Text == "")
+                    if (_BtxtCriteiaValueA[i, j].Text == "" && _BtxtCriteiaValueB[i, j].Text == "")
                     {
                         continue;
                     }
                     else
                     {
-                        CreatRecord(RecordList, _Bvitalcode[i].SelectedIndex, _BtxtCriteiaValueA[i, j].Text, _Bcmb[i, j].SelectedIndex, _BtxtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, Convert.ToInt32(txtSeqNo.Text));
+                        CreatRecord(RecordList, _Bvitalcode[i].SelectedIndex, _BtxtCriteiaValueA[i, j].Text, _Bcmb[i, j].SelectedIndex, _BtxtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1);
                     }
 
                 }
@@ -154,6 +154,11 @@ namespace app2
             con.Open();
             try
             {
+                //M_EwsTypeへレコード登録
+                string sqlstr = $"INSERT INTO M_EwsType (EwsName, WarningThresholds) VALUES('{txtCreateEwsName.Text}','{txtCreateWarningThresolds.Text}')";
+                SqlCommand createEwsTypecom = new SqlCommand(sqlstr, con);
+                var result1 = createEwsTypecom.ExecuteNonQuery();
+                if (result1 == 0) MessageBox.Show("M_EwsType INSERT Failed in CreatButton_Click()");
                 foreach (var record in RecordList)
                 {
 
@@ -167,19 +172,22 @@ namespace app2
                     txtOutSql.Text += string.Format("{0} / {1} /{2} / {3} / {4} / {5} / {6}  \r\n", EwsId, VitalCode, Score, CriteriaValue, CriteriaSign, Target, record.DisplayOrder);
                     //test 
 
+
+
+                    //T_EwsScoreCriteriaへレコード追加
                     var sb = new StringBuilder();
                     sb.Append("INSERT INTO T_EwsScoreCriteria(EwsId, SeqNo, VitalCode, Score, CriteriaValue, CriteriaSign, Target, DisplayOrder)");
-                    //sb.Append($"VALUES({record.EWSId}, {record.SeqNo}, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
-                    sb.Append($"VALUES( {record.EWSId}, {record.SeqNo}, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
+                    //sb.Append($"VALUES( {record.EWSId}, {record.SeqNo}, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
+                    //seqno=1固定でいいんじゃないか？新規追加だし
+                    sb.Append($"VALUES( {record.EWSId},1, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
                     SqlCommand com = new SqlCommand(sb.ToString(), con);
-
-                    //過去分のinvalidflagを立てる必要がある
-                    var result = com.ExecuteNonQuery();
-
+                    var result2 = com.ExecuteNonQuery();
+                    if (result2 == 0) MessageBox.Show("T_EwsScoreCriteria to INSERT Failed in CreatButton_Click()");
                 }
             }
             finally
             {
+                MessageBox.Show("INSERT DONE");
                 con.Close();
             }
         }
@@ -356,8 +364,6 @@ namespace app2
 
             //レコード表示処理
             OutScore();
-
-
         }
 
         private void OutScore()
@@ -478,10 +484,19 @@ namespace app2
                     _cmb[i, j].Items.Add("≦");
                     _cmb[i, j].Items.Add("≧");
                     _cmb[i, j].SelectedIndex = 0;
+                    _Bcmb[i, j].Items.Clear();
+                    _Bcmb[i, j].Items.Add("");
+                    _Bcmb[i, j].Items.Add(",");
+                    _Bcmb[i, j].Items.Add("～");
+                    _Bcmb[i, j].Items.Add("≦");
+                    _Bcmb[i, j].Items.Add("≧");
+                    _Bcmb[i, j].SelectedIndex = 0;
                 }
 
                 _vitalcode[i].SelectedIndex = 0;
                 _vitalcode[i].Items.Clear();
+                _Bvitalcode[i].SelectedIndex = 0;
+                _Bvitalcode[i].Items.Clear();
 
 
 
@@ -491,6 +506,7 @@ namespace app2
                 foreach (string s in VitalTypeFile)
                 {
                     _vitalcode[i].Items.Add(s);
+                    _Bvitalcode[i].Items.Add(s);
                     ele++;
                 }
                 //配列に情報を書き込みたいだけなので一度だけの実行でいい
@@ -1071,7 +1087,7 @@ namespace app2
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void UPDATE_Click(object sender, EventArgs e)
         {
             var RecordList = new List<Record>();
 
@@ -1095,9 +1111,10 @@ namespace app2
 
             SqlConnection con = new SqlConnection(constr);
             con.Open();
+            bool update_done = true;
             try
             {
-                bool first = true;
+                bool first = true;              
                 foreach (var record in RecordList)
                 {
                     //test　テキストボックスに登録する情報を出力、確認用 shundbg
@@ -1117,7 +1134,8 @@ namespace app2
                     SqlCommand com = new SqlCommand(sb.ToString(), con);
 
                     var result = com.ExecuteNonQuery();
-
+                    if (result == 0) MessageBox.Show("T_EwsScoreCriteria to UPDATE Failed in UPDATE_Click()");
+                    
                     if (first)
                     {
                         //過去分のinvalidflagを立てる必要がある
@@ -1130,6 +1148,7 @@ namespace app2
             }
             finally
             {
+                MessageBox.Show("UPDATE Done");
                 con.Close();
             }
         }
@@ -1223,15 +1242,38 @@ namespace app2
 
         }
 
-        private void button2_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
         private void BcmbVitalCode2_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
 
+        private void Selected_CreatPage(object sender, EventArgs e)
+        {
+            //EwsNameに対応するEwsidのレコードを取得しtxtに出力する
+            string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
+            SqlConnection con = new SqlConnection(constr);
+            con.Open();
+            try
+            {
+                //test shundbg 
+                //string sqlstr = $"SELECT Id FROM M_EwsType WHERE Id = (SELECT MAX(Id) FROM M_EwsType)";
+                string sqlstr = $"SELECT MAX(Id) FROM M_EwsType";
+                SqlCommand com = new SqlCommand(sqlstr, con);
+                SqlDataReader sdr = com.ExecuteReader();
+
+                while (sdr.Read() == true)
+                {
+                    //EVIS                   
+                    int Id = (int)sdr["Id"];
+                    txtCreateEWSID.Text = (Id+1).ToString();
+                }
+                sdr.Close();
+                com.Dispose();
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
     }
 }
