@@ -30,6 +30,14 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtScoreLv3R = new System.Windows.Forms.TextBox();
+            this.txtScoreLv2R = new System.Windows.Forms.TextBox();
+            this.txtScoreLv1R = new System.Windows.Forms.TextBox();
+            this.txtScoreLv1L = new System.Windows.Forms.TextBox();
+            this.txtScoreLv2L = new System.Windows.Forms.TextBox();
+            this.txtScoreLv3L = new System.Windows.Forms.TextBox();
             this.btnUPDATE = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.txtSeqNo = new System.Windows.Forms.TextBox();
@@ -395,13 +403,6 @@
             this.cmb11 = new System.Windows.Forms.ComboBox();
             this.txtCriteiaValue11B = new System.Windows.Forms.TextBox();
             this.txtCriteiaValue11A = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.cmbVitalCode1 = new System.Windows.Forms.ComboBox();
             this.lb_ewsid = new System.Windows.Forms.Label();
             this.EWSID = new System.Windows.Forms.TextBox();
@@ -940,6 +941,14 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label2);
+            this.tabPage1.Controls.Add(this.label1);
+            this.tabPage1.Controls.Add(this.txtScoreLv3R);
+            this.tabPage1.Controls.Add(this.txtScoreLv2R);
+            this.tabPage1.Controls.Add(this.txtScoreLv1R);
+            this.tabPage1.Controls.Add(this.txtScoreLv1L);
+            this.tabPage1.Controls.Add(this.txtScoreLv2L);
+            this.tabPage1.Controls.Add(this.txtScoreLv3L);
             this.tabPage1.Controls.Add(this.btnUPDATE);
             this.tabPage1.Controls.Add(this.label5);
             this.tabPage1.Controls.Add(this.txtSeqNo);
@@ -1025,13 +1034,6 @@
             this.tabPage1.Controls.Add(this.panel4);
             this.tabPage1.Controls.Add(this.panel3);
             this.tabPage1.Controls.Add(this.panel2);
-            this.tabPage1.Controls.Add(this.label8);
-            this.tabPage1.Controls.Add(this.label7);
-            this.tabPage1.Controls.Add(this.label6);
-            this.tabPage1.Controls.Add(this.label4);
-            this.tabPage1.Controls.Add(this.label3);
-            this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Controls.Add(this.cmbVitalCode1);
             this.tabPage1.Controls.Add(this.lb_ewsid);
             this.tabPage1.Controls.Add(this.EWSID);
@@ -1042,6 +1044,69 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "UPDATE";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(811, 68);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(11, 12);
+            this.label2.TabIndex = 204;
+            this.label2.Text = "0";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(148, 64);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(34, 12);
+            this.label1.TabIndex = 203;
+            this.label1.Text = "Score";
+            // 
+            // txtScoreLv3R
+            // 
+            this.txtScoreLv3R.Location = new System.Drawing.Point(1387, 61);
+            this.txtScoreLv3R.Name = "txtScoreLv3R";
+            this.txtScoreLv3R.Size = new System.Drawing.Size(40, 19);
+            this.txtScoreLv3R.TabIndex = 202;
+            // 
+            // txtScoreLv2R
+            // 
+            this.txtScoreLv2R.Location = new System.Drawing.Point(1190, 61);
+            this.txtScoreLv2R.Name = "txtScoreLv2R";
+            this.txtScoreLv2R.Size = new System.Drawing.Size(40, 19);
+            this.txtScoreLv2R.TabIndex = 201;
+            // 
+            // txtScoreLv1R
+            // 
+            this.txtScoreLv1R.Location = new System.Drawing.Point(993, 61);
+            this.txtScoreLv1R.Name = "txtScoreLv1R";
+            this.txtScoreLv1R.Size = new System.Drawing.Size(40, 19);
+            this.txtScoreLv1R.TabIndex = 200;
+            // 
+            // txtScoreLv1L
+            // 
+            this.txtScoreLv1L.Location = new System.Drawing.Point(599, 61);
+            this.txtScoreLv1L.Name = "txtScoreLv1L";
+            this.txtScoreLv1L.Size = new System.Drawing.Size(40, 19);
+            this.txtScoreLv1L.TabIndex = 198;
+            this.txtScoreLv1L.TextChanged += new System.EventHandler(this.txtScoreLv1L_TextChanged);
+            // 
+            // txtScoreLv2L
+            // 
+            this.txtScoreLv2L.Location = new System.Drawing.Point(402, 61);
+            this.txtScoreLv2L.Name = "txtScoreLv2L";
+            this.txtScoreLv2L.Size = new System.Drawing.Size(40, 19);
+            this.txtScoreLv2L.TabIndex = 197;
+            this.txtScoreLv2L.TextChanged += new System.EventHandler(this.txtScoreLv2L_TextChanged);
+            // 
+            // txtScoreLv3L
+            // 
+            this.txtScoreLv3L.Location = new System.Drawing.Point(205, 61);
+            this.txtScoreLv3L.Name = "txtScoreLv3L";
+            this.txtScoreLv3L.Size = new System.Drawing.Size(40, 19);
+            this.txtScoreLv3L.TabIndex = 196;
+            this.txtScoreLv3L.TextChanged += new System.EventHandler(this.txtScoreLv3L_TextChanged);
             // 
             // btnUPDATE
             // 
@@ -4619,69 +4684,6 @@
             this.txtCriteiaValue11A.Name = "txtCriteiaValue11A";
             this.txtCriteiaValue11A.Size = new System.Drawing.Size(60, 19);
             this.txtCriteiaValue11A.TabIndex = 12;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(1400, 65);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(11, 12);
-            this.label8.TabIndex = 110;
-            this.label8.Text = "3";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(1200, 65);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(11, 12);
-            this.label7.TabIndex = 109;
-            this.label7.Text = "2";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(1009, 65);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(11, 12);
-            this.label6.TabIndex = 108;
-            this.label6.Text = "1";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(810, 65);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(11, 12);
-            this.label4.TabIndex = 107;
-            this.label4.Text = "0";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(614, 65);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(11, 12);
-            this.label3.TabIndex = 106;
-            this.label3.Text = "1";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(417, 65);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(11, 12);
-            this.label2.TabIndex = 105;
-            this.label2.Text = "2";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(222, 65);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(11, 12);
-            this.label1.TabIndex = 104;
-            this.label1.Text = "3";
             // 
             // cmbVitalCode1
             // 
@@ -9178,13 +9180,6 @@
         private System.Windows.Forms.ComboBox cmb11;
         private System.Windows.Forms.TextBox txtCriteiaValue11B;
         private System.Windows.Forms.TextBox txtCriteiaValue11A;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmbVitalCode1;
         private System.Windows.Forms.Label lb_ewsid;
         private System.Windows.Forms.TextBox EWSID;
@@ -9563,5 +9558,13 @@
         private System.Windows.Forms.TextBox txtCreateEwsName;
         private System.Windows.Forms.TextBox txtCreateWarningThresolds;
         private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox txtScoreLv3R;
+        private System.Windows.Forms.TextBox txtScoreLv2R;
+        private System.Windows.Forms.TextBox txtScoreLv1R;
+        private System.Windows.Forms.TextBox txtScoreLv1L;
+        private System.Windows.Forms.TextBox txtScoreLv2L;
+        private System.Windows.Forms.TextBox txtScoreLv3L;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }

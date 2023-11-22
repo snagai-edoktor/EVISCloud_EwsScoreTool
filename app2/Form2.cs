@@ -39,6 +39,22 @@ namespace app2
         {
             InitializeComponent();
         }
+        private void Form2_Load(object sender, EventArgs e)
+        {
+            InitControl();
+            InitComboBox();
+            InitEwsName();
+        }
+        private void Update_scorearray()
+        {
+            _score[0] = Int32.Parse(txtScoreLv3L.Text);
+            _score[1] = Int32.Parse(txtScoreLv2L.Text);
+            _score[2] = Int32.Parse(txtScoreLv1L.Text);
+            _score[3] = 0;
+            _score[4] = Int32.Parse(txtScoreLv1L.Text);
+            _score[5] = Int32.Parse(txtScoreLv2L.Text);
+            _score[6] = Int32.Parse(txtScoreLv3L.Text);
+        }
         /// <summary>
         /// 受け取った入力情報からレコードを作りRecListに追加する
         /// 新規追加用
@@ -297,6 +313,8 @@ namespace app2
                 MessageBox.Show("INSERT DONE");
                 con.Close();
             }
+            
+            InitEwsName();
         }
         public class Record
         {
@@ -315,13 +333,6 @@ namespace app2
             }
 
         }
-
-        private void Form2_Load(object sender, EventArgs e)
-        {
-            InitControl();
-            InitComboBox();
-            InitEwsName();
-        }
         /// <summary>
         /// DB->app スコア表示用関数
         /// </summary>
@@ -330,6 +341,7 @@ namespace app2
         private void btnReadDB_Click(object sender, EventArgs e)
         {
             AllClear();
+            var scoreset = new SortedSet<int>();
             //GetRecords初期化
             for (int i = 0; i < 11; i++)
             {
@@ -345,12 +357,12 @@ namespace app2
             try
             {
                 //SQL文作成:
-                //string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]} AND InvalidFlag = 0";
-                //sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]})";
+                string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]} AND InvalidFlag = 0";
+                sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]})";
 
                 //shundbg 引っ張ってくるのを3000に固定している
-                string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId =3000 AND InvalidFlag = 0";
-                sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = 3000)";
+                //string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId =3000 AND InvalidFlag = 0";
+                //sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = 3000)";
                 //shundbg
                 SqlCommand com = new SqlCommand(sqlstr, con);
                 SqlDataReader sdr = com.ExecuteReader();
@@ -367,6 +379,9 @@ namespace app2
                     int CriteriaSign = (int)sdr["CriteriaSign"];
                     int Target = (int)sdr["Target"];
                     int Displayorder = (int)sdr["DisplayOrder"];
+
+                    //setにScoreに使用されているレベル3種類を保存
+                    scoreset.Add(Score);
 
                     var record = new Record(EwsId.ToString());
                     record.EWSId = EwsId;
@@ -421,6 +436,33 @@ namespace app2
             finally
             {
                 con.Close();
+            }
+
+            //setにある要素からtxtScoreLvを更新する
+            int cnt = 0;
+            foreach(var score in scoreset)
+            {
+                switch(cnt) 
+                {
+                    case 0:
+                        cnt++;
+                        break;
+                    case 1:
+                        cnt++;
+                        txtScoreLv1L.Text = score.ToString();
+                        break;
+                    case 2:
+                        cnt++;
+                        txtScoreLv2L.Text = score.ToString();
+                        break;
+                    case 3:
+                        cnt++;
+                        txtScoreLv3L.Text = score.ToString();
+                        break;
+                    default:
+                        break;
+                    
+                }
             }
 
             //GetRecords[0][]に入ってしまった分をvitalcodeをもとに1<=iに振り分ける
@@ -562,6 +604,9 @@ namespace app2
         /// </summary>
         private void InitEwsName()
         {
+            EwsName.Clear();
+            cmbEwsName.Items.Clear();
+
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
 
             SqlConnection con = new SqlConnection(constr);
@@ -1222,7 +1267,8 @@ namespace app2
         private void UPDATE_Click(object sender, EventArgs e)
         {
             var RecordList = new List<Record>();
-
+            //score配列を入力したscoreLVに更新する
+            Update_scorearray();
             for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
             {
 
@@ -1262,8 +1308,9 @@ namespace app2
 
                     var sb = new StringBuilder();
                     sb.Append("INSERT INTO T_EwsScoreCriteria(EwsId, SeqNo, VitalCode, Score, CriteriaValue, CriteriaSign, Target, DisplayOrder)");
-                    //sb.Append($"VALUES( {record.EWSId}, {record.SeqNo}, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
-                    sb.Append($"VALUES( 3000, {record.SeqNo}, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
+                    sb.Append($"VALUES( {record.EWSId}, {record.SeqNo}, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
+                    //shundbg
+                    //sb.Append($"VALUES( 3000, {record.SeqNo}, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
                     SqlCommand com = new SqlCommand(sb.ToString(), con);
 
                     var result = com.ExecuteNonQuery();
@@ -1414,6 +1461,26 @@ namespace app2
             {
                 con.Close();
             }
+        }
+
+        private void textBox16_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtScoreLv1L_TextChanged(object sender, EventArgs e)
+        {
+            txtScoreLv1R.Text = txtScoreLv1L.Text;
+        }
+
+        private void txtScoreLv2L_TextChanged(object sender, EventArgs e)
+        {
+            txtScoreLv2R.Text = txtScoreLv2L.Text;
+        }
+
+        private void txtScoreLv3L_TextChanged(object sender, EventArgs e)
+        {
+            txtScoreLv3R.Text = txtScoreLv3L.Text;
         }
     }
 }
