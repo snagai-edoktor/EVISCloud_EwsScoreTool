@@ -105,19 +105,23 @@ namespace app2
                     RecList.Add(record22);
                     if (double.TryParse(txtB, out d) && txtB.Contains('.'))
                     {
+
+
                         double da;
                         double.TryParse(txtA, out da);
-                        for (double start = da; start < d+0.1; start += 0.10)
+                        
+                        /*for (double start = da; start <= d; start += 0.100000000000)
                         {
                             doublelist.Add(start);
-                        }
+                        }*/
 
-                        int a = (int)da * 10;
-                        int b = (int)d * 10;
+                        int a = (int)(da * 10);
+                        int b = (int)(d * 10);
                         for(int k=a; k<=b; k++)
                         {
-                            doublelist.Add( ((double)k) / 10);
+                            intlist.Add(k);
                         }
+                        
 
                     }//int
                     else if (int.TryParse(txtB, out i))
@@ -147,7 +151,8 @@ namespace app2
 
                     if (double.TryParse(txtB, out d) && txtB.Contains('.'))
                     {
-                        doublelist.Add(d);
+                        intlist.Add((int)(d*10));
+                        //doublelist.Add(d);
                     }//int
                     else if (int.TryParse(txtB, out i))
                     {
@@ -172,6 +177,7 @@ namespace app2
 
                     if (double.TryParse(txtB, out d) && txtB.Contains('.'))
                     {
+                        intlist.Add((int)(d + 10));
                         doublelist.Add(d);
                     }//int
                     else if (int.TryParse(txtB, out i))
@@ -213,7 +219,7 @@ namespace app2
                 double d;
                 int num;
                 //double
-                if (doublelist.Count != 0)
+                /*if (doublelist.Count != 0)
                 {
                     bool fl = true;
                     for(int s=0; s < doublelist.Count-1; s++)
@@ -228,8 +234,9 @@ namespace app2
                     {
                         MessageBox.Show("double error");
                     }
-                }//int
-                else if (intlist.Count != 0)
+                }*/
+                //int double
+                if (intlist.Count != 0)
                 {
                     bool fl = true;
                     for (int s = 0; s < intlist.Count - 1; s++)
@@ -259,7 +266,7 @@ namespace app2
             try
             {
                 //M_EwsTypeへレコード登録
-                string sqlstr = $"INSERT INTO M_EwsType (Id, EwsName, WarningThresholds) VALUES('{txtCreateEwsName.Text}','{txtCreateWarningThresolds.Text}')";
+                string sqlstr = $"INSERT INTO M_EwsType (EwsName, WarningThresholds) VALUES('{txtCreateEwsName.Text}','{txtCreateWarningThresolds.Text}')";
                 SqlCommand createEwsTypecom = new SqlCommand(sqlstr, con);
                 var result1 = createEwsTypecom.ExecuteNonQuery();
                 if (result1 == 0) MessageBox.Show("M_EwsType INSERT Failed in CreatButton_Click()");
@@ -338,12 +345,12 @@ namespace app2
             try
             {
                 //SQL文作成:
-                string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]} AND InvalidFlag = 0";
-                sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]})";
+                //string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]} AND InvalidFlag = 0";
+                //sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]})";
 
                 //shundbg 引っ張ってくるのを3000に固定している
-                //string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId =3000 AND InvalidFlag = 0";
-                //sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = 3000)";
+                string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId =3000 AND InvalidFlag = 0";
+                sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = 3000)";
                 //shundbg
                 SqlCommand com = new SqlCommand(sqlstr, con);
                 SqlDataReader sdr = com.ExecuteReader();
