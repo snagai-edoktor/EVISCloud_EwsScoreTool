@@ -342,6 +342,7 @@ namespace app2
         {
             AllClear();
             var scoreset = new SortedSet<int>();
+            scoreset.Add(0);
             //GetRecords初期化
             for (int i = 0; i < 11; i++)
             {
@@ -439,29 +440,34 @@ namespace app2
             }
 
             //setにある要素からtxtScoreLvを更新する
-            int cnt = 0;
-            foreach(var score in scoreset)
+            int cnt = scoreset.Count();
+            IOrderedEnumerable<int> result = scoreset.OrderByDescending(x =>x);
+            if(4 < cnt)
             {
-                switch(cnt) 
+                //エラー
+            }
+            else
+            {
+                foreach (var score in result)
                 {
-                    case 0:
-                        cnt++;
-                        break;
-                    case 1:
-                        cnt++;
-                        txtScoreLv1L.Text = score.ToString();
-                        break;
-                    case 2:
-                        cnt++;
-                        txtScoreLv2L.Text = score.ToString();
-                        break;
-                    case 3:
-                        cnt++;
-                        txtScoreLv3L.Text = score.ToString();
-                        break;
-                    default:
-                        break;
-                    
+                    switch (cnt)
+                    {
+                        case 2:
+                            cnt--;
+                            txtScoreLv1L.Text = score.ToString();
+                            break;
+                        case 3:
+                            cnt--;
+                            txtScoreLv2L.Text = score.ToString();
+                            break;
+                        case 4:
+                            cnt--;
+                            txtScoreLv3L.Text = score.ToString();
+                            break;
+                        default:
+                            break;
+
+                    }
                 }
             }
 
