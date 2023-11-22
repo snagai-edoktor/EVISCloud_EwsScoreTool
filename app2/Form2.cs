@@ -28,6 +28,7 @@ namespace app2
         private ComboBox[] _Bvitalcode;
 
         private int[] _score = new int[] { 3, 2, 1, 0, 1, 2, 3 };
+        //private TextBox[] _ScoreLv;
         private int[] tarval = new int[] { 0, 0, 0, 1, 1, 1, 1 };
         private SortedDictionary<string, int> EwsName = new SortedDictionary<string, int>();
         private SortedDictionary<string, int> DicVitalcodeandDisplayOrder = new SortedDictionary<string, int>();
@@ -47,13 +48,13 @@ namespace app2
         }
         private void Update_scorearray()
         {
-            _score[0] = Int32.Parse(txtScoreLv3L.Text);
-            _score[1] = Int32.Parse(txtScoreLv2L.Text);
-            _score[2] = Int32.Parse(txtScoreLv1L.Text);
-            _score[3] = 0;
-            _score[4] = Int32.Parse(txtScoreLv1L.Text);
-            _score[5] = Int32.Parse(txtScoreLv2L.Text);
-            _score[6] = Int32.Parse(txtScoreLv3L.Text);
+            if (txtScoreLv3L.Text != "") _score[0] = Int32.Parse(txtScoreLv3L.Text);
+            if (txtScoreLv2L.Text != "") _score[1] = Int32.Parse(txtScoreLv2L.Text);
+            if (txtScoreLv1L.Text != "") _score[2] = Int32.Parse(txtScoreLv1L.Text);
+                                         _score[3] = 0;
+            if (txtScoreLv1L.Text != "") _score[4] = Int32.Parse(txtScoreLv1L.Text);
+            if (txtScoreLv2L.Text != "") _score[5] = Int32.Parse(txtScoreLv2L.Text);
+            if (txtScoreLv3L.Text != "") _score[6] = Int32.Parse(txtScoreLv3L.Text);
         }
         /// <summary>
         /// 受け取った入力情報からレコードを作りRecListに追加する
@@ -343,6 +344,8 @@ namespace app2
             AllClear();
             var scoreset = new SortedSet<int>();
             scoreset.Add(0);
+            var stackrecords = new List<Record>();
+            int[] scoreindex = new int[4];
             //GetRecords初期化
             for (int i = 0; i < 11; i++)
             {
@@ -409,7 +412,9 @@ namespace app2
                     {
                         DicVitalcodeandDisplayOrder.Add(VitalCode, Displayorder);
                     }
-
+                    //shundbg 一回全部スタックする
+                    stackrecords.Add(record);
+                    /*shundbg　入力方法切替
                     //GetRecordリストにDBから受けた情報をスコア別に格納
                     if (Target == 0)
                     {
@@ -430,6 +435,8 @@ namespace app2
                             //error文出したい
                         }
                     }
+                    */
+
                 }
                 sdr.Close();
                 com.Dispose();
@@ -450,6 +457,7 @@ namespace app2
             {
                 foreach (var score in result)
                 {
+                    //ここの変更で_score[]の値も変更される？
                     switch (cnt)
                     {
                         case 2:
@@ -470,6 +478,23 @@ namespace app2
                     }
                 }
             }
+
+            //
+            scoreindex = scoreset.ToArray();
+            foreach(var record in stackrecords)
+            {
+                if (record.Target == 0)
+                {
+                    GetRecords[record.DisplayOrder, 3 - (Array.IndexOf(scoreindex, record.Score))].Add(record);
+
+                }
+                else
+                {
+                    GetRecords[record.DisplayOrder, 3 + (Array.IndexOf(scoreindex, record.Score))].Add(record);
+                }
+            }
+
+
 
             //GetRecords[0][]に入ってしまった分をvitalcodeをもとに1<=iに振り分ける
             for (int i = 0; i < 7; i++)
@@ -729,6 +754,7 @@ namespace app2
             _Bcmb = new ComboBox[10, 7];//vitaltype, score
             _Bvitalcode = new ComboBox[10];
 
+            //_ScoreLv = new TextBox[7];
 
             //A 1行目
             _txtCriteiaValueA[0, 0] = txtCriteiaValue11A;
@@ -1246,6 +1272,17 @@ namespace app2
             _Bvitalcode[7] = BcmbVitalCode8;
             _Bvitalcode[8] = BcmbVitalCode9;
             _Bvitalcode[9] = BcmbVitalCode10;
+
+            
+            /*
+            _ScoreLv[0] = txtScoreLv3L;
+            _ScoreLv[1] = txtScoreLv2L;
+            _ScoreLv[2] = txtScoreLv1L;
+            //_ScoreLv[3] = ;
+            _ScoreLv[4] = txtScoreLv1L;
+            _ScoreLv[5] = txtScoreLv2R;
+            _ScoreLv[6] = txtScoreLv3R;
+            */
         }
         /// <summary>
         /// 表示中の表を削除
