@@ -4530,6 +4530,7 @@
             this.cmb14.Name = "cmb14";
             this.cmb14.Size = new System.Drawing.Size(40, 20);
             this.cmb14.TabIndex = 11;
+            this.cmb14.SelectedIndexChanged += new System.EventHandler(this.cmb14_SelectedIndexChanged);
             // 
             // txtCriteiaValue14B
             // 

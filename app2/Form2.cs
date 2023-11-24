@@ -56,6 +56,15 @@ namespace app2
             if (txtScoreLv1L.Text != "") _score[4] = Int32.Parse(txtScoreLv1L.Text);
             if (txtScoreLv2L.Text != "") _score[5] = Int32.Parse(txtScoreLv2L.Text);
             if (txtScoreLv3L.Text != "") _score[6] = Int32.Parse(txtScoreLv3L.Text);
+
+            for(int i=0;i<3;i++)
+            {
+                if (_score[i] < _score[i + 1])
+                {
+                    MessageBox.Show("スコアが間違っています");
+                    break;
+                }
+            }
         }
 
         private void Create_scorearray()
@@ -67,6 +76,14 @@ namespace app2
             if (txtCreScoreLv1L.Text != "") _score[4] = Int32.Parse(txtCreScoreLv1L.Text);
             if (txtCreScoreLv2L.Text != "") _score[5] = Int32.Parse(txtCreScoreLv2L.Text);
             if (txtCreScoreLv3L.Text != "") _score[6] = Int32.Parse(txtCreScoreLv3L.Text);
+            for (int i = 0; i < 3; i++)
+            {
+                if (_score[i] < _score[i + 1])
+                {
+                    MessageBox.Show("スコアが間違っています");
+                    break;
+                }
+            }
         }
         /// <summary>
         /// 受け取った入力情報からレコードを作りRecListに追加する
@@ -1614,6 +1631,11 @@ namespace app2
         private void txtCreScoreLv1L_TextChanged(object sender, EventArgs e)
         {
             txtCreScoreLv1R.Text = txtCreScoreLv1L.Text;
+        }
+
+        private void cmb14_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
