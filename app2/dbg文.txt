@@ -1,0 +1,8 @@
+////ファイルの行番号取得           
+string strMsg = GetLineNumber().ToString() + " 行目。";    //この行（サンプルでは50行目）が表示される
+
+//メッセージボックスで行番号を表示
+MessageBox.Show(strMsg
+                , "情報"
+                , MessageBoxButtons.OK
+                , MessageBoxIcon.Information);

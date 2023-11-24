@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Collections;
+using System.Runtime.CompilerServices;
 
 namespace app2
 {
@@ -27,6 +28,8 @@ namespace app2
         private TextBox[,] _BtxtCriteiaValueB;
         private ComboBox[,] _Bcmb;
         private ComboBox[] _Bvitalcode;
+        private ComboBox[] _cmbDataTypeUP;
+        //private ComboBox[] _cmbDataTypeCRE;
 
         private int[] _score = new int[] { 3, 2, 1, 0, 1, 2, 3 };
         //private TextBox[] _ScoreLv;
@@ -67,6 +70,11 @@ namespace app2
             }
         }
 
+        //行番号取得用メソッド
+        private int GetLineNumber([CallerLineNumber] int intLineNumber = 0)
+        {
+            return intLineNumber;
+        }
         private void Create_scorearray()
         {
             if (txtCreScoreLv3L.Text != "") _score[0] = Int32.Parse(txtCreScoreLv3L.Text);
@@ -96,14 +104,33 @@ namespace app2
         /// <param name="txtB"></param>
         /// <param name="score"></param>
         /// <param name="tarval"></param>
-        public void CreatRecord(List<Record> RecList, List<int> intlist, int vitalcode, string txtA, int symb, string txtB, int score, int tarval, int displayorder)
+        public bool CreatRecord(List<Record> RecList, List<int> intlist, int vitalcode, string txtA, int symb, string txtB, int score, int tarval, int displayorder,int datatype)
         {
             double d;
             int i;
+            bool fl = true;
             //string[] words;
             switch (symb)
             {
-                case 0://   memo 1つのレコード作成
+                case 0://未選択
+                    //エラー この関数を呼ぶ前にtxtA,bに中身があるか確認してるからここには来ないはず
+                    MessageBox.Show("コンボボックスが未選択です");
+                    fl = false;
+                    break;
+                case 1:// =  memo 1つのレコード作成
+                    if(datatype != 2)
+                    {
+                        //エラー 数値入力なのに単一文字列が含まれている
+                        fl = false;
+                        string strMsg = GetLineNumber().ToString() + " 行目。";    //この行（サンプルでは50行目）が表示される
+
+                        //メッセージボックスで行番号を表示
+                        MessageBox.Show(strMsg
+                                        , "情報"
+                                        , MessageBoxButtons.OK
+                                        , MessageBoxIcon.Information);
+                        break;
+                    }
                     var record0 = new Record(txtCreateEWSID.Text);
                     record0.Score = score;
                     record0.VitalCode = VitalCodeName[vitalcode];
@@ -114,7 +141,20 @@ namespace app2
 
                     RecList.Add(record0);
                     break;
-                case 1:// , memo レコード数に限りない
+                case 2:// , memo レコード数に限りない
+                    if (datatype != 2)
+                    {
+                        //エラー 数値入力なのに単一文字列が含まれている
+                        fl = false;
+                        string strMsg = GetLineNumber().ToString() + " 行目。";    //この行（サンプルでは50行目）が表示される
+
+                        //メッセージボックスで行番号を表示
+                        MessageBox.Show(strMsg
+                                        , "情報"
+                                        , MessageBoxButtons.OK
+                                        , MessageBoxIcon.Information);
+                        break;
+                    }
                     string[] words = txtA.Split(',');
                     foreach (var word in words)
                     {
@@ -129,7 +169,7 @@ namespace app2
                         RecList.Add(record1);
                     }
                     break;
-                case 2:// ~ memo 2つレコードを作ればいい
+                case 3:// ~ memo 2つレコードを作ればいい
                     var record21 = new Record(txtCreateEWSID.Text);
                     record21.Score = score;
                     record21.VitalCode = VitalCodeName[vitalcode];
@@ -151,24 +191,14 @@ namespace app2
                     RecList.Add(record22);
                     if (double.TryParse(txtB, out d) && txtB.Contains('.'))
                     {
-
-
                         double da;
                         double.TryParse(txtA, out da);
-                        
-                        /*for (double start = da; start <= d; start += 0.100000000000)
-                        {
-                            doublelist.Add(start);
-                        }*/
-
                         int a = (int)(da * 10);
                         int b = (int)(d * 10);
                         for(int k=a; k<=b; k++)
                         {
                             intlist.Add(k);
                         }
-                        
-
                     }//int
                     else if (int.TryParse(txtB, out i))
                     {
@@ -181,10 +211,19 @@ namespace app2
                     }
                     else
                     {
-                        //stringは処理なし
+                        //エラー　数値入力のはずなのに文字列入力されている
+                        fl = false;
+                        string strMsg = GetLineNumber().ToString() + " 行目。";    //この行（サンプルでは50行目）が表示される
+
+                        //メッセージボックスで行番号を表示
+                        MessageBox.Show(strMsg
+                                        , "情報"
+                                        , MessageBoxButtons.OK
+                                        , MessageBoxIcon.Information);
+                        break;
                     }
                     break;
-                case 3:// <= memo １つレコード：
+                case 4:// <= memo １つレコード：
                     var record3 = new Record(txtCreateEWSID.Text);
                     record3.Score = score;
                     record3.VitalCode = VitalCodeName[vitalcode];
@@ -206,11 +245,20 @@ namespace app2
                     }
                     else
                     {
-                        //stringは処理なし
+                        //エラー　数値入力のはずなのに文字列入力されている
+                        fl = false;
+                        string strMsg = GetLineNumber().ToString() + " 行目。";    //この行（サンプルでは50行目）が表示される
+
+                        //メッセージボックスで行番号を表示
+                        MessageBox.Show(strMsg
+                                        , "情報"
+                                        , MessageBoxButtons.OK
+                                        , MessageBoxIcon.Information); 
+                        break;
                     }
 
                     break;
-                case 4:// >= memo １つレコード：
+                case 5:// >= memo １つレコード：
                     var record4 = new Record(txtCreateEWSID.Text);
                     record4.Score = score;
                     record4.VitalCode = VitalCodeName[vitalcode];
@@ -223,7 +271,7 @@ namespace app2
 
                     if (double.TryParse(txtB, out d) && txtB.Contains('.'))
                     {
-                        intlist.Add((int)(d + 10));
+                        intlist.Add((int)(d * 10));
                     }//int
                     else if (int.TryParse(txtB, out i))
                     {
@@ -231,15 +279,18 @@ namespace app2
                     }
                     else
                     {
-                        //stringは処理なし
+                        //エラー　数値入力のはずなのに文字列入力されている
+                        fl = false; break;
                     }
                     break;
             }
+            return fl;
         }
 
         private void CreatButton_Click(object sender, EventArgs e)
         {
             var RecordList = new List<Record>();
+            bool check_input = true;
             Create_scorearray();
             //入力情報をレコードに変換する
             for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
@@ -255,7 +306,7 @@ namespace app2
                     }
                     else
                     {
-                        CreatRecord(RecordList, intlist, _Bvitalcode[i].SelectedIndex, _BtxtCriteiaValueA[i, j].Text, _Bcmb[i, j].SelectedIndex, _BtxtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1);
+                        check_input = CreatRecord(RecordList, intlist, _Bvitalcode[i].SelectedIndex, _BtxtCriteiaValueA[i, j].Text, _Bcmb[i, j].SelectedIndex, _BtxtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, _cmbDataTypeCRE[i].SelectedIndex);
                     }
 
                 }
@@ -279,7 +330,6 @@ namespace app2
                 }//string
                 else
                 {
-                    break;
                 }
             }
         
@@ -420,31 +470,7 @@ namespace app2
                     {
                         DicVitalcodeandDisplayOrder.Add(VitalCode, Displayorder);
                     }
-                    //shundbg 一回全部スタックする
                     stackrecords.Add(record);
-                    /*shundbg　入力方法切替
-                    //GetRecordリストにDBから受けた情報をスコア別に格納
-                    if (Target == 0)
-                    {
-                        if (Score <= 3)
-                        {
-                            GetRecords[Displayorder, 3 - Score].Add(record);
-                        }
-
-                    }
-                    else
-                    {
-                        if (Score <= 3)
-                        {
-                            GetRecords[Displayorder, 3 + Score].Add(record);
-                        }
-                        else
-                        {
-                            //error文出したい
-                        }
-                    }
-                    */
-
                 }
                 sdr.Close();
                 com.Dispose();
@@ -579,13 +605,13 @@ namespace app2
                             }
                             _txtCriteiaValueA[i, j].Text = _txtCriteiaValueA[i, j].Text.Remove(_txtCriteiaValueA[i, j].Text.Length - 1);
 
-                            _cmb[i, j].SelectedIndex = 1;
+                            _cmb[i, j].SelectedIndex = 2;
                         }
                         //case 0 " "
                         else
                         {
                             _txtCriteiaValueA[i, j].Text += GetRecords[i + 1, j].First().CriteriaValue;
-                            _cmb[i, j].SelectedIndex = 0;
+                            _cmb[i, j].SelectedIndex = 1;
                         }
                     }
                     //case2 "～"
@@ -602,7 +628,7 @@ namespace app2
                                 _txtCriteiaValueB[i, j].Text += record.CriteriaValue;
                             }
                         }
-                        _cmb[i, j].SelectedIndex = 2;
+                        _cmb[i, j].SelectedIndex = 3;
                     }
                     //case4,5 "<=" or ">="
                     else if (GetRecords[i + 1, j].Count() == 1)
@@ -610,12 +636,12 @@ namespace app2
                         if (GetRecords[i + 1, j].First().CriteriaSign == 0)
                         {
                             _txtCriteiaValueB[i, j].Text += GetRecords[i + 1, j].First().CriteriaValue;
-                            _cmb[i, j].SelectedIndex = 3;
+                            _cmb[i, j].SelectedIndex = 4;
                         }
                         else
                         {
                             _txtCriteiaValueB[i, j].Text += GetRecords[i + 1, j].First().CriteriaValue;
-                            _cmb[i, j].SelectedIndex = 4;
+                            _cmb[i, j].SelectedIndex = 5;
                         }
                     }
                     //error
@@ -683,6 +709,7 @@ namespace app2
                 {
                     _cmb[i, j].Items.Clear();
                     _cmb[i, j].Items.Add("");
+                    _cmb[i, j].Items.Add("=");
                     _cmb[i, j].Items.Add(",");
                     _cmb[i, j].Items.Add("～");
                     _cmb[i, j].Items.Add("≦");
@@ -690,6 +717,7 @@ namespace app2
                     _cmb[i, j].SelectedIndex = 0;
                     _Bcmb[i, j].Items.Clear();
                     _Bcmb[i, j].Items.Add("");
+                    _Bcmb[i, j].Items.Add("=");
                     _Bcmb[i, j].Items.Add(",");
                     _Bcmb[i, j].Items.Add("～");
                     _Bcmb[i, j].Items.Add("≦");
@@ -761,6 +789,9 @@ namespace app2
             _BtxtCriteiaValueB = new TextBox[10, 7];//vitaltype, score
             _Bcmb = new ComboBox[10, 7];//vitaltype, score
             _Bvitalcode = new ComboBox[10];
+
+            _cmbDataTypeUP = new ComboBox[10];
+            //_cmbDataTypeCRE = new ComboBox[10];
 
             //_ScoreLv = new TextBox[7];
 
@@ -1281,7 +1312,31 @@ namespace app2
             _Bvitalcode[8] = BcmbVitalCode9;
             _Bvitalcode[9] = BcmbVitalCode10;
 
+            _cmbDataTypeUP[0] = cmbDataTypeUP1;
+            _cmbDataTypeUP[1] = cmbDataTypeUP2;
+            _cmbDataTypeUP[2] = cmbDataTypeUP3;
+            _cmbDataTypeUP[3] = cmbDataTypeUP4;
+            _cmbDataTypeUP[4] = cmbDataTypeUP5;
+            _cmbDataTypeUP[5] = cmbDataTypeUP6;
+            _cmbDataTypeUP[6] = cmbDataTypeUP7;
+            _cmbDataTypeUP[7] = cmbDataTypeUP8;
+            _cmbDataTypeUP[8] = cmbDataTypeUP9;
+            _cmbDataTypeUP[9] = cmbDataTypeUP10;
+
             
+            /*
+            _cmbDataTypeCRE[0] = cmbDataTypeCRE1;
+            _cmbDataTypeCRE[1] = cmbDataTypeCRE2;
+            _cmbDataTypeCRE[2] = cmbDataTypeCRE3;
+            _cmbDataTypeCRE[3] = cmbDataTypeCRE4;
+            _cmbDataTypeCRE[4] = cmbDataTypeCRE5;
+            _cmbDataTypeCRE[5] = cmbDataTypeCRE6;
+            _cmbDataTypeCRE[6] = cmbDataTypeCRE7;
+            _cmbDataTypeCRE[7] = cmbDataTypeCRE8;
+            _cmbDataTypeCRE[8] = cmbDataTypeCRE9;
+            _cmbDataTypeCRE[9] = cmbDataTypeCRE10;
+            */
+
             /*
             _ScoreLv[0] = txtScoreLv3L;
             _ScoreLv[1] = txtScoreLv2L;
@@ -1325,6 +1380,8 @@ namespace app2
             var RecordList = new List<Record>();
             //score配列を入力したscoreLVに更新する
             Update_scorearray();
+            //入力エラーチェックフラグ
+            bool check_input = true;
             for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
             {
                 var intlist = new List<int>();
@@ -1336,7 +1393,7 @@ namespace app2
                     }
                     else
                     {
-                        CreatRecord_Update(RecordList,intlist, i, _txtCriteiaValueA[i, j].Text, _cmb[i, j].SelectedIndex, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, Convert.ToInt32(txtSeqNo.Text));
+                        check_input = CreatRecord_Update(RecordList,intlist, i, _txtCriteiaValueA[i, j].Text, _cmb[i, j].SelectedIndex, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, Convert.ToInt32(txtSeqNo.Text), _cmbDataTypeUP[i].SelectedIndex);
                     }
                 }
 
@@ -1349,7 +1406,9 @@ namespace app2
                     {
                         if (intlist[s + 1] - intlist[s] != 1)
                         {
-                            fl = false; break;
+                            fl = false;
+                            check_input = false;
+                            break;
                         }
                     }
                     //エラー処理
@@ -1360,10 +1419,21 @@ namespace app2
                 }//string
                 else
                 {
-                    break;
                 }
             }
 
+            if (!check_input)
+            {
+                ////ファイルの行番号取得           
+                string strMsg = GetLineNumber().ToString() + " 行目。";    //この行（サンプルでは50行目）が表示される
+
+                //メッセージボックスで行番号を表示
+                MessageBox.Show(strMsg
+                                , "情報"
+                                , MessageBoxButtons.OK
+                                , MessageBoxIcon.Information);
+                return ;
+            }
             //EVISCloudに接続
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
 
@@ -1423,14 +1493,25 @@ namespace app2
         /// <param name="tarval"></param>
         /// <param name="displayorder"></param>
         /// <param name="seqno"></param>
-        public void CreatRecord_Update(List<Record> RecList, List<int> intlist, int vitalcode, string txtA, int symb, string txtB, int score, int tarval, int displayorder, int seqno)
+        public bool CreatRecord_Update(List<Record> RecList, List<int> intlist, int vitalcode, string txtA, int symb, string txtB, int score, int tarval, int displayorder, int seqno, int datatype)
         {
             double d;
             int i;
+            bool fl = true;
             //string[] words;
             switch (symb)
             {
-                case 0://   memo 1つのレコード作成
+                case 0:
+                    //エラー この関数を呼ぶ前にtxtA,bに中身があるか確認してるからここには来ないはず
+                    MessageBox.Show("コンボボックスが未選択です");
+                    fl = false;
+                    break;
+                case 1://   memo 1つのレコード作成
+                    if (datatype != 2)
+                    {
+                        //エラー 数値入力なのに単一文字列が含まれている
+                        fl = false; break;
+                    }
                     var record0 = new Record(EWSID.Text);
 
                     record0.Score = score;
@@ -1443,7 +1524,20 @@ namespace app2
 
                     RecList.Add(record0);
                     break;
-                case 1:// , memo レコード数に限りない
+                case 2:// , memo レコード数に限りない
+                    if (datatype != 2)
+                    {
+                        //エラー
+                        ////ファイルの行番号取得           
+                        string strMsg = GetLineNumber().ToString() + " 行目。";    //この行（サンプルでは50行目）が表示される
+
+                        //メッセージボックスで行番号を表示
+                        MessageBox.Show(strMsg
+                                        , "情報"
+                                        , MessageBoxButtons.OK
+                                        , MessageBoxIcon.Information);
+                        fl = false; break;
+                    }
                     string[] words = txtA.Split(',');
                     foreach (var word in words)
                     {
@@ -1459,7 +1553,7 @@ namespace app2
                         RecList.Add(record1);
                     }
                     break;
-                case 2:// ~ memo 2つレコードを作ればいい
+                case 3:// ~ memo 2つレコードを作ればいい
                     var record21 = new Record(EWSID.Text);
                     record21.Score = score;
                     record21.VitalCode = _vitalcode[vitalcode].Items[0].ToString();
@@ -1506,11 +1600,20 @@ namespace app2
                     }
                     else
                     {
-                        //stringは処理なし
+                        //エラー　数値入力のはずなのに文字列入力されている
+                        ////ファイルの行番号取得           
+                        string strMsg = GetLineNumber().ToString() + " 行目。";    //この行（サンプルでは50行目）が表示される
+
+                        //メッセージボックスで行番号を表示
+                        MessageBox.Show(strMsg
+                                        , "情報"
+                                        , MessageBoxButtons.OK
+                                        , MessageBoxIcon.Information);
+                        fl = false; break;
                     }
 
                     break;
-                case 3:// <= memo １つレコード：A,Bが空かどうか判別が必要かな一回ききたい
+                case 4:// <= memo １つレコード：A,Bが空かどうか判別が必要かな一回ききたい
                     var record3 = new Record(EWSID.Text);
                     record3.Score = score;
                     record3.VitalCode = _vitalcode[vitalcode].Items[0].ToString();
@@ -1534,11 +1637,20 @@ namespace app2
                     }
                     else
                     {
-                        //stringは処理なし
+                        //エラー　数値入力のはずなのに文字列入力されている
+                        ////ファイルの行番号取得           
+                        string strMsg = GetLineNumber().ToString() + " 行目。";    //この行（サンプルでは50行目）が表示される
+
+                        //メッセージボックスで行番号を表示
+                        MessageBox.Show(strMsg
+                                        , "情報"
+                                        , MessageBoxButtons.OK
+                                        , MessageBoxIcon.Information);
+                        fl = false; break;
                     }
 
                     break;
-                case 4:// >= memo １つレコード：A,Bが空かどうか判別が必要一回聞きたいそういう表記になってるだけで入力するときの感覚的にはおかしいかもしれない
+                case 5:// >= memo １つレコード：A,Bが空かどうか判別が必要一回聞きたいそういう表記になってるだけで入力するときの感覚的にはおかしいかもしれない
                     var record4 = new Record(EWSID.Text);
                     record4.Score = score;
                     record4.VitalCode = _vitalcode[vitalcode].Items[0].ToString();
@@ -1562,11 +1674,21 @@ namespace app2
                     }
                     else
                     {
-                        //stringは処理なし
+                        //エラー　数値入力のはずなのに文字列入力されている
+                        ////ファイルの行番号取得           
+                        string strMsg = GetLineNumber().ToString() + " 行目。";    //この行（サンプルでは50行目）が表示される
+
+                        //メッセージボックスで行番号を表示
+                        MessageBox.Show(strMsg
+                                        , "情報"
+                                        , MessageBoxButtons.OK
+                                        , MessageBoxIcon.Information);
+                        fl = false; break;
                     }
 
                     break;
             }
+            return fl;
         }
         /// <summary>
         /// Createページ移行時初期処理
