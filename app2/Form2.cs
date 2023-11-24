@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using System.Collections;
 
 namespace app2
 {
@@ -28,6 +29,7 @@ namespace app2
         private ComboBox[] _Bvitalcode;
 
         private int[] _score = new int[] { 3, 2, 1, 0, 1, 2, 3 };
+        //private TextBox[] _ScoreLv;
         private int[] tarval = new int[] { 0, 0, 0, 1, 1, 1, 1 };
         private SortedDictionary<string, int> EwsName = new SortedDictionary<string, int>();
         private SortedDictionary<string, int> DicVitalcodeandDisplayOrder = new SortedDictionary<string, int>();
@@ -47,13 +49,41 @@ namespace app2
         }
         private void Update_scorearray()
         {
-            _score[0] = Int32.Parse(txtScoreLv3L.Text);
-            _score[1] = Int32.Parse(txtScoreLv2L.Text);
-            _score[2] = Int32.Parse(txtScoreLv1L.Text);
-            _score[3] = 0;
-            _score[4] = Int32.Parse(txtScoreLv1L.Text);
-            _score[5] = Int32.Parse(txtScoreLv2L.Text);
-            _score[6] = Int32.Parse(txtScoreLv3L.Text);
+            if (txtScoreLv3L.Text != "") _score[0] = Int32.Parse(txtScoreLv3L.Text);
+            if (txtScoreLv2L.Text != "") _score[1] = Int32.Parse(txtScoreLv2L.Text);
+            if (txtScoreLv1L.Text != "") _score[2] = Int32.Parse(txtScoreLv1L.Text);
+                                         _score[3] = 0;
+            if (txtScoreLv1L.Text != "") _score[4] = Int32.Parse(txtScoreLv1L.Text);
+            if (txtScoreLv2L.Text != "") _score[5] = Int32.Parse(txtScoreLv2L.Text);
+            if (txtScoreLv3L.Text != "") _score[6] = Int32.Parse(txtScoreLv3L.Text);
+
+            for(int i=0;i<3;i++)
+            {
+                if (_score[i] < _score[i + 1])
+                {
+                    MessageBox.Show("スコアが間違っています");
+                    break;
+                }
+            }
+        }
+
+        private void Create_scorearray()
+        {
+            if (txtCreScoreLv3L.Text != "") _score[0] = Int32.Parse(txtCreScoreLv3L.Text);
+            if (txtCreScoreLv2L.Text != "") _score[1] = Int32.Parse(txtCreScoreLv2L.Text);
+            if (txtCreScoreLv1L.Text != "") _score[2] = Int32.Parse(txtCreScoreLv1L.Text);
+                                            _score[3] = 0;
+            if (txtCreScoreLv1L.Text != "") _score[4] = Int32.Parse(txtCreScoreLv1L.Text);
+            if (txtCreScoreLv2L.Text != "") _score[5] = Int32.Parse(txtCreScoreLv2L.Text);
+            if (txtCreScoreLv3L.Text != "") _score[6] = Int32.Parse(txtCreScoreLv3L.Text);
+            for (int i = 0; i < 3; i++)
+            {
+                if (_score[i] < _score[i + 1])
+                {
+                    MessageBox.Show("スコアが間違っています");
+                    break;
+                }
+            }
         }
         /// <summary>
         /// 受け取った入力情報からレコードを作りRecListに追加する
@@ -66,7 +96,7 @@ namespace app2
         /// <param name="txtB"></param>
         /// <param name="score"></param>
         /// <param name="tarval"></param>
-        public void CreatRecord(List<Record> RecList, List<int> intlist, List<double> doublelist, int vitalcode, string txtA, int symb, string txtB, int score, int tarval, int displayorder)
+        public void CreatRecord(List<Record> RecList, List<int> intlist, int vitalcode, string txtA, int symb, string txtB, int score, int tarval, int displayorder)
         {
             double d;
             int i;
@@ -154,7 +184,7 @@ namespace app2
                         //stringは処理なし
                     }
                     break;
-                case 3:// <= memo １つレコード：A,Bが空かどうか判別が必要かな一回ききたい
+                case 3:// <= memo １つレコード：
                     var record3 = new Record(txtCreateEWSID.Text);
                     record3.Score = score;
                     record3.VitalCode = VitalCodeName[vitalcode];
@@ -180,7 +210,7 @@ namespace app2
                     }
 
                     break;
-                case 4:// >= memo １つレコード：A,Bが空かどうか判別が必要一回聞きたいそういう表記になってるだけで入力するときの感覚的にはおかしいかもしれない
+                case 4:// >= memo １つレコード：
                     var record4 = new Record(txtCreateEWSID.Text);
                     record4.Score = score;
                     record4.VitalCode = VitalCodeName[vitalcode];
@@ -194,7 +224,6 @@ namespace app2
                     if (double.TryParse(txtB, out d) && txtB.Contains('.'))
                     {
                         intlist.Add((int)(d + 10));
-                        doublelist.Add(d);
                     }//int
                     else if (int.TryParse(txtB, out i))
                     {
@@ -211,12 +240,11 @@ namespace app2
         private void CreatButton_Click(object sender, EventArgs e)
         {
             var RecordList = new List<Record>();
-
+            Create_scorearray();
             //入力情報をレコードに変換する
             for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
             {
                 var RecordList_Vital = new List<Record>();
-                var doublelist = new List<double>();
                 var intlist = new List<int>();
 
                 for (int j = 0; j < 7; j++)//jは列数　７の部分を定数にしたほうがきれいかも
@@ -227,37 +255,18 @@ namespace app2
                     }
                     else
                     {
-                        CreatRecord(RecordList, intlist, doublelist, _Bvitalcode[i].SelectedIndex, _BtxtCriteiaValueA[i, j].Text, _Bcmb[i, j].SelectedIndex, _BtxtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1);
+                        CreatRecord(RecordList, intlist, _Bvitalcode[i].SelectedIndex, _BtxtCriteiaValueA[i, j].Text, _Bcmb[i, j].SelectedIndex, _BtxtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1);
                     }
 
                 }
 
-                double d;
-                int num;
-                //double
-                /*if (doublelist.Count != 0)
-                {
-                    bool fl = true;
-                    for(int s=0; s < doublelist.Count-1; s++)
-                    {
-                        if (doublelist[i+1] - doublelist[i] <= 0.1)
-                        {
-                            fl = false; break;
-                        }
-                    }
-                    //エラー処理
-                    if (!fl)
-                    {
-                        MessageBox.Show("double error");
-                    }
-                }*/
                 //int double
                 if (intlist.Count != 0)
                 {
                     bool fl = true;
                     for (int s = 0; s < intlist.Count - 1; s++)
                     {
-                        if (intlist[i + 1] - intlist[i] != 1)
+                        if (intlist[s + 1] - intlist[s] != 1)
                         {
                             fl = false; break;
                         }
@@ -343,6 +352,8 @@ namespace app2
             AllClear();
             var scoreset = new SortedSet<int>();
             scoreset.Add(0);
+            var stackrecords = new List<Record>();
+            int[] scoreindex = new int[4];
             //GetRecords初期化
             for (int i = 0; i < 11; i++)
             {
@@ -409,7 +420,9 @@ namespace app2
                     {
                         DicVitalcodeandDisplayOrder.Add(VitalCode, Displayorder);
                     }
-
+                    //shundbg 一回全部スタックする
+                    stackrecords.Add(record);
+                    /*shundbg　入力方法切替
                     //GetRecordリストにDBから受けた情報をスコア別に格納
                     if (Target == 0)
                     {
@@ -430,6 +443,8 @@ namespace app2
                             //error文出したい
                         }
                     }
+                    */
+
                 }
                 sdr.Close();
                 com.Dispose();
@@ -450,6 +465,7 @@ namespace app2
             {
                 foreach (var score in result)
                 {
+                    //ここの変更で_score[]の値も変更される？
                     switch (cnt)
                     {
                         case 2:
@@ -470,6 +486,23 @@ namespace app2
                     }
                 }
             }
+
+            //
+            scoreindex = scoreset.ToArray();
+            foreach(var record in stackrecords)
+            {
+                if (record.Target == 0)
+                {
+                    GetRecords[record.DisplayOrder, 3 - (Array.IndexOf(scoreindex, record.Score))].Add(record);
+
+                }
+                else
+                {
+                    GetRecords[record.DisplayOrder, 3 + (Array.IndexOf(scoreindex, record.Score))].Add(record);
+                }
+            }
+
+
 
             //GetRecords[0][]に入ってしまった分をvitalcodeをもとに1<=iに振り分ける
             for (int i = 0; i < 7; i++)
@@ -729,6 +762,7 @@ namespace app2
             _Bcmb = new ComboBox[10, 7];//vitaltype, score
             _Bvitalcode = new ComboBox[10];
 
+            //_ScoreLv = new TextBox[7];
 
             //A 1行目
             _txtCriteiaValueA[0, 0] = txtCriteiaValue11A;
@@ -1246,12 +1280,24 @@ namespace app2
             _Bvitalcode[7] = BcmbVitalCode8;
             _Bvitalcode[8] = BcmbVitalCode9;
             _Bvitalcode[9] = BcmbVitalCode10;
+
+            
+            /*
+            _ScoreLv[0] = txtScoreLv3L;
+            _ScoreLv[1] = txtScoreLv2L;
+            _ScoreLv[2] = txtScoreLv1L;
+            //_ScoreLv[3] = ;
+            _ScoreLv[4] = txtScoreLv1L;
+            _ScoreLv[5] = txtScoreLv2R;
+            _ScoreLv[6] = txtScoreLv3R;
+            */
         }
         /// <summary>
         /// 表示中の表を削除
         /// </summary>
         private void AllClear()
         {
+            //表のテキストボックスを初期化
             for (int i = 0; i < 10; i++)
             {
                 for (int j = 0; j < 7; j++)
@@ -1262,6 +1308,10 @@ namespace app2
                 }
                 _vitalcode[i].Items.Clear();
             }
+
+            txtScoreLv3L.ResetText();
+            txtScoreLv2L.ResetText();
+            txtScoreLv1L.ResetText();
         }
 
         /// <summary>
@@ -1277,7 +1327,7 @@ namespace app2
             Update_scorearray();
             for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
             {
-
+                var intlist = new List<int>();
                 for (int j = 0; j < 7; j++)//jは列数　７の部分を定数にしたほうがきれいかも
                 {
                     if (_txtCriteiaValueA[i, j].Text == "" && _txtCriteiaValueB[i, j].Text == "")
@@ -1286,8 +1336,31 @@ namespace app2
                     }
                     else
                     {
-                        CreatRecord_Update(RecordList, i, _txtCriteiaValueA[i, j].Text, _cmb[i, j].SelectedIndex, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, Convert.ToInt32(txtSeqNo.Text));
+                        CreatRecord_Update(RecordList,intlist, i, _txtCriteiaValueA[i, j].Text, _cmb[i, j].SelectedIndex, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, Convert.ToInt32(txtSeqNo.Text));
                     }
+                }
+
+                //入力制限判定
+                //int double
+                if (intlist.Count != 0)
+                {
+                    bool fl = true;
+                    for (int s = 0; s < intlist.Count - 1; s++)
+                    {
+                        if (intlist[s + 1] - intlist[s] != 1)
+                        {
+                            fl = false; break;
+                        }
+                    }
+                    //エラー処理
+                    if (!fl)
+                    {
+                        MessageBox.Show("int error");
+                    }
+                }//string
+                else
+                {
+                    break;
                 }
             }
 
@@ -1296,7 +1369,6 @@ namespace app2
 
             SqlConnection con = new SqlConnection(constr);
             con.Open();
-            bool update_done = true;
             try
             {
                 bool first = true;              
@@ -1351,8 +1423,10 @@ namespace app2
         /// <param name="tarval"></param>
         /// <param name="displayorder"></param>
         /// <param name="seqno"></param>
-        public void CreatRecord_Update(List<Record> RecList, int vitalcode, string txtA, int symb, string txtB, int score, int tarval, int displayorder, int seqno)
+        public void CreatRecord_Update(List<Record> RecList, List<int> intlist, int vitalcode, string txtA, int symb, string txtB, int score, int tarval, int displayorder, int seqno)
         {
+            double d;
+            int i;
             //string[] words;
             switch (symb)
             {
@@ -1407,6 +1481,34 @@ namespace app2
                     record22.DisplayOrder = displayorder;
 
                     RecList.Add(record22);
+
+                    //入力制限判定用
+                    //double入力
+                    if (double.TryParse(txtB, out d) && txtB.Contains('.'))
+                    {
+                        double da;
+                        double.TryParse(txtA, out da);
+                        int a = (int)(da * 10);
+                        int b = (int)(d * 10);
+                        for (int k = a; k <= b; k++)
+                        {
+                            intlist.Add(k);
+                        }
+                    }//int入力
+                    else if (int.TryParse(txtB, out i))
+                    {
+                        int ia;
+                        int.TryParse(txtA, out ia);
+                        for (int start = ia; start <= i; start++)
+                        {
+                            intlist.Add(start);
+                        }
+                    }
+                    else
+                    {
+                        //stringは処理なし
+                    }
+
                     break;
                 case 3:// <= memo １つレコード：A,Bが空かどうか判別が必要かな一回ききたい
                     var record3 = new Record(EWSID.Text);
@@ -1419,6 +1521,22 @@ namespace app2
                     record3.DisplayOrder = displayorder;
 
                     RecList.Add(record3);
+
+                    //入力制限用
+                    //double
+                    if (double.TryParse(txtB, out d) && txtB.Contains('.'))
+                    {
+                        intlist.Add((int)(d * 10));
+                    }//int
+                    else if (int.TryParse(txtB, out i))
+                    {
+                        intlist.Add(i);
+                    }
+                    else
+                    {
+                        //stringは処理なし
+                    }
+
                     break;
                 case 4:// >= memo １つレコード：A,Bが空かどうか判別が必要一回聞きたいそういう表記になってるだけで入力するときの感覚的にはおかしいかもしれない
                     var record4 = new Record(EWSID.Text);
@@ -1431,6 +1549,22 @@ namespace app2
                     record4.DisplayOrder = displayorder;
 
                     RecList.Add(record4);
+
+                    //入力制限用
+                    //double
+                    if (double.TryParse(txtB, out d) && txtB.Contains('.'))
+                    {
+                        intlist.Add((int)(d * 10));
+                    }//int
+                    else if (int.TryParse(txtB, out i))
+                    {
+                        intlist.Add(i);
+                    }
+                    else
+                    {
+                        //stringは処理なし
+                    }
+
                     break;
             }
         }
@@ -1469,11 +1603,6 @@ namespace app2
             }
         }
 
-        private void textBox16_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void txtScoreLv1L_TextChanged(object sender, EventArgs e)
         {
             txtScoreLv1R.Text = txtScoreLv1L.Text;
@@ -1487,6 +1616,26 @@ namespace app2
         private void txtScoreLv3L_TextChanged(object sender, EventArgs e)
         {
             txtScoreLv3R.Text = txtScoreLv3L.Text;
+        }
+
+        private void txtCreScoreLv3L_TextChanged(object sender, EventArgs e)
+        {
+            txtCreScoreLv3R.Text = txtCreScoreLv3L.Text; 
+        }
+
+        private void txtCreScoreLv2L_TextChanged(object sender, EventArgs e)
+        {
+            txtCreScoreLv2R.Text = txtCreScoreLv2L.Text;
+        }
+
+        private void txtCreScoreLv1L_TextChanged(object sender, EventArgs e)
+        {
+            txtCreScoreLv1R.Text = txtCreScoreLv1L.Text;
+        }
+
+        private void cmb14_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
