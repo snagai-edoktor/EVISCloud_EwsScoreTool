@@ -1344,7 +1344,7 @@ namespace app2
             _cmbDataTypeCRE[2] = cmbDataTypeCRE3;
             _cmbDataTypeCRE[3] = cmbDataTypeCRE4;
             _cmbDataTypeCRE[4] = cmbDataTypeCRE5;
-            _cmbDataTypeCRE[5] = cmbDataTypeCRE5;
+            _cmbDataTypeCRE[5] = cmbDataTypeCRE6;
             _cmbDataTypeCRE[6] = cmbDataTypeCRE7;
             _cmbDataTypeCRE[7] = cmbDataTypeCRE8;
             _cmbDataTypeCRE[8] = cmbDataTypeCRE9;
