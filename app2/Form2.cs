@@ -29,7 +29,7 @@ namespace app2
         private ComboBox[,] _Bcmb;
         private ComboBox[] _Bvitalcode;
         private ComboBox[] _cmbDataTypeUP;
-        //private ComboBox[] _cmbDataTypeCRE;
+        private ComboBox[] _cmbDataTypeCRE;
 
         private int[] _score = new int[] { 3, 2, 1, 0, 1, 2, 3 };
         //private TextBox[] _ScoreLv;
@@ -412,6 +412,20 @@ namespace app2
                     GetRecords[i, j] = new List<Record>();
                 }
             }
+
+            if (cmbEwsName.SelectedIndex == -1)
+            {
+                ////ファイルの行番号取得           
+                string strMsg = GetLineNumber().ToString() + " 行目";
+
+                //メッセージボックスで行番号を表示
+                MessageBox.Show(strMsg
+                                , "エラー"
+                                , MessageBoxButtons.OK
+                                , MessageBoxIcon.Information);
+
+                return;
+            }
             //EwsNameに対応するEwsidのレコードを取得しtxtに出力する
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
             SqlConnection con = new SqlConnection(constr);
@@ -791,7 +805,7 @@ namespace app2
             _Bvitalcode = new ComboBox[10];
 
             _cmbDataTypeUP = new ComboBox[10];
-            //_cmbDataTypeCRE = new ComboBox[10];
+            _cmbDataTypeCRE = new ComboBox[10];
 
             //_ScoreLv = new TextBox[7];
 
@@ -1324,18 +1338,18 @@ namespace app2
             _cmbDataTypeUP[9] = cmbDataTypeUP10;
 
             
-            /*
+            
             _cmbDataTypeCRE[0] = cmbDataTypeCRE1;
             _cmbDataTypeCRE[1] = cmbDataTypeCRE2;
             _cmbDataTypeCRE[2] = cmbDataTypeCRE3;
             _cmbDataTypeCRE[3] = cmbDataTypeCRE4;
             _cmbDataTypeCRE[4] = cmbDataTypeCRE5;
-            _cmbDataTypeCRE[5] = cmbDataTypeCRE6;
+            _cmbDataTypeCRE[5] = cmbDataTypeCRE5;
             _cmbDataTypeCRE[6] = cmbDataTypeCRE7;
             _cmbDataTypeCRE[7] = cmbDataTypeCRE8;
             _cmbDataTypeCRE[8] = cmbDataTypeCRE9;
             _cmbDataTypeCRE[9] = cmbDataTypeCRE10;
-            */
+            
 
             /*
             _ScoreLv[0] = txtScoreLv3L;
@@ -1393,7 +1407,17 @@ namespace app2
                     }
                     else
                     {
-                        check_input = CreatRecord_Update(RecordList,intlist, i, _txtCriteiaValueA[i, j].Text, _cmb[i, j].SelectedIndex, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, Convert.ToInt32(txtSeqNo.Text), _cmbDataTypeUP[i].SelectedIndex);
+                        if(!CreatRecord_Update(RecordList, intlist, i, _txtCriteiaValueA[i, j].Text, _cmb[i, j].SelectedIndex, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, Convert.ToInt32(txtSeqNo.Text), _cmbDataTypeUP[i].SelectedIndex))
+                        {
+                            ////ファイルの行番号取得           
+                            string errMsg = GetLineNumber().ToString() + " 行目" +" [i,j] = " + i + " " + j;    //この行（サンプルでは50行目）が表示される
+                            //メッセージボックスで行番号を表示
+                            MessageBox.Show(errMsg
+                                            , "エラー"
+                                            , MessageBoxButtons.OK
+                                            , MessageBoxIcon.Information);
+                            check_input = false;
+                        }
                     }
                 }
 
@@ -1422,10 +1446,10 @@ namespace app2
                 }
             }
 
-            if (!check_input)
-            {
+            //if (!check_input)
+            //{
                 ////ファイルの行番号取得           
-                string strMsg = GetLineNumber().ToString() + " 行目。";    //この行（サンプルでは50行目）が表示される
+                string strMsg = GetLineNumber().ToString() + " 行目 レコード登録中止";    //この行（サンプルでは50行目）が表示される
 
                 //メッセージボックスで行番号を表示
                 MessageBox.Show(strMsg
@@ -1433,7 +1457,7 @@ namespace app2
                                 , MessageBoxButtons.OK
                                 , MessageBoxIcon.Information);
                 return ;
-            }
+            //}
             //EVISCloudに接続
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
 
@@ -1506,7 +1530,7 @@ namespace app2
                     MessageBox.Show("コンボボックスが未選択です");
                     fl = false;
                     break;
-                case 1://   memo 1つのレコード作成
+                case 1://   "="memo 1つのレコード作成
                     if (datatype != 2)
                     {
                         //エラー 数値入力なのに単一文字列が含まれている
@@ -1529,11 +1553,11 @@ namespace app2
                     {
                         //エラー
                         ////ファイルの行番号取得           
-                        string strMsg = GetLineNumber().ToString() + " 行目。";    //この行（サンプルでは50行目）が表示される
+                        string strMsg = GetLineNumber().ToString() + " 行目";    //この行（サンプルでは50行目）が表示される
 
                         //メッセージボックスで行番号を表示
                         MessageBox.Show(strMsg
-                                        , "情報"
+                                        , "入力値エラー"
                                         , MessageBoxButtons.OK
                                         , MessageBoxIcon.Information);
                         fl = false; break;
@@ -1602,11 +1626,11 @@ namespace app2
                     {
                         //エラー　数値入力のはずなのに文字列入力されている
                         ////ファイルの行番号取得           
-                        string strMsg = GetLineNumber().ToString() + " 行目。";    //この行（サンプルでは50行目）が表示される
+                        string strMsg = GetLineNumber().ToString() + " 行目";
 
                         //メッセージボックスで行番号を表示
                         MessageBox.Show(strMsg
-                                        , "情報"
+                                        , "入力値エラー"
                                         , MessageBoxButtons.OK
                                         , MessageBoxIcon.Information);
                         fl = false; break;
@@ -1639,11 +1663,11 @@ namespace app2
                     {
                         //エラー　数値入力のはずなのに文字列入力されている
                         ////ファイルの行番号取得           
-                        string strMsg = GetLineNumber().ToString() + " 行目。";    //この行（サンプルでは50行目）が表示される
+                        string strMsg = GetLineNumber().ToString() + " 行目";
 
                         //メッセージボックスで行番号を表示
                         MessageBox.Show(strMsg
-                                        , "情報"
+                                        , "入力値エラー"
                                         , MessageBoxButtons.OK
                                         , MessageBoxIcon.Information);
                         fl = false; break;
@@ -1676,11 +1700,11 @@ namespace app2
                     {
                         //エラー　数値入力のはずなのに文字列入力されている
                         ////ファイルの行番号取得           
-                        string strMsg = GetLineNumber().ToString() + " 行目。";    //この行（サンプルでは50行目）が表示される
+                        string strMsg = GetLineNumber().ToString() + " 行目";
 
                         //メッセージボックスで行番号を表示
                         MessageBox.Show(strMsg
-                                        , "情報"
+                                        , "入力値エラー"
                                         , MessageBoxButtons.OK
                                         , MessageBoxIcon.Information);
                         fl = false; break;
@@ -1749,13 +1773,62 @@ namespace app2
         {
             txtCreScoreLv2R.Text = txtCreScoreLv2L.Text;
         }
-
         private void txtCreScoreLv1L_TextChanged(object sender, EventArgs e)
         {
             txtCreScoreLv1R.Text = txtCreScoreLv1L.Text;
         }
 
-        private void cmb14_SelectedIndexChanged(object sender, EventArgs e)
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox5_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox6_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox7_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox8_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox9_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox10_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
