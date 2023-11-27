@@ -1227,6 +1227,7 @@
             this.cmbDataTypeUP1.Name = "cmbDataTypeUP1";
             this.cmbDataTypeUP1.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP1.TabIndex = 205;
+            this.cmbDataTypeUP1.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP1_SelectedIndexChanged);
             // 
             // label2
             // 

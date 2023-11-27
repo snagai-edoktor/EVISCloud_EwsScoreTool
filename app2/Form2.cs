@@ -189,20 +189,26 @@ namespace app2
                     record22.DisplayOrder = displayorder;
 
                     RecList.Add(record22);
-                    if (double.TryParse(txtB, out d) && txtB.Contains('.'))
+
+
+                    //入力制限判定用
+                    //double入力
+                    if (datatype == 1)
                     {
                         double da;
+                        double.TryParse(txtB, out d);
                         double.TryParse(txtA, out da);
                         int a = (int)(da * 10);
                         int b = (int)(d * 10);
-                        for(int k=a; k<=b; k++)
+                        for (int k = a; k <= b; k++)
                         {
                             intlist.Add(k);
                         }
-                    }//int
-                    else if (int.TryParse(txtB, out i))
+                    }//int入力
+                    else if (datatype == 0)
                     {
                         int ia;
+                        int.TryParse(txtB, out i);
                         int.TryParse(txtA, out ia);
                         for (int start = ia; start <= i; start++)
                         {
@@ -212,16 +218,17 @@ namespace app2
                     else
                     {
                         //エラー　数値入力のはずなのに文字列入力されている
-                        fl = false;
-                        string strMsg = GetLineNumber().ToString() + " 行目。";    //この行（サンプルでは50行目）が表示される
+                        ////ファイルの行番号取得           
+                        string strMsg = GetLineNumber().ToString() + " 行目";
 
                         //メッセージボックスで行番号を表示
                         MessageBox.Show(strMsg
-                                        , "情報"
+                                        , "入力値エラー"
                                         , MessageBoxButtons.OK
                                         , MessageBoxIcon.Information);
-                        break;
+                        fl = false; break;
                     }
+
                     break;
                 case 4:// <= memo １つレコード：
                     var record3 = new Record(txtCreateEWSID.Text);
@@ -234,27 +241,42 @@ namespace app2
 
                     RecList.Add(record3);
 
-                    if (double.TryParse(txtB, out d) && txtB.Contains('.'))
+                    //入力制限用
+                    //double
+                    if (datatype == 1)
                     {
-                        intlist.Add((int)(d*10));
-                        //doublelist.Add(d);
-                    }//int
-                    else if (int.TryParse(txtB, out i))
+                        double da;
+                        double.TryParse(txtB, out d);
+                        double.TryParse(txtA, out da);
+                        int a = (int)(da * 10);
+                        int b = (int)(d * 10);
+                        for (int k = a; k <= b; k++)
+                        {
+                            intlist.Add(k);
+                        }
+                    }//int入力
+                    else if (datatype == 0)
                     {
-                        intlist.Add(i);
+                        int ia;
+                        int.TryParse(txtB, out i);
+                        int.TryParse(txtA, out ia);
+                        for (int start = ia; start <= i; start++)
+                        {
+                            intlist.Add(start);
+                        }
                     }
                     else
                     {
                         //エラー　数値入力のはずなのに文字列入力されている
-                        fl = false;
-                        string strMsg = GetLineNumber().ToString() + " 行目。";    //この行（サンプルでは50行目）が表示される
+                        ////ファイルの行番号取得           
+                        string strMsg = GetLineNumber().ToString() + " 行目";
 
                         //メッセージボックスで行番号を表示
                         MessageBox.Show(strMsg
-                                        , "情報"
+                                        , "入力値エラー"
                                         , MessageBoxButtons.OK
-                                        , MessageBoxIcon.Information); 
-                        break;
+                                        , MessageBoxIcon.Information);
+                        fl = false; break;
                     }
 
                     break;
@@ -269,6 +291,8 @@ namespace app2
 
                     RecList.Add(record4);
 
+                    //入力制限用
+                    //double
                     if (double.TryParse(txtB, out d) && txtB.Contains('.'))
                     {
                         intlist.Add((int)(d * 10));
@@ -280,6 +304,14 @@ namespace app2
                     else
                     {
                         //エラー　数値入力のはずなのに文字列入力されている
+                        ////ファイルの行番号取得           
+                        string strMsg = GetLineNumber().ToString() + " 行目";
+
+                        //メッセージボックスで行番号を表示
+                        MessageBox.Show(strMsg
+                                        , "入力値エラー"
+                                        , MessageBoxButtons.OK
+                                        , MessageBoxIcon.Information);
                         fl = false; break;
                     }
                     break;
@@ -1357,6 +1389,8 @@ namespace app2
             _Bvitalcode[8] = BcmbVitalCode9;
             _Bvitalcode[9] = BcmbVitalCode10;
 
+
+            //_cmbDataType
             _cmbDataTypeUP[0] = cmbDataTypeUP1;
             _cmbDataTypeUP[1] = cmbDataTypeUP2;
             _cmbDataTypeUP[2] = cmbDataTypeUP3;
@@ -1367,8 +1401,6 @@ namespace app2
             _cmbDataTypeUP[7] = cmbDataTypeUP8;
             _cmbDataTypeUP[8] = cmbDataTypeUP9;
             _cmbDataTypeUP[9] = cmbDataTypeUP10;
-
-            
             
             _cmbDataTypeCRE[0] = cmbDataTypeCRE1;
             _cmbDataTypeCRE[1] = cmbDataTypeCRE2;
@@ -1407,6 +1439,9 @@ namespace app2
                     _cmb[i, j].SelectedIndex = 0;
                 }
                 _vitalcode[i].Items.Clear();
+                _Bvitalcode[i].Items.Clear();
+                _cmbDataTypeUP[i].SelectedIndex = -1;
+                _cmbDataTypeCRE[i].SelectedIndex = -1;
             }
 
             txtScoreLv3L.ResetText();
@@ -1633,9 +1668,10 @@ namespace app2
 
                     //入力制限判定用
                     //double入力
-                    if (double.TryParse(txtB, out d) && txtB.Contains('.'))
+                    if (datatype == 1)
                     {
                         double da;
+                        double.TryParse(txtB, out d);
                         double.TryParse(txtA, out da);
                         int a = (int)(da * 10);
                         int b = (int)(d * 10);
@@ -1644,9 +1680,10 @@ namespace app2
                             intlist.Add(k);
                         }
                     }//int入力
-                    else if (int.TryParse(txtB, out i))
+                    else if (datatype == 0)
                     {
                         int ia;
+                        int.TryParse(txtB, out i);
                         int.TryParse(txtA, out ia);
                         for (int start = ia; start <= i; start++)
                         {
@@ -1682,13 +1719,27 @@ namespace app2
 
                     //入力制限用
                     //double
-                    if (double.TryParse(txtB, out d) && txtB.Contains('.'))
+                    if (datatype == 1)
                     {
-                        intlist.Add((int)(d * 10));
-                    }//int
-                    else if (int.TryParse(txtB, out i))
+                        double da;
+                        double.TryParse(txtB, out d);
+                        double.TryParse(txtA, out da);
+                        int a = (int)(da * 10);
+                        int b = (int)(d * 10);
+                        for (int k = a; k <= b; k++)
+                        {
+                            intlist.Add(k);
+                        }
+                    }//int入力
+                    else if (datatype == 0)
                     {
-                        intlist.Add(i);
+                        int ia;
+                        int.TryParse(txtB, out i);
+                        int.TryParse(txtA, out ia);
+                        for (int start = ia; start <= i; start++)
+                        {
+                            intlist.Add(start);
+                        }
                     }
                     else
                     {
@@ -1870,6 +1921,11 @@ namespace app2
         }
 
         private void cmbEwsName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbDataTypeUP1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
