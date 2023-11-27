@@ -1110,6 +1110,7 @@
             this.cmbDataTypeUP10.Name = "cmbDataTypeUP10";
             this.cmbDataTypeUP10.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP10.TabIndex = 214;
+            this.cmbDataTypeUP10.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // cmbDataTypeUP9
             // 
@@ -1123,6 +1124,7 @@
             this.cmbDataTypeUP9.Name = "cmbDataTypeUP9";
             this.cmbDataTypeUP9.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP9.TabIndex = 213;
+            this.cmbDataTypeUP9.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // cmbDataTypeUP8
             // 
@@ -1136,6 +1138,7 @@
             this.cmbDataTypeUP8.Name = "cmbDataTypeUP8";
             this.cmbDataTypeUP8.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP8.TabIndex = 212;
+            this.cmbDataTypeUP8.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // cmbDataTypeUP7
             // 
@@ -1149,6 +1152,7 @@
             this.cmbDataTypeUP7.Name = "cmbDataTypeUP7";
             this.cmbDataTypeUP7.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP7.TabIndex = 211;
+            this.cmbDataTypeUP7.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // cmbDataTypeUP6
             // 
@@ -1162,6 +1166,7 @@
             this.cmbDataTypeUP6.Name = "cmbDataTypeUP6";
             this.cmbDataTypeUP6.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP6.TabIndex = 210;
+            this.cmbDataTypeUP6.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // cmbDataTypeUP5
             // 
@@ -1175,6 +1180,7 @@
             this.cmbDataTypeUP5.Name = "cmbDataTypeUP5";
             this.cmbDataTypeUP5.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP5.TabIndex = 209;
+            this.cmbDataTypeUP5.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // cmbDataTypeUP4
             // 
@@ -1188,6 +1194,7 @@
             this.cmbDataTypeUP4.Name = "cmbDataTypeUP4";
             this.cmbDataTypeUP4.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP4.TabIndex = 208;
+            this.cmbDataTypeUP4.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // cmbDataTypeUP3
             // 
@@ -1201,6 +1208,7 @@
             this.cmbDataTypeUP3.Name = "cmbDataTypeUP3";
             this.cmbDataTypeUP3.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP3.TabIndex = 207;
+            this.cmbDataTypeUP3.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // cmbDataTypeUP2
             // 
@@ -1214,6 +1222,7 @@
             this.cmbDataTypeUP2.Name = "cmbDataTypeUP2";
             this.cmbDataTypeUP2.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP2.TabIndex = 206;
+            this.cmbDataTypeUP2.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // cmbDataTypeUP1
             // 
@@ -1227,7 +1236,7 @@
             this.cmbDataTypeUP1.Name = "cmbDataTypeUP1";
             this.cmbDataTypeUP1.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP1.TabIndex = 205;
-            this.cmbDataTypeUP1.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP1_SelectedIndexChanged);
+            this.cmbDataTypeUP1.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -4426,6 +4435,7 @@
             this.txtCriteiaValue21A.Name = "txtCriteiaValue21A";
             this.txtCriteiaValue21A.Size = new System.Drawing.Size(60, 19);
             this.txtCriteiaValue21A.TabIndex = 12;
+            this.txtCriteiaValue21A.TextChanged += new System.EventHandler(this.txtCriteiaValue21A_TextChanged);
             // 
             // cmbVitalCode5
             // 
@@ -5037,7 +5047,6 @@
             this.label8.Size = new System.Drawing.Size(58, 12);
             this.label8.TabIndex = 226;
             this.label8.Text = "Data Type";
-            this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // cmbDataTypeCRE10
             // 
@@ -5051,7 +5060,6 @@
             this.cmbDataTypeCRE10.Name = "cmbDataTypeCRE10";
             this.cmbDataTypeCRE10.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE10.TabIndex = 225;
-            this.cmbDataTypeCRE10.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // cmbDataTypeCRE9
             // 
@@ -5065,7 +5073,6 @@
             this.cmbDataTypeCRE9.Name = "cmbDataTypeCRE9";
             this.cmbDataTypeCRE9.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE9.TabIndex = 224;
-            this.cmbDataTypeCRE9.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
             // cmbDataTypeCRE8
             // 
@@ -5079,7 +5086,6 @@
             this.cmbDataTypeCRE8.Name = "cmbDataTypeCRE8";
             this.cmbDataTypeCRE8.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE8.TabIndex = 223;
-            this.cmbDataTypeCRE8.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
             // cmbDataTypeCRE7
             // 
@@ -5093,7 +5099,6 @@
             this.cmbDataTypeCRE7.Name = "cmbDataTypeCRE7";
             this.cmbDataTypeCRE7.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE7.TabIndex = 222;
-            this.cmbDataTypeCRE7.SelectedIndexChanged += new System.EventHandler(this.comboBox4_SelectedIndexChanged);
             // 
             // cmbDataTypeCRE6
             // 
@@ -5107,7 +5112,6 @@
             this.cmbDataTypeCRE6.Name = "cmbDataTypeCRE6";
             this.cmbDataTypeCRE6.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE6.TabIndex = 221;
-            this.cmbDataTypeCRE6.SelectedIndexChanged += new System.EventHandler(this.comboBox5_SelectedIndexChanged);
             // 
             // cmbDataTypeCRE5
             // 
@@ -5121,7 +5125,6 @@
             this.cmbDataTypeCRE5.Name = "cmbDataTypeCRE5";
             this.cmbDataTypeCRE5.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE5.TabIndex = 220;
-            this.cmbDataTypeCRE5.SelectedIndexChanged += new System.EventHandler(this.comboBox6_SelectedIndexChanged);
             // 
             // cmbDataTypeCRE4
             // 
@@ -5135,7 +5138,6 @@
             this.cmbDataTypeCRE4.Name = "cmbDataTypeCRE4";
             this.cmbDataTypeCRE4.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE4.TabIndex = 219;
-            this.cmbDataTypeCRE4.SelectedIndexChanged += new System.EventHandler(this.comboBox7_SelectedIndexChanged);
             // 
             // cmbDataTypeCRE3
             // 
@@ -5149,7 +5151,6 @@
             this.cmbDataTypeCRE3.Name = "cmbDataTypeCRE3";
             this.cmbDataTypeCRE3.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE3.TabIndex = 218;
-            this.cmbDataTypeCRE3.SelectedIndexChanged += new System.EventHandler(this.comboBox8_SelectedIndexChanged);
             // 
             // cmbDataTypeCRE2
             // 
@@ -5163,7 +5164,6 @@
             this.cmbDataTypeCRE2.Name = "cmbDataTypeCRE2";
             this.cmbDataTypeCRE2.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE2.TabIndex = 217;
-            this.cmbDataTypeCRE2.SelectedIndexChanged += new System.EventHandler(this.comboBox9_SelectedIndexChanged);
             // 
             // cmbDataTypeCRE1
             // 
@@ -5177,7 +5177,6 @@
             this.cmbDataTypeCRE1.Name = "cmbDataTypeCRE1";
             this.cmbDataTypeCRE1.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE1.TabIndex = 216;
-            this.cmbDataTypeCRE1.SelectedIndexChanged += new System.EventHandler(this.comboBox10_SelectedIndexChanged);
             // 
             // label3
             // 

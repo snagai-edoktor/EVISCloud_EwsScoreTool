@@ -1805,6 +1805,7 @@ namespace app2
         private void Selected_CreatPage(object sender, EventArgs e)
         {
             //EwsNameに対応するEwsidのレコードを取得しtxtに出力する
+            AllClear();//shundbg 入力されているが消してもいいか？って聞く処理がない
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
             SqlConnection con = new SqlConnection(constr);
             con.Open();
@@ -1860,72 +1861,49 @@ namespace app2
             txtCreScoreLv1R.Text = txtCreScoreLv1L.Text;
         }
 
-        private void label8_Click(object sender, EventArgs e)
-        {
+        private void cmbDataTypeUP_SelectedIndexChanged(object sender, EventArgs e)
+        {   
+            //DataType == String
+            if( ((ComboBox)sender).SelectedIndex == 2)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    int index = Array.IndexOf(_cmbDataTypeUP, ((ComboBox)sender));
+                    _cmb[index, j].Items.Clear();
+                    _cmb[index, j].Items.Add("");
+                    _cmb[index, j].Items.Add("=");
+                    _cmb[index, j].Items.Add(",");
+                    _cmb[index, j].SelectedIndex = 0;
+                    _Bcmb[index, j].Items.Clear();
+                    _Bcmb[index, j].Items.Add("");
+                    _Bcmb[index, j].Items.Add("=");
+                    _Bcmb[index, j].Items.Add(",");
+                    _Bcmb[index, j].SelectedIndex = 0;
+                }
+            }
+            else
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    int index = Array.IndexOf(_cmbDataTypeUP, ((ComboBox)sender));
+                    _cmb[index, j].Items.Clear();
+                    _cmb[index, j].Items.Add("");
+                    _cmb[index, j].Items.Add("～");
+                    _cmb[index, j].Items.Add("≦");
+                    _cmb[index, j].Items.Add("≧");
+                    _cmb[index, j].SelectedIndex = 0;
+                    _Bcmb[index, j].Items.Clear();
+                    _Bcmb[index, j].Items.Add("");
+                    _Bcmb[index, j].Items.Add("～");
+                    _Bcmb[index, j].Items.Add("≦");
+                    _Bcmb[index, j].Items.Add("≧");
+                    _Bcmb[index, j].SelectedIndex = 0;
+                }
+            }
 
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox5_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox6_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox7_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox8_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox9_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox10_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cmbEwsName_DropDownClosed(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cmbEwsName_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cmbDataTypeUP1_SelectedIndexChanged(object sender, EventArgs e)
+        private void txtCriteiaValue21A_TextChanged(object sender, EventArgs e)
         {
 
         }
