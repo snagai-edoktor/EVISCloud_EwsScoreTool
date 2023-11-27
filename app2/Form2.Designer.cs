@@ -235,7 +235,6 @@
             this.txtCriteiaValue61A = new System.Windows.Forms.TextBox();
             this.cmbVitalCode6 = new System.Windows.Forms.ComboBox();
             this.txtOutSql = new System.Windows.Forms.TextBox();
-            this.btnReadDB = new System.Windows.Forms.Button();
             this.panel29 = new System.Windows.Forms.Panel();
             this.textBox71 = new System.Windows.Forms.TextBox();
             this.cmb57 = new System.Windows.Forms.ComboBox();
@@ -419,6 +418,7 @@
             this.lb_ewsid = new System.Windows.Forms.Label();
             this.EWSID = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label10 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.cmbDataTypeCRE10 = new System.Windows.Forms.ComboBox();
             this.cmbDataTypeCRE9 = new System.Windows.Forms.ComboBox();
@@ -806,7 +806,6 @@
             this.BcmbVitalCode1 = new System.Windows.Forms.ComboBox();
             this.label17 = new System.Windows.Forms.Label();
             this.txtCreateEWSID = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel64.SuspendLayout();
@@ -1031,7 +1030,6 @@
             this.tabPage1.Controls.Add(this.panel42);
             this.tabPage1.Controls.Add(this.cmbVitalCode6);
             this.tabPage1.Controls.Add(this.txtOutSql);
-            this.tabPage1.Controls.Add(this.btnReadDB);
             this.tabPage1.Controls.Add(this.panel29);
             this.tabPage1.Controls.Add(this.panel30);
             this.tabPage1.Controls.Add(this.panel31);
@@ -1326,6 +1324,7 @@
             this.cmbEwsName.Name = "cmbEwsName";
             this.cmbEwsName.Size = new System.Drawing.Size(101, 20);
             this.cmbEwsName.TabIndex = 192;
+            this.cmbEwsName.DropDownClosed += new System.EventHandler(this.ReadEwsScoreBoard);
             // 
             // panel64
             // 
@@ -3110,16 +3109,6 @@
             this.txtOutSql.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtOutSql.Size = new System.Drawing.Size(1057, 117);
             this.txtOutSql.TabIndex = 154;
-            // 
-            // btnReadDB
-            // 
-            this.btnReadDB.Location = new System.Drawing.Point(1096, 757);
-            this.btnReadDB.Name = "btnReadDB";
-            this.btnReadDB.Size = new System.Drawing.Size(167, 49);
-            this.btnReadDB.TabIndex = 151;
-            this.btnReadDB.Text = "DB読込";
-            this.btnReadDB.UseVisualStyleBackColor = true;
-            this.btnReadDB.Click += new System.EventHandler(this.btnReadDB_Click);
             // 
             // panel29
             // 
@@ -5029,6 +5018,15 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "CREATE";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(99, 72);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(55, 12);
+            this.label10.TabIndex = 227;
+            this.label10.Text = "VitalCode";
             // 
             // label8
             // 
@@ -8860,15 +8858,6 @@
             this.txtCreateEWSID.Size = new System.Drawing.Size(35, 19);
             this.txtCreateEWSID.TabIndex = 100;
             // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(99, 72);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(55, 12);
-            this.label10.TabIndex = 227;
-            this.label10.Text = "VitalCode";
-            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -9357,7 +9346,6 @@
         private System.Windows.Forms.TextBox txtCriteiaValue61A;
         private System.Windows.Forms.ComboBox cmbVitalCode6;
         private System.Windows.Forms.TextBox txtOutSql;
-        private System.Windows.Forms.Button btnReadDB;
         private System.Windows.Forms.Panel panel29;
         private System.Windows.Forms.TextBox textBox71;
         private System.Windows.Forms.ComboBox cmb57;

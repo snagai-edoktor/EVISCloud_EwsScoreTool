@@ -393,17 +393,48 @@ namespace app2
 
         }
         /// <summary>
-        /// DB->app スコア表示用関数
+        /// DB->app スコア表示用関数 
+        /// 変更　btnReadDB_Click -> ReadEwsScoreBoard
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnReadDB_Click(object sender, EventArgs e)
+        private void ReadEwsScoreBoard(object sender, EventArgs e)
         {
-            AllClear();
             var scoreset = new SortedSet<int>();
             scoreset.Add(0);
             var stackrecords = new List<Record>();
             int[] scoreindex = new int[4];
+            //表に値が入力済みかチェック
+            bool fl_Completed = false;
+            for (int i= 0; i< 10; i++)
+            {
+                for(int j = 0; j<7; j++)
+                {
+                    if(_txtCriteiaValueA[i, j].Text != "" || _txtCriteiaValueB[i, j].Text != "")
+                    {
+                        fl_Completed = true;
+                        break;
+                    }
+                }
+                if (fl_Completed)
+                {
+                    ////ファイルの行番号取得           
+                    string strMsg = "表に値が書き込まれています、更新しますか？";
+
+                    //メッセージボックスで行番号を表示
+                    var resultMessageBox = MessageBox.Show(strMsg
+                                    , "エラー"
+                                    , MessageBoxButtons.OKCancel
+                                    , MessageBoxIcon.Information);
+
+                    if (resultMessageBox == System.Windows.Forms.DialogResult.No)
+                    {
+                        return;
+                    }
+                    break;
+                }
+            }
+            AllClear();
             //GetRecords初期化
             for (int i = 0; i < 11; i++)
             {
@@ -1829,6 +1860,16 @@ namespace app2
         }
 
         private void comboBox10_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbEwsName_DropDownClosed(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbEwsName_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
