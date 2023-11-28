@@ -135,7 +135,7 @@ namespace app2
                 fl = false;
                 return fl;
             }
-            //string[] words;
+            
             switch (symb)
             {
                 case ""://未選択
@@ -540,20 +540,6 @@ namespace app2
                 }
             }
 
-            /*if (cmbEwsName.SelectedIndex == -1)
-            {
-                ////ファイルの行番号取得           
-                string strMsg = GetLineNumber().ToString() + " 行目";
-
-                //メッセージボックスで行番号を表示
-                MessageBox.Show(strMsg
-                                , "エラー"
-                                , MessageBoxButtons.OK
-                                , MessageBoxIcon.Information);
-
-                return;
-            }*/
-
             //EwsNameに対応するEwsidのレコードを取得しtxtに出力する
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
             SqlConnection con = new SqlConnection(constr);
@@ -655,7 +641,6 @@ namespace app2
                 }
             }
 
-            //
             scoreindex = scoreset.ToArray();
             foreach(var record in stackrecords)
             {
@@ -672,12 +657,12 @@ namespace app2
 
 
 
-            //GetRecords[0][]に入ってしまった分をvitalcodeをもとに1<=iに振り分ける
-            for (int i = 0; i < 7; i++)
+            //GetRecords[0][]に入ってしまった分をvitalcodeをもとに0<iに振り分ける
+            for (int j = 0; j < 7; j++)
             {
-                foreach (var record in GetRecords[0, i])
+                foreach (var record in GetRecords[0, j])
                 {
-                    GetRecords[DicVitalcodeandDisplayOrder[record.VitalCode], i].Add(record);
+                    GetRecords[DicVitalcodeandDisplayOrder[record.VitalCode], j].Add(record);
                 }
             }
 
@@ -686,7 +671,6 @@ namespace app2
             for (int i = 0; i < 10; i++)
             {
                 //cmbvitalcode クリアする
-                //shundbg_vitalcode[i].Items.Clear();
                 bool fl = false;
                 //Vitalcode追加,選択
                 for (int j = 0; j < 7; j++)
@@ -695,7 +679,6 @@ namespace app2
                     {
                         //Getrecordsにはi=1から実データが入ってる
                         string str = GetRecords[i + 1, j].First().VitalCode;
-                        //
                         _vitalcode[i].SelectedIndex = _vitalcode[i].FindString(str);
                         fl = true;
                     }
@@ -2019,51 +2002,6 @@ namespace app2
             }
             return fl;
         }
-        /// <summary>
-        /// Createページ移行時初期処理
-        /// 登録可能なEwsID取得・表示
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Selected_CreatPage(object sender, EventArgs e)
-        {
-
-            //(create -> update)
-            if ( ((TabControl)sender).SelectedIndex == 0 )
-            {
-
-            }
-            //(update -> create)
-            else if (((TabControl)sender).SelectedIndex == 1 )
-            {
-
-            }
-            AllClear();//shundbg 入力されているが消してもいいか？って聞く処理がない
-            string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
-            SqlConnection con = new SqlConnection(constr);
-            con.Open();
-            try
-            {
-                 
-                string sqlstr = $"SELECT Id FROM M_EwsType WHERE Id = (SELECT MAX(Id) FROM M_EwsType)";
-                //string sqlstr = $"SELECT MAX(Id) FROM M_EwsType";
-                SqlCommand com = new SqlCommand(sqlstr, con);
-                SqlDataReader sdr = com.ExecuteReader();
-
-                while (sdr.Read() == true)
-                {
-                    //EVIS                   
-                    int Id = (int)sdr["Id"];
-                    txtCreateEWSID.Text = (Id+1).ToString();
-                }
-                sdr.Close();
-                com.Dispose();
-            }
-            finally
-            {
-                con.Close();
-            }
-        }
 
         private void txtScoreLv1L_TextChanged(object sender, EventArgs e)
         {
@@ -2080,19 +2018,6 @@ namespace app2
             txtScoreLv3R.Text = txtScoreLv3L.Text;
         }
 
-        private void txtCreScoreLv3L_TextChanged(object sender, EventArgs e)
-        {
-            //shundbgtxtCreScoreLv3R.Text = txtCreScoreLv3L.Text; 
-        }
-
-        private void txtCreScoreLv2L_TextChanged(object sender, EventArgs e)
-        {
-            //shundbgtxtCreScoreLv2R.Text = txtCreScoreLv2L.Text;
-        }
-        private void txtCreScoreLv1L_TextChanged(object sender, EventArgs e)
-        {
-            //shundbgtxtCreScoreLv1R.Text = txtCreScoreLv1L.Text;
-        }
         /// <summary>
         /// DataTypeコンボボックス選択時処理(UPDATEページ)
         /// 数値、文字列の二つの条件に合わせてコンボボックスのアイテムを設定する
@@ -2185,48 +2110,6 @@ namespace app2
                     }
                 }
             }
-
-        }
-
-        /// <summary>
-        /// DataTypeコンボボックス選択時処理(CREATERページ)
-        /// 数値、文字列の二つの条件に合わせてコンボボックスのアイテムを設定する
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /*private void cmbDataTypeCRE_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //DataType == String
-            if (((ComboBox)sender).SelectedIndex == 2)
-            {
-                for (int j = 0; j < 7; j++)
-                {
-                    int index = Array.IndexOf(_cmbDataTypeCRE, ((ComboBox)sender));
-                    _Bcmb[index, j].Items.Clear();
-                    _Bcmb[index, j].Items.Add("");
-                    _Bcmb[index, j].Items.Add("=");
-                    _Bcmb[index, j].Items.Add(",");
-                    _Bcmb[index, j].SelectedIndex = 0;
-                }
-            }
-            else
-            {
-                for (int j = 0; j < 7; j++)
-                {
-                    int index = Array.IndexOf(_cmbDataTypeCRE, ((ComboBox)sender));
-                    _Bcmb[index, j].Items.Clear();
-                    _Bcmb[index, j].Items.Add("");
-                    _Bcmb[index, j].Items.Add("～");
-                    _Bcmb[index, j].Items.Add("≦");
-                    _Bcmb[index, j].Items.Add("≧");
-                    _Bcmb[index, j].SelectedIndex = 0;
-                }
-            }
-
-        }*/
-
-        private void Selected_CreatPage(object sender, TabControlEventArgs e)
-        {
 
         }
 
