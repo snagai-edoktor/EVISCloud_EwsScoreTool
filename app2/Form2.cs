@@ -32,7 +32,7 @@ namespace app2
         private ComboBox[] _cmbDataTypeUP;
         private ComboBox[] _cmbDataTypeCRE;
 
-        private int[] _score = new int[] { 3, 2, 1, 0, 1, 2, 3 };
+        private int[] _score = new int[7];
         //private TextBox[] _ScoreLv;
         private int[] tarval = new int[] { 0, 0, 0, 1, 1, 1, 1 };
         private SortedDictionary<string, int> EwsName = new SortedDictionary<string, int>();
@@ -54,14 +54,26 @@ namespace app2
         private void Update_scorearray()
         {
             if (txtScoreLv3L.Text != "") _score[0] = Int32.Parse(txtScoreLv3L.Text);
-            if (txtScoreLv2L.Text != "") _score[1] = Int32.Parse(txtScoreLv2L.Text);
-            if (txtScoreLv1L.Text != "") _score[2] = Int32.Parse(txtScoreLv1L.Text);
-                                         _score[3] = 0;
-            if (txtScoreLv1L.Text != "") _score[4] = Int32.Parse(txtScoreLv1L.Text);
-            if (txtScoreLv2L.Text != "") _score[5] = Int32.Parse(txtScoreLv2L.Text);
-            if (txtScoreLv3L.Text != "") _score[6] = Int32.Parse(txtScoreLv3L.Text);
+            else                         _score[0] = -1;     
 
-            for(int i=0;i<3;i++)
+            if (txtScoreLv2L.Text != "") _score[1] = Int32.Parse(txtScoreLv2L.Text);
+            else                         _score[1] = -1;
+
+            if (txtScoreLv1L.Text != "") _score[2] = Int32.Parse(txtScoreLv1L.Text);
+            else                         _score[2] = -1;
+
+                                         _score[3] = 0;
+
+            if (txtScoreLv1L.Text != "") _score[4] = Int32.Parse(txtScoreLv1L.Text);
+            else                         _score[4] = -1;
+
+            if (txtScoreLv2L.Text != "") _score[5] = Int32.Parse(txtScoreLv2L.Text);
+            else                         _score[5] = -1;
+
+            if (txtScoreLv3L.Text != "") _score[6] = Int32.Parse(txtScoreLv3L.Text);
+            else                         _score[6] = -1;
+
+            for (int i=0;i<3;i++)
             {
                 if (_score[i] < _score[i + 1])
                 {
@@ -69,6 +81,8 @@ namespace app2
                     break;
                 }
             }
+
+           
         }
 
         //行番号取得用メソッド
@@ -76,25 +90,6 @@ namespace app2
         {
             return intLineNumber;
         }
-        /* shundbg
-        private void Create_scorearray()
-        {
-            if (txtCreScoreLv3L.Text != "") _score[0] = Int32.Parse(txtCreScoreLv3L.Text);
-            if (txtCreScoreLv2L.Text != "") _score[1] = Int32.Parse(txtCreScoreLv2L.Text);
-            if (txtCreScoreLv1L.Text != "") _score[2] = Int32.Parse(txtCreScoreLv1L.Text);
-                                            _score[3] = 0;
-            if (txtCreScoreLv1L.Text != "") _score[4] = Int32.Parse(txtCreScoreLv1L.Text);
-            if (txtCreScoreLv2L.Text != "") _score[5] = Int32.Parse(txtCreScoreLv2L.Text);
-            if (txtCreScoreLv3L.Text != "") _score[6] = Int32.Parse(txtCreScoreLv3L.Text);
-            for (int i = 0; i < 3; i++)
-            {
-                if (_score[i] < _score[i + 1])
-                {
-                    MessageBox.Show("スコアが間違っています");
-                    break;  
-                }
-            }
-        }*/
         /// <summary>
         /// 受け取った入力情報からレコードを作りRecListに追加する
         /// 新規追加用
@@ -116,6 +111,21 @@ namespace app2
                 //エラー
                 ////ファイルの行番号取得           
                 string strMsg = GetLineNumber().ToString() + " 行目 DATATYPEが未選択です";    //この行（サンプルでは50行目）が表示される
+
+                //メッセージボックスで行番号を表示
+                MessageBox.Show(strMsg
+                                , "入力値エラー"
+                                , MessageBoxButtons.OK
+                                , MessageBoxIcon.Information);
+                fl = false;
+                return fl;
+            }
+
+            if(score == -1)
+            {
+                //エラー
+                ////ファイルの行番号取得           
+                string strMsg = GetLineNumber().ToString() + " 行目 SCOREが未入力です";    //この行（サンプルでは50行目）が表示される
 
                 //メッセージボックスで行番号を表示
                 MessageBox.Show(strMsg
@@ -1751,6 +1761,21 @@ namespace app2
                 //エラー
                 ////ファイルの行番号取得           
                 string strMsg = GetLineNumber().ToString() + " 行目 DATATYPEが未選択です";    //この行（サンプルでは50行目）が表示される
+
+                //メッセージボックスで行番号を表示
+                MessageBox.Show(strMsg
+                                , "入力値エラー"
+                                , MessageBoxButtons.OK
+                                , MessageBoxIcon.Information);
+                fl = false;
+                return fl;
+            }
+
+            if (score == -1)
+            {
+                //エラー
+                ////ファイルの行番号取得           
+                string strMsg = GetLineNumber().ToString() + " 行目 SCOREが未入力です";    //この行（サンプルでは50行目）が表示される
 
                 //メッセージボックスで行番号を表示
                 MessageBox.Show(strMsg
