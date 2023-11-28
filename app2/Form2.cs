@@ -106,20 +106,34 @@ namespace app2
         /// <param name="txtB"></param>
         /// <param name="score"></param>
         /// <param name="tarval"></param>
-        public bool CreatRecord(List<Record> RecList, List<int> intlist, int vitalcode, string txtA, int symb, string txtB, int score, int tarval, int displayorder,int datatype)
+        public bool CreatRecord(List<Record> RecList, List<int> intlist, string vitalcode, string txtA, string symb, string txtB, int score, int tarval, int displayorder,int datatype)
         {
             double d;
             int i;
             bool fl = true;
+            if (datatype == -1)
+            {
+                //エラー
+                ////ファイルの行番号取得           
+                string strMsg = GetLineNumber().ToString() + " 行目 DATATYPEが未選択です";    //この行（サンプルでは50行目）が表示される
+
+                //メッセージボックスで行番号を表示
+                MessageBox.Show(strMsg
+                                , "入力値エラー"
+                                , MessageBoxButtons.OK
+                                , MessageBoxIcon.Information);
+                fl = false;
+                return fl;
+            }
             //string[] words;
             switch (symb)
             {
-                case 0://未選択
+                case ""://未選択
                     //エラー この関数を呼ぶ前にtxtA,bに中身があるか確認してるからここには来ないはず
                     MessageBox.Show("コンボボックスが未選択です");
                     fl = false;
                     break;
-                case 1:// =  memo 1つのレコード作成
+                case "=":// =  memo 1つのレコード作成
                     if(datatype != 2)
                     {
                         //エラー 数値入力なのに単一文字列が含まれている
@@ -135,7 +149,7 @@ namespace app2
                     }
                     var record0 = new Record(txtCreateEWSID.Text);
                     record0.Score = score;
-                    record0.VitalCode = VitalCodeName[vitalcode];
+                    record0.VitalCode = vitalcode;
                     record0.CriteriaValue = txtA;
                     record0.CriteriaSign = 2;
                     record0.Target = tarval;
@@ -143,7 +157,7 @@ namespace app2
 
                     RecList.Add(record0);
                     break;
-                case 2:// , memo レコード数に限りない
+                case ",":// , memo レコード数に限りない
                     if (datatype != 2)
                     {
                         //エラー 数値入力なのに単一文字列が含まれている
@@ -162,7 +176,7 @@ namespace app2
                     {
                         var record1 = new Record(txtCreateEWSID.Text);
                         record1.Score = score;
-                        record1.VitalCode = VitalCodeName[vitalcode];
+                        record1.VitalCode = vitalcode;
                         record1.CriteriaValue = word;
                         record1.CriteriaSign = 2;
                         record1.Target = tarval;
@@ -171,10 +185,10 @@ namespace app2
                         RecList.Add(record1);
                     }
                     break;
-                case 3:// ~ memo 2つレコードを作ればいい
+                case "～":// ~ memo 2つレコードを作ればいい
                     var record21 = new Record(txtCreateEWSID.Text);
                     record21.Score = score;
-                    record21.VitalCode = VitalCodeName[vitalcode];
+                    record21.VitalCode = vitalcode;
                     record21.CriteriaValue = txtA;
                     record21.CriteriaSign = 1;
                     record21.Target = tarval;
@@ -184,7 +198,7 @@ namespace app2
 
                     var record22 = new Record(txtCreateEWSID.Text);
                     record22.Score = score;
-                    record22.VitalCode = VitalCodeName[vitalcode];
+                    record22.VitalCode = vitalcode;
                     record22.CriteriaValue = txtB;
                     record22.CriteriaSign = 0;
                     record22.Target = tarval;
@@ -232,10 +246,10 @@ namespace app2
                     }
 
                     break;
-                case 4:// <= memo １つレコード：
+                case "≦":// <= memo １つレコード：
                     var record3 = new Record(txtCreateEWSID.Text);
                     record3.Score = score;
-                    record3.VitalCode = VitalCodeName[vitalcode];
+                    record3.VitalCode = vitalcode;
                     record3.CriteriaValue = txtB;
                     record3.CriteriaSign = 0;
                     record3.Target = tarval;
@@ -282,10 +296,10 @@ namespace app2
                     }
 
                     break;
-                case 5:// >= memo １つレコード：
+                case "≧":// >= memo １つレコード：
                     var record4 = new Record(txtCreateEWSID.Text);
                     record4.Score = score;
-                    record4.VitalCode = VitalCodeName[vitalcode];
+                    record4.VitalCode = vitalcode;
                     record4.CriteriaValue = txtB;
                     record4.CriteriaSign = 1;
                     record4.Target = tarval;
@@ -340,7 +354,7 @@ namespace app2
                     }
                     else
                     {
-                        check_input = CreatRecord(RecordList, intlist, _vitalcode[i].SelectedIndex, _txtCriteiaValueA[i, j].Text, _cmb[i, j].SelectedIndex, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, _cmbDataTypeCRE[i].SelectedIndex);
+                        check_input = CreatRecord(RecordList, intlist, _vitalcode[i].Text, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, _cmbDataTypeUP[i].SelectedIndex);
                     }
 
                 }
@@ -366,8 +380,20 @@ namespace app2
                 {
                 }
             }
-        
-    
+
+            if (!check_input)
+            {
+                ////ファイルの行番号取得           
+                string strMsg = GetLineNumber().ToString() + " 行目 レコード新規登録中止";    //この行（サンプルでは50行目）が表示される
+
+                //メッセージボックスで行番号を表示
+                MessageBox.Show(strMsg
+                                , "情報"
+                                , MessageBoxButtons.OK
+                                , MessageBoxIcon.Information);
+                return;
+            }
+
             //EVISCloudに接続
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
             SqlConnection con = new SqlConnection(constr);
@@ -1605,7 +1631,7 @@ namespace app2
                     }
                     else
                     {
-                        if(!CreatRecord_Update(RecordList, intlist, i, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, Convert.ToInt32(txtSeqNo.Text), _cmbDataTypeUP[i].SelectedIndex))
+                        if(!CreatRecord_Update(RecordList, intlist, _vitalcode[i].Text, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, Convert.ToInt32(txtSeqNo.Text), _cmbDataTypeUP[i].SelectedIndex))
                         {
                             ////ファイルの行番号取得           
                             string errMsg = GetLineNumber().ToString() + " 行目" +" [i,j] = " + i + " " + j;    //この行（サンプルでは50行目）が表示される
@@ -1715,11 +1741,25 @@ namespace app2
         /// <param name="tarval"></param>
         /// <param name="displayorder"></param>
         /// <param name="seqno"></param>
-        public bool CreatRecord_Update(List<Record> RecList, List<int> intlist, int vitalcode, string txtA, string symb, string txtB, int score, int tarval, int displayorder, int seqno, int datatype)
+        public bool CreatRecord_Update(List<Record> RecList, List<int> intlist, string vitalcode, string txtA, string symb, string txtB, int score, int tarval, int displayorder, int seqno, int datatype)
         {
             double d;
             int i;
             bool fl = true;
+            if(datatype == -1)
+            {
+                //エラー
+                ////ファイルの行番号取得           
+                string strMsg = GetLineNumber().ToString() + " 行目 DATATYPEが未選択です";    //この行（サンプルでは50行目）が表示される
+
+                //メッセージボックスで行番号を表示
+                MessageBox.Show(strMsg
+                                , "入力値エラー"
+                                , MessageBoxButtons.OK
+                                , MessageBoxIcon.Information);
+                fl = false;
+                return fl;
+            }
             //string[] words;
             switch (symb)
             {
@@ -1737,7 +1777,7 @@ namespace app2
                     var record0 = new Record(EWSID.Text);
 
                     record0.Score = score;
-                    record0.VitalCode = _vitalcode[vitalcode].Items[0].ToString();
+                    record0.VitalCode = vitalcode;
                     record0.CriteriaValue = txtA;
                     record0.CriteriaSign = 2;
                     record0.Target = tarval;
@@ -1765,7 +1805,7 @@ namespace app2
                     {
                         var record1 = new Record(EWSID.Text);
                         record1.Score = score;
-                        record1.VitalCode = _vitalcode[vitalcode].Items[0].ToString();
+                        record1.VitalCode = vitalcode;
                         record1.CriteriaValue = word;
                         record1.CriteriaSign = 2;
                         record1.Target = tarval;
@@ -1778,7 +1818,7 @@ namespace app2
                 case "～"    :// ~ memo 2つレコードを作ればいい
                     var record21 = new Record(EWSID.Text);
                     record21.Score = score;
-                    record21.VitalCode = _vitalcode[vitalcode].Items[0].ToString();
+                    record21.VitalCode = vitalcode;
                     record21.CriteriaValue = txtA;
                     record21.CriteriaSign = 1;
                     record21.Target = tarval;
@@ -1789,7 +1829,7 @@ namespace app2
 
                     var record22 = new Record(EWSID.Text);
                     record22.Score = score;
-                    record22.VitalCode = _vitalcode[vitalcode].Items[0].ToString();
+                    record22.VitalCode = vitalcode;
                     record22.CriteriaValue = txtB;
                     record22.CriteriaSign = 0;
                     record22.Target = tarval;
@@ -1840,7 +1880,7 @@ namespace app2
                 case "≦":// <= memo １つレコード：A,Bが空かどうか判別が必要かな一回ききたい
                     var record3 = new Record(EWSID.Text);
                     record3.Score = score;
-                    record3.VitalCode = _vitalcode[vitalcode].Items[0].ToString();
+                    record3.VitalCode = vitalcode;
                     record3.CriteriaValue = txtB;
                     record3.CriteriaSign = 0;
                     record3.Target = tarval;
@@ -1891,7 +1931,7 @@ namespace app2
                 case "≧":// >= memo １つレコード：A,Bが空かどうか判別が必要一回聞きたいそういう表記になってるだけで入力するときの感覚的にはおかしいかもしれない
                     var record4 = new Record(EWSID.Text);
                     record4.Score = score;
-                    record4.VitalCode = _vitalcode[vitalcode].Items[0].ToString();
+                    record4.VitalCode = vitalcode;
                     record4.CriteriaValue = txtB;
                     record4.CriteriaSign = 1;//shundbg 
                     record4.Target = tarval;
