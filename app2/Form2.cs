@@ -1450,6 +1450,7 @@ namespace app2
                     _cmb[i, j].Items.Add("≦");
                     _cmb[i, j].Items.Add("≧");
                     _cmb[i, j].SelectedIndex = 0;
+                    //削除予定
                     _Bcmb[i, j].Items.Clear();
                     _Bcmb[i, j].Items.Add("");
                     _Bcmb[i, j].Items.Add("=");
