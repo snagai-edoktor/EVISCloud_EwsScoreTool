@@ -76,6 +76,7 @@ namespace app2
         {
             return intLineNumber;
         }
+        /* shundbg
         private void Create_scorearray()
         {
             if (txtCreScoreLv3L.Text != "") _score[0] = Int32.Parse(txtCreScoreLv3L.Text);
@@ -93,7 +94,7 @@ namespace app2
                     break;  
                 }
             }
-        }
+        }*/
         /// <summary>
         /// 受け取った入力情報からレコードを作りRecListに追加する
         /// 新規追加用
@@ -320,7 +321,7 @@ namespace app2
             return fl;
         }
 
-        private void CreatButton_Click(object sender, EventArgs e)
+        /*private void CreatButton_Click(object sender, EventArgs e)
         {
             var RecordList = new List<Record>();
             bool check_input = true;
@@ -408,6 +409,8 @@ namespace app2
             
             InitEwsName();
         }
+        */
+
         public class Record
         {
             public int EWSId;
@@ -793,7 +796,7 @@ namespace app2
                     _cmb[i, j].Items.Add("≦");
                     _cmb[i, j].Items.Add("≧");
                     _cmb[i, j].SelectedIndex = 0;
-                    _Bcmb[i, j].Items.Clear();
+                    /*_Bcmb[i, j].Items.Clear(); shundbg
                     _Bcmb[i, j].Items.Add("");
                     _Bcmb[i, j].Items.Add("=");
                     _Bcmb[i, j].Items.Add(",");
@@ -801,12 +804,16 @@ namespace app2
                     _Bcmb[i, j].Items.Add("≦");
                     _Bcmb[i, j].Items.Add("≧");
                     _Bcmb[i, j].SelectedIndex = 0;
+                    */
                 }
 
                 _vitalcode[i].SelectedIndex = 0;
                 _vitalcode[i].Items.Clear();
+                
+                /*shundbg
                 _Bvitalcode[i].SelectedIndex = 0;
                 _Bvitalcode[i].Items.Clear();
+                */
 
 
 
@@ -816,7 +823,7 @@ namespace app2
                 foreach (string s in VitalTypeFile)
                 {
                     _vitalcode[i].Items.Add(s);
-                    _Bvitalcode[i].Items.Add(s);
+                    //shundbg_Bvitalcode[i].Items.Add(s);
                     ele++;
                 }
                 //配列に情報を書き込みたいだけなので一度だけの実行でいい
@@ -1132,7 +1139,8 @@ namespace app2
 
 
 
-            //BControl----------------------------------------------------------
+            /* shundbg
+             * //BControl----------------------------------------------------------
             //A 1行目
             _BtxtCriteiaValueA[0, 0] = BtxtCriteiaValue11A;
             _BtxtCriteiaValueA[0, 1] = BtxtCriteiaValue12A;
@@ -1389,7 +1397,7 @@ namespace app2
             _Bvitalcode[7] = BcmbVitalCode8;
             _Bvitalcode[8] = BcmbVitalCode9;
             _Bvitalcode[9] = BcmbVitalCode10;
-
+            */
 
             //_cmbDataType
             _cmbDataTypeUP[0] = cmbDataTypeUP1;
@@ -1403,7 +1411,8 @@ namespace app2
             _cmbDataTypeUP[8] = cmbDataTypeUP9;
             _cmbDataTypeUP[9] = cmbDataTypeUP10;
             
-            _cmbDataTypeCRE[0] = cmbDataTypeCRE1;
+            /* shundbg
+             * _cmbDataTypeCRE[0] = cmbDataTypeCRE1;
             _cmbDataTypeCRE[1] = cmbDataTypeCRE2;
             _cmbDataTypeCRE[2] = cmbDataTypeCRE3;
             _cmbDataTypeCRE[3] = cmbDataTypeCRE4;
@@ -1413,6 +1422,7 @@ namespace app2
             _cmbDataTypeCRE[7] = cmbDataTypeCRE8;
             _cmbDataTypeCRE[8] = cmbDataTypeCRE9;
             _cmbDataTypeCRE[9] = cmbDataTypeCRE10;
+            */
             
 
             /*
@@ -1437,12 +1447,13 @@ namespace app2
                 {
                     _txtCriteiaValueA[i, j].ResetText();
                     _txtCriteiaValueB[i, j].ResetText();
-                    _BtxtCriteiaValueA[i, j].ResetText();
+                    /*_BtxtCriteiaValueA[i, j].ResetText();
                     _BtxtCriteiaValueB[i, j].ResetText();
+                    shundbg*/
                     _cmb[i, j].SelectedIndex = 0;
 
                     //txtcombobox
-                                        _cmb[i, j].Items.Clear();
+                    _cmb[i, j].Items.Clear();
                     _cmb[i, j].Items.Add("");
                     _cmb[i, j].Items.Add("=");
                     _cmb[i, j].Items.Add(",");
@@ -1451,6 +1462,7 @@ namespace app2
                     _cmb[i, j].Items.Add("≧");
                     _cmb[i, j].SelectedIndex = 0;
                     //削除予定
+                    /* shundbg
                     _Bcmb[i, j].Items.Clear();
                     _Bcmb[i, j].Items.Add("");
                     _Bcmb[i, j].Items.Add("=");
@@ -1459,11 +1471,12 @@ namespace app2
                     _Bcmb[i, j].Items.Add("≦");
                     _Bcmb[i, j].Items.Add("≧");
                     _Bcmb[i, j].SelectedIndex = 0;
+                    */
                 }
                 _vitalcode[i].Items.Clear();
-                _Bvitalcode[i].Items.Clear();
+                //_Bvitalcode[i].Items.Clear();
                 _cmbDataTypeUP[i].SelectedIndex = -1;
-                _cmbDataTypeCRE[i].SelectedIndex = -1;
+                //_cmbDataTypeCRE[i].SelectedIndex = -1;shundbg
             }
 
             txtScoreLv3L.ResetText();
@@ -1881,16 +1894,16 @@ namespace app2
 
         private void txtCreScoreLv3L_TextChanged(object sender, EventArgs e)
         {
-            txtCreScoreLv3R.Text = txtCreScoreLv3L.Text; 
+            //shundbgtxtCreScoreLv3R.Text = txtCreScoreLv3L.Text; 
         }
 
         private void txtCreScoreLv2L_TextChanged(object sender, EventArgs e)
         {
-            txtCreScoreLv2R.Text = txtCreScoreLv2L.Text;
+            //shundbgtxtCreScoreLv2R.Text = txtCreScoreLv2L.Text;
         }
         private void txtCreScoreLv1L_TextChanged(object sender, EventArgs e)
         {
-            txtCreScoreLv1R.Text = txtCreScoreLv1L.Text;
+            //shundbgtxtCreScoreLv1R.Text = txtCreScoreLv1L.Text;
         }
         /// <summary>
         /// DataTypeコンボボックス選択時処理(UPDATEページ)
@@ -1966,5 +1979,9 @@ namespace app2
 
         }
 
+        private void Selected_CreatPage(object sender, TabControlEventArgs e)
+        {
+
+        }
     }
 }
