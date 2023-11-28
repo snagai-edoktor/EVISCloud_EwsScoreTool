@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Collections;
 using System.Runtime.CompilerServices;
+using System.Reflection;
 
 namespace app2
 {
@@ -89,7 +90,7 @@ namespace app2
                 if (_score[i] < _score[i + 1])
                 {
                     MessageBox.Show("スコアが間違っています");
-                    break;
+                    break;  
                 }
             }
         }
@@ -1436,7 +1437,27 @@ namespace app2
                 {
                     _txtCriteiaValueA[i, j].ResetText();
                     _txtCriteiaValueB[i, j].ResetText();
+                    _BtxtCriteiaValueA[i, j].ResetText();
+                    _BtxtCriteiaValueB[i, j].ResetText();
                     _cmb[i, j].SelectedIndex = 0;
+
+                    //txtcombobox
+                                        _cmb[i, j].Items.Clear();
+                    _cmb[i, j].Items.Add("");
+                    _cmb[i, j].Items.Add("=");
+                    _cmb[i, j].Items.Add(",");
+                    _cmb[i, j].Items.Add("～");
+                    _cmb[i, j].Items.Add("≦");
+                    _cmb[i, j].Items.Add("≧");
+                    _cmb[i, j].SelectedIndex = 0;
+                    _Bcmb[i, j].Items.Clear();
+                    _Bcmb[i, j].Items.Add("");
+                    _Bcmb[i, j].Items.Add("=");
+                    _Bcmb[i, j].Items.Add(",");
+                    _Bcmb[i, j].Items.Add("～");
+                    _Bcmb[i, j].Items.Add("≦");
+                    _Bcmb[i, j].Items.Add("≧");
+                    _Bcmb[i, j].SelectedIndex = 0;
                 }
                 _vitalcode[i].Items.Clear();
                 _Bvitalcode[i].Items.Clear();
@@ -1860,7 +1881,12 @@ namespace app2
         {
             txtCreScoreLv1R.Text = txtCreScoreLv1L.Text;
         }
-
+        /// <summary>
+        /// DataTypeコンボボックス選択時処理
+        /// Update,Createを同時に描画するが、ページ遷移時に初期化されるので二種類のコンボボックスにセットするが大丈夫
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmbDataTypeUP_SelectedIndexChanged(object sender, EventArgs e)
         {   
             //DataType == String
@@ -1874,11 +1900,6 @@ namespace app2
                     _cmb[index, j].Items.Add("=");
                     _cmb[index, j].Items.Add(",");
                     _cmb[index, j].SelectedIndex = 0;
-                    _Bcmb[index, j].Items.Clear();
-                    _Bcmb[index, j].Items.Add("");
-                    _Bcmb[index, j].Items.Add("=");
-                    _Bcmb[index, j].Items.Add(",");
-                    _Bcmb[index, j].SelectedIndex = 0;
                 }
             }
             else
@@ -1892,6 +1913,31 @@ namespace app2
                     _cmb[index, j].Items.Add("≦");
                     _cmb[index, j].Items.Add("≧");
                     _cmb[index, j].SelectedIndex = 0;
+                }
+            }
+
+        }
+
+        private void cmbDataTypeCRE_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //DataType == String
+            if (((ComboBox)sender).SelectedIndex == 2)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    int index = Array.IndexOf(_cmbDataTypeCRE, ((ComboBox)sender));
+                    _Bcmb[index, j].Items.Clear();
+                    _Bcmb[index, j].Items.Add("");
+                    _Bcmb[index, j].Items.Add("=");
+                    _Bcmb[index, j].Items.Add(",");
+                    _Bcmb[index, j].SelectedIndex = 0;
+                }
+            }
+            else
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    int index = Array.IndexOf(_cmbDataTypeCRE, ((ComboBox)sender));
                     _Bcmb[index, j].Items.Clear();
                     _Bcmb[index, j].Items.Add("");
                     _Bcmb[index, j].Items.Add("～");
@@ -1903,9 +1949,5 @@ namespace app2
 
         }
 
-        private void txtCriteiaValue21A_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

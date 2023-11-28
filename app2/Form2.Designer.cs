@@ -4435,7 +4435,6 @@
             this.txtCriteiaValue21A.Name = "txtCriteiaValue21A";
             this.txtCriteiaValue21A.Size = new System.Drawing.Size(60, 19);
             this.txtCriteiaValue21A.TabIndex = 12;
-            this.txtCriteiaValue21A.TextChanged += new System.EventHandler(this.txtCriteiaValue21A_TextChanged);
             // 
             // cmbVitalCode5
             // 
@@ -5060,6 +5059,7 @@
             this.cmbDataTypeCRE10.Name = "cmbDataTypeCRE10";
             this.cmbDataTypeCRE10.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE10.TabIndex = 225;
+            this.cmbDataTypeCRE10.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeCRE_SelectedIndexChanged);
             // 
             // cmbDataTypeCRE9
             // 
@@ -5073,6 +5073,7 @@
             this.cmbDataTypeCRE9.Name = "cmbDataTypeCRE9";
             this.cmbDataTypeCRE9.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE9.TabIndex = 224;
+            this.cmbDataTypeCRE9.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeCRE_SelectedIndexChanged);
             // 
             // cmbDataTypeCRE8
             // 
@@ -5086,6 +5087,7 @@
             this.cmbDataTypeCRE8.Name = "cmbDataTypeCRE8";
             this.cmbDataTypeCRE8.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE8.TabIndex = 223;
+            this.cmbDataTypeCRE8.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeCRE_SelectedIndexChanged);
             // 
             // cmbDataTypeCRE7
             // 
@@ -5099,6 +5101,7 @@
             this.cmbDataTypeCRE7.Name = "cmbDataTypeCRE7";
             this.cmbDataTypeCRE7.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE7.TabIndex = 222;
+            this.cmbDataTypeCRE7.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeCRE_SelectedIndexChanged);
             // 
             // cmbDataTypeCRE6
             // 
@@ -5112,6 +5115,7 @@
             this.cmbDataTypeCRE6.Name = "cmbDataTypeCRE6";
             this.cmbDataTypeCRE6.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE6.TabIndex = 221;
+            this.cmbDataTypeCRE6.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeCRE_SelectedIndexChanged);
             // 
             // cmbDataTypeCRE5
             // 
@@ -5125,6 +5129,7 @@
             this.cmbDataTypeCRE5.Name = "cmbDataTypeCRE5";
             this.cmbDataTypeCRE5.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE5.TabIndex = 220;
+            this.cmbDataTypeCRE4.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeCRE_SelectedIndexChanged);
             // 
             // cmbDataTypeCRE4
             // 
@@ -5138,6 +5143,7 @@
             this.cmbDataTypeCRE4.Name = "cmbDataTypeCRE4";
             this.cmbDataTypeCRE4.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE4.TabIndex = 219;
+            this.cmbDataTypeCRE4.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeCRE_SelectedIndexChanged);
             // 
             // cmbDataTypeCRE3
             // 
@@ -5151,6 +5157,7 @@
             this.cmbDataTypeCRE3.Name = "cmbDataTypeCRE3";
             this.cmbDataTypeCRE3.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE3.TabIndex = 218;
+            this.cmbDataTypeCRE3.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeCRE_SelectedIndexChanged);
             // 
             // cmbDataTypeCRE2
             // 
@@ -5164,6 +5171,7 @@
             this.cmbDataTypeCRE2.Name = "cmbDataTypeCRE2";
             this.cmbDataTypeCRE2.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE2.TabIndex = 217;
+            this.cmbDataTypeCRE2.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeCRE_SelectedIndexChanged);
             // 
             // cmbDataTypeCRE1
             // 
@@ -5177,6 +5185,7 @@
             this.cmbDataTypeCRE1.Name = "cmbDataTypeCRE1";
             this.cmbDataTypeCRE1.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE1.TabIndex = 216;
+            this.cmbDataTypeCRE1.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeCRE_SelectedIndexChanged);
             // 
             // label3
             // 
