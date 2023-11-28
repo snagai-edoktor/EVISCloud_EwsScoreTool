@@ -391,6 +391,19 @@ namespace app2
                 }
             }
 
+            if (RecordList.Count == 0)
+            {
+                ////ファイルの行番号取得           
+                string strMsg = GetLineNumber().ToString() + " 行目 レコードが作成されていません";    //この行（サンプルでは50行目）が表示される
+
+                //メッセージボックスで行番号を表示
+                MessageBox.Show(strMsg
+                                , "情報"
+                                , MessageBoxButtons.OK
+                                , MessageBoxIcon.Information);
+                check_input = false;
+            }
+
             if (!check_input)
             {
                 ////ファイルの行番号取得           
@@ -403,7 +416,7 @@ namespace app2
                                 , MessageBoxIcon.Information);
                 return;
             }
-
+           
             //EVISCloudに接続
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
             SqlConnection con = new SqlConnection(constr);
@@ -1678,6 +1691,19 @@ namespace app2
                 else
                 {
                 }
+            }
+
+            if (RecordList.Count == 0)
+            {
+                ////ファイルの行番号取得           
+                string strMsg = GetLineNumber().ToString() + " 行目 レコードが作成されていません";    //この行（サンプルでは50行目）が表示される
+
+                //メッセージボックスで行番号を表示
+                MessageBox.Show(strMsg
+                                , "情報"
+                                , MessageBoxButtons.OK
+                                , MessageBoxIcon.Information);
+                check_input = false;
             }
 
             if (!check_input)
