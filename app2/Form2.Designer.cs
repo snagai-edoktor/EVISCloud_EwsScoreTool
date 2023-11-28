@@ -5129,7 +5129,6 @@
             this.cmbDataTypeCRE5.Name = "cmbDataTypeCRE5";
             this.cmbDataTypeCRE5.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeCRE5.TabIndex = 220;
-            this.cmbDataTypeCRE4.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeCRE_SelectedIndexChanged);
             // 
             // cmbDataTypeCRE4
             // 
@@ -8817,7 +8816,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(1316, 743);
+            this.button5.Location = new System.Drawing.Point(1323, 743);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(172, 49);
             this.button5.TabIndex = 103;

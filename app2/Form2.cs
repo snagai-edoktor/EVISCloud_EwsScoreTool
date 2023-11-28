@@ -1825,7 +1825,17 @@ namespace app2
         /// <param name="e"></param>
         private void Selected_CreatPage(object sender, EventArgs e)
         {
-            //EwsNameに対応するEwsidのレコードを取得しtxtに出力する
+
+            //(create -> update)
+            if ( ((TabControl)sender).SelectedIndex == 0 )
+            {
+
+            }
+            //(update -> create)
+            else if (((TabControl)sender).SelectedIndex == 1 )
+            {
+
+            }
             AllClear();//shundbg 入力されているが消してもいいか？って聞く処理がない
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
             SqlConnection con = new SqlConnection(constr);
@@ -1882,8 +1892,8 @@ namespace app2
             txtCreScoreLv1R.Text = txtCreScoreLv1L.Text;
         }
         /// <summary>
-        /// DataTypeコンボボックス選択時処理
-        /// Update,Createを同時に描画するが、ページ遷移時に初期化されるので二種類のコンボボックスにセットするが大丈夫
+        /// DataTypeコンボボックス選択時処理(UPDATEページ)
+        /// 数値、文字列の二つの条件に合わせてコンボボックスのアイテムを設定する
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1918,6 +1928,12 @@ namespace app2
 
         }
 
+        /// <summary>
+        /// DataTypeコンボボックス選択時処理(CREATERページ)
+        /// 数値、文字列の二つの条件に合わせてコンボボックスのアイテムを設定する
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmbDataTypeCRE_SelectedIndexChanged(object sender, EventArgs e)
         {
             //DataType == String
