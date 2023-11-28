@@ -321,11 +321,11 @@ namespace app2
             return fl;
         }
 
-        /*private void CreatButton_Click(object sender, EventArgs e)
+        private void CreatButton_Click(object sender, EventArgs e)
         {
             var RecordList = new List<Record>();
             bool check_input = true;
-            Create_scorearray();
+            Update_scorearray();
             //入力情報をレコードに変換する
             for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
             {
@@ -334,13 +334,13 @@ namespace app2
 
                 for (int j = 0; j < 7; j++)//jは列数　７の部分を定数にしたほうがきれいかも
                 {
-                    if (_BtxtCriteiaValueA[i, j].Text == "" && _BtxtCriteiaValueB[i, j].Text == "")
+                    if (_txtCriteiaValueA[i, j].Text == "" && _txtCriteiaValueB[i, j].Text == "")
                     {
                         continue;
                     }
                     else
                     {
-                        check_input = CreatRecord(RecordList, intlist, _Bvitalcode[i].SelectedIndex, _BtxtCriteiaValueA[i, j].Text, _Bcmb[i, j].SelectedIndex, _BtxtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, _cmbDataTypeCRE[i].SelectedIndex);
+                        check_input = CreatRecord(RecordList, intlist, _vitalcode[i].SelectedIndex, _txtCriteiaValueA[i, j].Text, _cmb[i, j].SelectedIndex, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, _cmbDataTypeCRE[i].SelectedIndex);
                     }
 
                 }
@@ -409,7 +409,7 @@ namespace app2
             
             InitEwsName();
         }
-        */
+        
 
         public class Record
         {
@@ -470,6 +470,17 @@ namespace app2
                     break;
                 }
             }
+            int selectindex = cmbEwsName.SelectedIndex;
+            string SelectedItem;
+            if ( selectindex != -1)
+            {
+                SelectedItem = cmbEwsName.SelectedItem.ToString();
+            }
+            else
+            {
+                return;
+            }
+            
             AllClear();
             //GetRecords初期化
             for (int i = 0; i < 11; i++)
@@ -480,7 +491,7 @@ namespace app2
                 }
             }
 
-            if (cmbEwsName.SelectedIndex == -1)
+            /*if (cmbEwsName.SelectedIndex == -1)
             {
                 ////ファイルの行番号取得           
                 string strMsg = GetLineNumber().ToString() + " 行目";
@@ -492,7 +503,8 @@ namespace app2
                                 , MessageBoxIcon.Information);
 
                 return;
-            }
+            }*/
+
             //EwsNameに対応するEwsidのレコードを取得しtxtに出力する
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
             SqlConnection con = new SqlConnection(constr);
@@ -500,8 +512,8 @@ namespace app2
             try
             {
                 //SQL文作成:
-                string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]} AND InvalidFlag = 0";
-                sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[cmbEwsName.SelectedItem.ToString()]})";
+                string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[SelectedItem]} AND InvalidFlag = 0";
+                sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[SelectedItem]})";
 
                 //shundbg 引っ張ってくるのを3000に固定している
                 //string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId =3000 AND InvalidFlag = 0";
@@ -625,7 +637,7 @@ namespace app2
             for (int i = 0; i < 10; i++)
             {
                 //cmbvitalcode クリアする
-                _vitalcode[i].Items.Clear();
+                //shundbg_vitalcode[i].Items.Clear();
                 bool fl = false;
                 //Vitalcode追加,選択
                 for (int j = 0; j < 7; j++)
@@ -633,8 +645,9 @@ namespace app2
                     if (GetRecords[i + 1, j].Count != 0)
                     {
                         //Getrecordsにはi=1から実データが入ってる
-                        _vitalcode[i].Items.Add(GetRecords[i + 1, j].First().VitalCode);
-                        _vitalcode[i].SelectedIndex = 0;
+                        string str = GetRecords[i + 1, j].First().VitalCode;
+                        //
+                        _vitalcode[i].SelectedIndex = _vitalcode[i].FindString(str);
                         fl = true;
                     }
                     if (fl) break;
@@ -659,6 +672,7 @@ namespace app2
 
             //レコード表示処理
             OutScore();
+            cmbEwsName.SelectedIndex = selectindex;
         }
 
         /// <summary>
@@ -669,6 +683,8 @@ namespace app2
 
             for (int i = 0; i < 10; i++)
             {
+                int datatype = 99;
+                double d;
                 for (int j = 0; j < 7; j++)
                 {
                     if (GetRecords[i + 1, j].Count() == 0)
@@ -687,12 +703,14 @@ namespace app2
                             _txtCriteiaValueA[i, j].Text = _txtCriteiaValueA[i, j].Text.Remove(_txtCriteiaValueA[i, j].Text.Length - 1);
 
                             _cmb[i, j].SelectedIndex = 2;
+                            datatype = 2;
                         }
-                        //case 0 " "
+                        //case 0 "="
                         else
                         {
                             _txtCriteiaValueA[i, j].Text += GetRecords[i + 1, j].First().CriteriaValue;
                             _cmb[i, j].SelectedIndex = 1;
+                            datatype = 2;
                         }
                     }
                     //case2 "～"
@@ -710,6 +728,14 @@ namespace app2
                             }
                         }
                         _cmb[i, j].SelectedIndex = 3;
+                        if (double.TryParse(_txtCriteiaValueA[i, j].Text, out d) && _txtCriteiaValueA[i, j].Text.Contains('.'))
+                        {
+                            datatype = 1;
+                        }
+                        else
+                        {
+                            datatype = 0;
+                        }
                     }
                     //case4,5 "<=" or ">="
                     else if (GetRecords[i + 1, j].Count() == 1)
@@ -724,12 +750,33 @@ namespace app2
                             _txtCriteiaValueB[i, j].Text += GetRecords[i + 1, j].First().CriteriaValue;
                             _cmb[i, j].SelectedIndex = 5;
                         }
+                        if (double.TryParse(_txtCriteiaValueB[i, j].Text, out d) && _txtCriteiaValueB[i, j].Text.Contains('.'))
+                        {
+                            datatype = 1;
+                        }
+                        else
+                        {
+                            datatype = 0;
+                        }
                     }
                     //error
                     else
                     {
                         txtOutSql.Text += string.Format($"OutScore error {i} {j} \r\n");
                     }
+                }
+
+                if(datatype == 0)
+                {
+                    _cmbDataTypeUP[i].SelectedIndex = 0;
+                }
+                else if( datatype == 1)
+                {
+                    _cmbDataTypeUP[i].SelectedIndex = 1;
+                }
+                else if (datatype == 2)
+                {
+                    _cmbDataTypeUP[i].SelectedIndex = 2;
                 }
             }
         }
@@ -809,7 +856,7 @@ namespace app2
 
                 _vitalcode[i].SelectedIndex = 0;
                 _vitalcode[i].Items.Clear();
-                
+
                 /*shundbg
                 _Bvitalcode[i].SelectedIndex = 0;
                 _Bvitalcode[i].Items.Clear();
@@ -817,7 +864,7 @@ namespace app2
 
 
 
-                string[] VitalTypeFile = File.ReadAllLines("..\\..\\VitalType.txt");
+                /*string[] VitalTypeFile = File.ReadAllLines("..\\..\\VitalType.txt");
                 var splits = new List<string>();
                 int ele = 0;
                 foreach (string s in VitalTypeFile)
@@ -851,12 +898,47 @@ namespace app2
                         }
 
                     }
-                }
+                }*/ 
             }
             //shundbg
             foreach (string s in VitalCodeName)
             {
                 txtOutSql.Text += s + "\r\n";
+            }
+
+            //登録されているvitalcodeを取ってきてスタックしておく（重複を許していない）
+            var vitalcodes = new HashSet<string>();
+            string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
+            SqlConnection con = new SqlConnection(constr);
+            con.Open();
+            try
+            {
+                //vitalcode一覧取得
+                string sqlstr = $"SELECT vital_code FROM M_VitalType WHERE vital_code IS NOT NULL";
+                SqlCommand com = new SqlCommand(sqlstr, con);
+                SqlDataReader sdr = com.ExecuteReader();
+                while (sdr.Read() == true)
+                {
+
+                    string vitalcode = (string)sdr["vital_code"];
+                    vitalcodes.Add(vitalcode);
+                }
+                sdr.Close();
+                com.Dispose();
+
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            //_vitalcode[]にaddしておく
+            for (int i = 0; i < 10; i++)
+            {
+                foreach (var code in vitalcodes)
+                {
+                    _vitalcode[i].Items.Add(code);
+                }
             }
         }
 
@@ -1450,7 +1532,6 @@ namespace app2
                     /*_BtxtCriteiaValueA[i, j].ResetText();
                     _BtxtCriteiaValueB[i, j].ResetText();
                     shundbg*/
-                    _cmb[i, j].SelectedIndex = 0;
 
                     //txtcombobox
                     _cmb[i, j].Items.Clear();
@@ -1472,13 +1553,29 @@ namespace app2
                     _Bcmb[i, j].Items.Add("≧");
                     _Bcmb[i, j].SelectedIndex = 0;
                     */
+
+                    _cmb[i, j].Items.Clear();
+                    _cmb[i, j].Items.Add("");
+                    _cmb[i, j].Items.Add("=");
+                    _cmb[i, j].Items.Add(",");
+                    _cmb[i, j].Items.Add("～");
+                    _cmb[i, j].Items.Add("≦");
+                    _cmb[i, j].Items.Add("≧");
+                    _cmb[i, j].SelectedIndex = 0;
                 }
-                _vitalcode[i].Items.Clear();
+                _vitalcode[i].SelectedIndex = -1;
                 //_Bvitalcode[i].Items.Clear();
                 _cmbDataTypeUP[i].SelectedIndex = -1;
                 //_cmbDataTypeCRE[i].SelectedIndex = -1;shundbg
+
             }
 
+            EWSID.ResetText();
+            txtSeqNo.ResetText();
+            cmbEwsName.SelectedIndex = -1;
+            txtCreateEWSID.ResetText();
+            txtCreateEwsName.ResetText();
+            txtCreateWarningThresolds.ResetText();
             txtScoreLv3L.ResetText();
             txtScoreLv2L.ResetText();
             txtScoreLv1L.ResetText();
@@ -1508,7 +1605,7 @@ namespace app2
                     }
                     else
                     {
-                        if(!CreatRecord_Update(RecordList, intlist, i, _txtCriteiaValueA[i, j].Text, _cmb[i, j].SelectedIndex, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, Convert.ToInt32(txtSeqNo.Text), _cmbDataTypeUP[i].SelectedIndex))
+                        if(!CreatRecord_Update(RecordList, intlist, i, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, Convert.ToInt32(txtSeqNo.Text), _cmbDataTypeUP[i].SelectedIndex))
                         {
                             ////ファイルの行番号取得           
                             string errMsg = GetLineNumber().ToString() + " 行目" +" [i,j] = " + i + " " + j;    //この行（サンプルでは50行目）が表示される
@@ -1547,8 +1644,8 @@ namespace app2
                 }
             }
 
-            //if (!check_input)
-            //{
+            if (!check_input)
+            {
                 ////ファイルの行番号取得           
                 string strMsg = GetLineNumber().ToString() + " 行目 レコード登録中止";    //この行（サンプルでは50行目）が表示される
 
@@ -1558,7 +1655,7 @@ namespace app2
                                 , MessageBoxButtons.OK
                                 , MessageBoxIcon.Information);
                 return ;
-            //}
+            }
             //EVISCloudに接続
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
 
@@ -1618,7 +1715,7 @@ namespace app2
         /// <param name="tarval"></param>
         /// <param name="displayorder"></param>
         /// <param name="seqno"></param>
-        public bool CreatRecord_Update(List<Record> RecList, List<int> intlist, int vitalcode, string txtA, int symb, string txtB, int score, int tarval, int displayorder, int seqno, int datatype)
+        public bool CreatRecord_Update(List<Record> RecList, List<int> intlist, int vitalcode, string txtA, string symb, string txtB, int score, int tarval, int displayorder, int seqno, int datatype)
         {
             double d;
             int i;
@@ -1626,12 +1723,12 @@ namespace app2
             //string[] words;
             switch (symb)
             {
-                case 0:
+                case "":
                     //エラー この関数を呼ぶ前にtxtA,bに中身があるか確認してるからここには来ないはず
                     MessageBox.Show("コンボボックスが未選択です");
                     fl = false;
                     break;
-                case 1://   "="memo 1つのレコード作成
+                case "="://   "="memo 1つのレコード作成
                     if (datatype != 2)
                     {
                         //エラー 数値入力なのに単一文字列が含まれている
@@ -1649,7 +1746,7 @@ namespace app2
 
                     RecList.Add(record0);
                     break;
-                case 2:// , memo レコード数に限りない
+                case ",":// , memo レコード数に限りない
                     if (datatype != 2)
                     {
                         //エラー
@@ -1678,7 +1775,7 @@ namespace app2
                         RecList.Add(record1);
                     }
                     break;
-                case 3:// ~ memo 2つレコードを作ればいい
+                case "～"    :// ~ memo 2つレコードを作ればいい
                     var record21 = new Record(EWSID.Text);
                     record21.Score = score;
                     record21.VitalCode = _vitalcode[vitalcode].Items[0].ToString();
@@ -1740,7 +1837,7 @@ namespace app2
                     }
 
                     break;
-                case 4:// <= memo １つレコード：A,Bが空かどうか判別が必要かな一回ききたい
+                case "≦":// <= memo １つレコード：A,Bが空かどうか判別が必要かな一回ききたい
                     var record3 = new Record(EWSID.Text);
                     record3.Score = score;
                     record3.VitalCode = _vitalcode[vitalcode].Items[0].ToString();
@@ -1791,7 +1888,7 @@ namespace app2
                     }
 
                     break;
-                case 5:// >= memo １つレコード：A,Bが空かどうか判別が必要一回聞きたいそういう表記になってるだけで入力するときの感覚的にはおかしいかもしれない
+                case "≧":// >= memo １つレコード：A,Bが空かどうか判別が必要一回聞きたいそういう表記になってるだけで入力するときの感覚的にはおかしいかもしれない
                     var record4 = new Record(EWSID.Text);
                     record4.Score = score;
                     record4.VitalCode = _vitalcode[vitalcode].Items[0].ToString();
@@ -1912,31 +2009,89 @@ namespace app2
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void cmbDataTypeUP_SelectedIndexChanged(object sender, EventArgs e)
-        {   
+        {
+            int index = Array.IndexOf(_cmbDataTypeUP, ((ComboBox)sender));
             //DataType == String
-            if( ((ComboBox)sender).SelectedIndex == 2)
+            if ( ((ComboBox)sender).SelectedIndex == 2)
             {
                 for (int j = 0; j < 7; j++)
                 {
-                    int index = Array.IndexOf(_cmbDataTypeUP, ((ComboBox)sender));
+                    bool fl = false;
+                    string s = "";
+                    if (_cmb[index, j].SelectedIndex != -1)
+                    {
+                        fl = true;
+                        s = _cmb[index, j].Text;
+                    }
                     _cmb[index, j].Items.Clear();
                     _cmb[index, j].Items.Add("");
                     _cmb[index, j].Items.Add("=");
                     _cmb[index, j].Items.Add(",");
-                    _cmb[index, j].SelectedIndex = 0;
+
+                    if (fl)
+                    {
+                        _cmb[index, j].SelectedIndex = _cmb[index, j].FindString(s);
+                    }
+                    else
+                    {
+                        _cmb[index, j].SelectedIndex = 0;
+                    }
+                   
+                }
+            }
+            else if( ((ComboBox)sender).SelectedIndex == -1)
+            {
+                for (int j = 0; (j < 7); j++)
+                {
+                    bool fl = false;
+                    string s = "";
+                    if (_cmb[index, j].SelectedIndex != -1)
+                    {
+                        fl = true;
+                        s = _cmb[index, j].Text;
+                    }
+                    _cmb[index, j].Items.Clear();
+                    _cmb[index, j].Items.Add("");
+                    _cmb[index, j].Items.Add("=");
+                    _cmb[index, j].Items.Add(",");
+                    _cmb[index, j].Items.Add("～");
+                    _cmb[index, j].Items.Add("≦");
+                    _cmb[index, j].Items.Add("≧");
+
+                    if (fl)
+                    {
+                        _cmb[index, j].SelectedIndex = _cmb[index, j].FindString(s);
+                    }
+                    else
+                    {
+                        _cmb[index, j].SelectedIndex = 0;
+                    }
                 }
             }
             else
             {
                 for (int j = 0; j < 7; j++)
                 {
-                    int index = Array.IndexOf(_cmbDataTypeUP, ((ComboBox)sender));
+                    bool fl = false;
+                    string s = "";
+                    if (_cmb[index, j].SelectedIndex != -1)
+                    {
+                        fl = true;
+                        s = _cmb[index, j].Text;
+                    }
                     _cmb[index, j].Items.Clear();
                     _cmb[index, j].Items.Add("");
                     _cmb[index, j].Items.Add("～");
                     _cmb[index, j].Items.Add("≦");
                     _cmb[index, j].Items.Add("≧");
-                    _cmb[index, j].SelectedIndex = 0;
+                    if (fl)
+                    {
+                        _cmb[index, j].SelectedIndex = _cmb[index, j].FindString(s);
+                    }
+                    else
+                    {
+                        _cmb[index, j].SelectedIndex = 0;
+                    }
                 }
             }
 
@@ -1948,7 +2103,7 @@ namespace app2
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cmbDataTypeCRE_SelectedIndexChanged(object sender, EventArgs e)
+        /*private void cmbDataTypeCRE_SelectedIndexChanged(object sender, EventArgs e)
         {
             //DataType == String
             if (((ComboBox)sender).SelectedIndex == 2)
@@ -1977,11 +2132,92 @@ namespace app2
                 }
             }
 
-        }
+        }*/
 
         private void Selected_CreatPage(object sender, TabControlEventArgs e)
         {
 
         }
+
+        private void btnInitforCreate_Click(object sender, EventArgs e)
+        {
+            //表に値が入力済みかチェックして初期化
+            bool fl_Completed = false;
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    if (_txtCriteiaValueA[i, j].Text != "" || _txtCriteiaValueB[i, j].Text != "")
+                    {
+                        fl_Completed = true;
+                        break;
+                    }
+                }
+                if (fl_Completed)
+                {
+                    ////ファイルの行番号取得           
+                    string strMsg = "入力中の値は保存されませんが初期化しますか？";
+
+                    //メッセージボックスで行番号を表示
+                    var resultMessageBox = MessageBox.Show(strMsg
+                                    , "エラー"
+                                    , MessageBoxButtons.OKCancel
+                                    , MessageBoxIcon.Information);
+
+                    if (resultMessageBox == System.Windows.Forms.DialogResult.No)
+                    {
+                        return;
+                    }
+                    break;
+                }
+            }
+            AllClear();//shundbg 入力されているが消してもいいか？って聞く処理がない
+
+            
+            //登録されているvitalcodeを取ってきてスタックしておく（重複を許していない）
+            var vitalcodes = new HashSet<string>();
+            //登録可能なIDをDBからとってくる。登録時に勝手に付けられるから意味ないけど画面で見れたほうがいいかもだから残す
+            string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
+            SqlConnection con = new SqlConnection(constr);
+            con.Open();
+            try
+            {
+
+                string sqlstr = $"SELECT Id FROM M_EwsType WHERE Id = (SELECT MAX(Id) FROM M_EwsType)";
+                //string sqlstr = $"SELECT MAX(Id) FROM M_EwsType";
+                SqlCommand com = new SqlCommand(sqlstr, con);
+                SqlDataReader sdr = com.ExecuteReader();
+
+                while (sdr.Read() == true)
+                {
+                    //EVIS                   
+                    int Id = (int)sdr["Id"];
+                    txtCreateEWSID.Text = (Id + 1).ToString();
+                }
+                sdr.Close();
+                com.Dispose();
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        private void txtScoreLv3L_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtScoreLv2L_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtScoreLv1L_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 }

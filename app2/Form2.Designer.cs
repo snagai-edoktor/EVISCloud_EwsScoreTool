@@ -552,6 +552,7 @@
             this.txtScoreLv1L.Name = "txtScoreLv1L";
             this.txtScoreLv1L.Size = new System.Drawing.Size(40, 19);
             this.txtScoreLv1L.TabIndex = 316;
+            this.txtScoreLv1L.TextChanged += new System.EventHandler(this.txtScoreLv1L_TextChanged);
             // 
             // txtScoreLv2L
             // 
@@ -559,6 +560,7 @@
             this.txtScoreLv2L.Name = "txtScoreLv2L";
             this.txtScoreLv2L.Size = new System.Drawing.Size(40, 19);
             this.txtScoreLv2L.TabIndex = 315;
+            this.txtScoreLv2L.TextChanged += new System.EventHandler(this.txtScoreLv2L_TextChanged);
             // 
             // txtScoreLv3L
             // 
@@ -566,6 +568,7 @@
             this.txtScoreLv3L.Name = "txtScoreLv3L";
             this.txtScoreLv3L.Size = new System.Drawing.Size(40, 19);
             this.txtScoreLv3L.TabIndex = 314;
+            this.txtScoreLv3L.TextChanged += new System.EventHandler(this.txtScoreLv3L_TextChanged);
             // 
             // txtSeqNo
             // 
@@ -598,6 +601,7 @@
             this.btnInitforCreate.TabIndex = 339;
             this.btnInitforCreate.Text = "新規登録用初期化";
             this.btnInitforCreate.UseVisualStyleBackColor = true;
+            this.btnInitforCreate.Click += new System.EventHandler(this.btnInitforCreate_Click);
             // 
             // button5
             // 
@@ -607,6 +611,7 @@
             this.button5.TabIndex = 338;
             this.button5.Text = "新規登録";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.CreatButton_Click);
             // 
             // label9
             // 
@@ -656,6 +661,7 @@
             this.cmbDataTypeUP10.Name = "cmbDataTypeUP10";
             this.cmbDataTypeUP10.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP10.TabIndex = 331;
+            this.cmbDataTypeUP10.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // cmbDataTypeUP9
             // 
@@ -669,6 +675,7 @@
             this.cmbDataTypeUP9.Name = "cmbDataTypeUP9";
             this.cmbDataTypeUP9.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP9.TabIndex = 330;
+            this.cmbDataTypeUP9.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // cmbDataTypeUP8
             // 
@@ -682,6 +689,7 @@
             this.cmbDataTypeUP8.Name = "cmbDataTypeUP8";
             this.cmbDataTypeUP8.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP8.TabIndex = 329;
+            this.cmbDataTypeUP8.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // cmbDataTypeUP7
             // 
@@ -695,6 +703,7 @@
             this.cmbDataTypeUP7.Name = "cmbDataTypeUP7";
             this.cmbDataTypeUP7.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP7.TabIndex = 328;
+            this.cmbDataTypeUP7.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // cmbDataTypeUP6
             // 
@@ -708,6 +717,7 @@
             this.cmbDataTypeUP6.Name = "cmbDataTypeUP6";
             this.cmbDataTypeUP6.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP6.TabIndex = 327;
+            this.cmbDataTypeUP6.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // cmbDataTypeUP5
             // 
@@ -721,6 +731,7 @@
             this.cmbDataTypeUP5.Name = "cmbDataTypeUP5";
             this.cmbDataTypeUP5.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP5.TabIndex = 326;
+            this.cmbDataTypeUP5.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // cmbDataTypeUP4
             // 
@@ -734,6 +745,7 @@
             this.cmbDataTypeUP4.Name = "cmbDataTypeUP4";
             this.cmbDataTypeUP4.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP4.TabIndex = 325;
+            this.cmbDataTypeUP4.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // cmbDataTypeUP3
             // 
@@ -747,6 +759,7 @@
             this.cmbDataTypeUP3.Name = "cmbDataTypeUP3";
             this.cmbDataTypeUP3.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP3.TabIndex = 324;
+            this.cmbDataTypeUP3.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // cmbDataTypeUP2
             // 
@@ -760,6 +773,7 @@
             this.cmbDataTypeUP2.Name = "cmbDataTypeUP2";
             this.cmbDataTypeUP2.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP2.TabIndex = 323;
+            this.cmbDataTypeUP2.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // cmbDataTypeUP1
             // 
@@ -773,6 +787,7 @@
             this.cmbDataTypeUP1.Name = "cmbDataTypeUP1";
             this.cmbDataTypeUP1.Size = new System.Drawing.Size(72, 20);
             this.cmbDataTypeUP1.TabIndex = 322;
+            this.cmbDataTypeUP1.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -800,6 +815,7 @@
             this.btnUPDATE.TabIndex = 313;
             this.btnUPDATE.Text = "更新分登録";
             this.btnUPDATE.UseVisualStyleBackColor = true;
+            this.btnUPDATE.Click += new System.EventHandler(this.UPDATE_Click);
             // 
             // label5
             // 
