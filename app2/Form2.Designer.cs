@@ -423,6 +423,17 @@
             this.txtCriteiaValue11A = new System.Windows.Forms.TextBox();
             this.cmbVitalCode1 = new System.Windows.Forms.ComboBox();
             this.lb_ewsid = new System.Windows.Forms.Label();
+            this.txtDisplayOrder1 = new System.Windows.Forms.TextBox();
+            this.txtDisplayOrder2 = new System.Windows.Forms.TextBox();
+            this.txtDisplayOrder3 = new System.Windows.Forms.TextBox();
+            this.txtDisplayOrder4 = new System.Windows.Forms.TextBox();
+            this.txtDisplayOrder5 = new System.Windows.Forms.TextBox();
+            this.txtDisplayOrder6 = new System.Windows.Forms.TextBox();
+            this.txtDisplayOrder7 = new System.Windows.Forms.TextBox();
+            this.txtDisplayOrder8 = new System.Windows.Forms.TextBox();
+            this.txtDisplayOrder9 = new System.Windows.Forms.TextBox();
+            this.txtDisplayOrder10 = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.panel64.SuspendLayout();
             this.panel57.SuspendLayout();
             this.panel65.SuspendLayout();
@@ -527,28 +538,28 @@
             // 
             // txtScoreLv3R
             // 
-            this.txtScoreLv3R.Location = new System.Drawing.Point(1446, 82);
+            this.txtScoreLv3R.Location = new System.Drawing.Point(1498, 82);
             this.txtScoreLv3R.Name = "txtScoreLv3R";
             this.txtScoreLv3R.Size = new System.Drawing.Size(40, 19);
             this.txtScoreLv3R.TabIndex = 319;
             // 
             // txtScoreLv2R
             // 
-            this.txtScoreLv2R.Location = new System.Drawing.Point(1249, 82);
+            this.txtScoreLv2R.Location = new System.Drawing.Point(1301, 82);
             this.txtScoreLv2R.Name = "txtScoreLv2R";
             this.txtScoreLv2R.Size = new System.Drawing.Size(40, 19);
             this.txtScoreLv2R.TabIndex = 318;
             // 
             // txtScoreLv1R
             // 
-            this.txtScoreLv1R.Location = new System.Drawing.Point(1052, 82);
+            this.txtScoreLv1R.Location = new System.Drawing.Point(1104, 82);
             this.txtScoreLv1R.Name = "txtScoreLv1R";
             this.txtScoreLv1R.Size = new System.Drawing.Size(40, 19);
             this.txtScoreLv1R.TabIndex = 317;
             // 
             // txtScoreLv1L
             // 
-            this.txtScoreLv1L.Location = new System.Drawing.Point(658, 82);
+            this.txtScoreLv1L.Location = new System.Drawing.Point(710, 82);
             this.txtScoreLv1L.Name = "txtScoreLv1L";
             this.txtScoreLv1L.Size = new System.Drawing.Size(40, 19);
             this.txtScoreLv1L.TabIndex = 316;
@@ -556,7 +567,7 @@
             // 
             // txtScoreLv2L
             // 
-            this.txtScoreLv2L.Location = new System.Drawing.Point(461, 82);
+            this.txtScoreLv2L.Location = new System.Drawing.Point(513, 82);
             this.txtScoreLv2L.Name = "txtScoreLv2L";
             this.txtScoreLv2L.Size = new System.Drawing.Size(40, 19);
             this.txtScoreLv2L.TabIndex = 315;
@@ -564,7 +575,7 @@
             // 
             // txtScoreLv3L
             // 
-            this.txtScoreLv3L.Location = new System.Drawing.Point(264, 82);
+            this.txtScoreLv3L.Location = new System.Drawing.Point(316, 82);
             this.txtScoreLv3L.Name = "txtScoreLv3L";
             this.txtScoreLv3L.Size = new System.Drawing.Size(40, 19);
             this.txtScoreLv3L.TabIndex = 314;
@@ -634,7 +645,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(117, 97);
+            this.label7.Location = new System.Drawing.Point(172, 97);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(55, 12);
             this.label7.TabIndex = 333;
@@ -643,7 +654,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(28, 97);
+            this.label6.Location = new System.Drawing.Point(83, 97);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(58, 12);
             this.label6.TabIndex = 332;
@@ -657,7 +668,7 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP10.Location = new System.Drawing.Point(11, 666);
+            this.cmbDataTypeUP10.Location = new System.Drawing.Point(66, 666);
             this.cmbDataTypeUP10.Name = "cmbDataTypeUP10";
             this.cmbDataTypeUP10.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP10.TabIndex = 331;
@@ -671,7 +682,7 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP9.Location = new System.Drawing.Point(11, 604);
+            this.cmbDataTypeUP9.Location = new System.Drawing.Point(66, 604);
             this.cmbDataTypeUP9.Name = "cmbDataTypeUP9";
             this.cmbDataTypeUP9.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP9.TabIndex = 330;
@@ -685,7 +696,7 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP8.Location = new System.Drawing.Point(11, 543);
+            this.cmbDataTypeUP8.Location = new System.Drawing.Point(66, 543);
             this.cmbDataTypeUP8.Name = "cmbDataTypeUP8";
             this.cmbDataTypeUP8.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP8.TabIndex = 329;
@@ -699,7 +710,7 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP7.Location = new System.Drawing.Point(11, 482);
+            this.cmbDataTypeUP7.Location = new System.Drawing.Point(66, 482);
             this.cmbDataTypeUP7.Name = "cmbDataTypeUP7";
             this.cmbDataTypeUP7.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP7.TabIndex = 328;
@@ -713,7 +724,7 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP6.Location = new System.Drawing.Point(11, 422);
+            this.cmbDataTypeUP6.Location = new System.Drawing.Point(66, 422);
             this.cmbDataTypeUP6.Name = "cmbDataTypeUP6";
             this.cmbDataTypeUP6.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP6.TabIndex = 327;
@@ -727,7 +738,7 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP5.Location = new System.Drawing.Point(11, 360);
+            this.cmbDataTypeUP5.Location = new System.Drawing.Point(66, 360);
             this.cmbDataTypeUP5.Name = "cmbDataTypeUP5";
             this.cmbDataTypeUP5.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP5.TabIndex = 326;
@@ -741,7 +752,7 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP4.Location = new System.Drawing.Point(11, 300);
+            this.cmbDataTypeUP4.Location = new System.Drawing.Point(66, 300);
             this.cmbDataTypeUP4.Name = "cmbDataTypeUP4";
             this.cmbDataTypeUP4.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP4.TabIndex = 325;
@@ -755,7 +766,7 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP3.Location = new System.Drawing.Point(11, 239);
+            this.cmbDataTypeUP3.Location = new System.Drawing.Point(66, 239);
             this.cmbDataTypeUP3.Name = "cmbDataTypeUP3";
             this.cmbDataTypeUP3.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP3.TabIndex = 324;
@@ -769,7 +780,7 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP2.Location = new System.Drawing.Point(11, 178);
+            this.cmbDataTypeUP2.Location = new System.Drawing.Point(66, 178);
             this.cmbDataTypeUP2.Name = "cmbDataTypeUP2";
             this.cmbDataTypeUP2.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP2.TabIndex = 323;
@@ -783,7 +794,7 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP1.Location = new System.Drawing.Point(11, 117);
+            this.cmbDataTypeUP1.Location = new System.Drawing.Point(66, 117);
             this.cmbDataTypeUP1.Name = "cmbDataTypeUP1";
             this.cmbDataTypeUP1.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP1.TabIndex = 322;
@@ -792,7 +803,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(870, 89);
+            this.label2.Location = new System.Drawing.Point(922, 89);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(11, 12);
             this.label2.TabIndex = 321;
@@ -801,7 +812,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(207, 85);
+            this.label1.Location = new System.Drawing.Point(273, 89);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(34, 12);
             this.label1.TabIndex = 320;
@@ -841,7 +852,7 @@
             this.panel64.Controls.Add(this.cmb107);
             this.panel64.Controls.Add(this.txtCriteiaValue107B);
             this.panel64.Controls.Add(this.txtCriteiaValue107A);
-            this.panel64.Location = new System.Drawing.Point(1386, 666);
+            this.panel64.Location = new System.Drawing.Point(1438, 666);
             this.panel64.Name = "panel64";
             this.panel64.Size = new System.Drawing.Size(160, 20);
             this.panel64.TabIndex = 277;
@@ -888,7 +899,7 @@
             this.panel57.Controls.Add(this.cmb97);
             this.panel57.Controls.Add(this.txtCriteiaValue97B);
             this.panel57.Controls.Add(this.txtCriteiaValue97A);
-            this.panel57.Location = new System.Drawing.Point(1386, 604);
+            this.panel57.Location = new System.Drawing.Point(1438, 604);
             this.panel57.Name = "panel57";
             this.panel57.Size = new System.Drawing.Size(160, 20);
             this.panel57.TabIndex = 276;
@@ -935,7 +946,7 @@
             this.panel65.Controls.Add(this.cmb106);
             this.panel65.Controls.Add(this.txtCriteiaValue106B);
             this.panel65.Controls.Add(this.txtCriteiaValue106A);
-            this.panel65.Location = new System.Drawing.Point(1189, 666);
+            this.panel65.Location = new System.Drawing.Point(1241, 666);
             this.panel65.Name = "panel65";
             this.panel65.Size = new System.Drawing.Size(160, 20);
             this.panel65.TabIndex = 282;
@@ -982,7 +993,7 @@
             this.panel50.Controls.Add(this.cmb87);
             this.panel50.Controls.Add(this.txtCriteiaValue87B);
             this.panel50.Controls.Add(this.txtCriteiaValue87A);
-            this.panel50.Location = new System.Drawing.Point(1386, 543);
+            this.panel50.Location = new System.Drawing.Point(1438, 543);
             this.panel50.Name = "panel50";
             this.panel50.Size = new System.Drawing.Size(160, 20);
             this.panel50.TabIndex = 304;
@@ -1029,7 +1040,7 @@
             this.panel66.Controls.Add(this.cmb105);
             this.panel66.Controls.Add(this.txtCriteiaValue105B);
             this.panel66.Controls.Add(this.txtCriteiaValue105A);
-            this.panel66.Location = new System.Drawing.Point(992, 666);
+            this.panel66.Location = new System.Drawing.Point(1044, 666);
             this.panel66.Name = "panel66";
             this.panel66.Size = new System.Drawing.Size(160, 20);
             this.panel66.TabIndex = 299;
@@ -1076,7 +1087,7 @@
             this.panel58.Controls.Add(this.cmb96);
             this.panel58.Controls.Add(this.txtCriteiaValue96B);
             this.panel58.Controls.Add(this.txtCriteiaValue96A);
-            this.panel58.Location = new System.Drawing.Point(1189, 604);
+            this.panel58.Location = new System.Drawing.Point(1241, 604);
             this.panel58.Name = "panel58";
             this.panel58.Size = new System.Drawing.Size(160, 20);
             this.panel58.TabIndex = 280;
@@ -1123,7 +1134,7 @@
             this.panel67.Controls.Add(this.cmb104);
             this.panel67.Controls.Add(this.txtCriteiaValue104B);
             this.panel67.Controls.Add(this.txtCriteiaValue104A);
-            this.panel67.Location = new System.Drawing.Point(795, 666);
+            this.panel67.Location = new System.Drawing.Point(847, 666);
             this.panel67.Name = "panel67";
             this.panel67.Size = new System.Drawing.Size(160, 20);
             this.panel67.TabIndex = 292;
@@ -1170,7 +1181,7 @@
             this.panel51.Controls.Add(this.cmb86);
             this.panel51.Controls.Add(this.txtCriteiaValue86B);
             this.panel51.Controls.Add(this.txtCriteiaValue86A);
-            this.panel51.Location = new System.Drawing.Point(1189, 543);
+            this.panel51.Location = new System.Drawing.Point(1241, 543);
             this.panel51.Name = "panel51";
             this.panel51.Size = new System.Drawing.Size(160, 20);
             this.panel51.TabIndex = 305;
@@ -1217,7 +1228,7 @@
             this.panel68.Controls.Add(this.cmb103);
             this.panel68.Controls.Add(this.txtCriteiaValue103B);
             this.panel68.Controls.Add(this.txtCriteiaValue103A);
-            this.panel68.Location = new System.Drawing.Point(598, 666);
+            this.panel68.Location = new System.Drawing.Point(650, 666);
             this.panel68.Name = "panel68";
             this.panel68.Size = new System.Drawing.Size(160, 20);
             this.panel68.TabIndex = 285;
@@ -1264,7 +1275,7 @@
             this.panel59.Controls.Add(this.cmb95);
             this.panel59.Controls.Add(this.txtCriteiaValue95B);
             this.panel59.Controls.Add(this.txtCriteiaValue95A);
-            this.panel59.Location = new System.Drawing.Point(992, 604);
+            this.panel59.Location = new System.Drawing.Point(1044, 604);
             this.panel59.Name = "panel59";
             this.panel59.Size = new System.Drawing.Size(160, 20);
             this.panel59.TabIndex = 297;
@@ -1311,7 +1322,7 @@
             this.panel69.Controls.Add(this.cmb102);
             this.panel69.Controls.Add(this.txtCriteiaValue102B);
             this.panel69.Controls.Add(this.txtCriteiaValue102A);
-            this.panel69.Location = new System.Drawing.Point(401, 666);
+            this.panel69.Location = new System.Drawing.Point(453, 666);
             this.panel69.Name = "panel69";
             this.panel69.Size = new System.Drawing.Size(160, 20);
             this.panel69.TabIndex = 288;
@@ -1358,7 +1369,7 @@
             this.panel52.Controls.Add(this.cmb85);
             this.panel52.Controls.Add(this.txtCriteiaValue85B);
             this.panel52.Controls.Add(this.txtCriteiaValue85A);
-            this.panel52.Location = new System.Drawing.Point(992, 543);
+            this.panel52.Location = new System.Drawing.Point(1044, 543);
             this.panel52.Name = "panel52";
             this.panel52.Size = new System.Drawing.Size(160, 20);
             this.panel52.TabIndex = 309;
@@ -1405,7 +1416,7 @@
             this.panel70.Controls.Add(this.cmb101);
             this.panel70.Controls.Add(this.txtCriteiaValue101B);
             this.panel70.Controls.Add(this.txtCriteiaValue101A);
-            this.panel70.Location = new System.Drawing.Point(204, 666);
+            this.panel70.Location = new System.Drawing.Point(256, 666);
             this.panel70.Name = "panel70";
             this.panel70.Size = new System.Drawing.Size(160, 20);
             this.panel70.TabIndex = 275;
@@ -1467,7 +1478,7 @@
             "Pulse(pulse_eng)",
             "Conscluseness(loc_eng)",
             "Temperature(temperature_eng)"});
-            this.cmbVitalCode10.Location = new System.Drawing.Point(102, 666);
+            this.cmbVitalCode10.Location = new System.Drawing.Point(157, 666);
             this.cmbVitalCode10.Name = "cmbVitalCode10";
             this.cmbVitalCode10.Size = new System.Drawing.Size(90, 20);
             this.cmbVitalCode10.TabIndex = 271;
@@ -1478,7 +1489,7 @@
             this.panel60.Controls.Add(this.cmb94);
             this.panel60.Controls.Add(this.txtCriteiaValue94B);
             this.panel60.Controls.Add(this.txtCriteiaValue94A);
-            this.panel60.Location = new System.Drawing.Point(795, 604);
+            this.panel60.Location = new System.Drawing.Point(847, 604);
             this.panel60.Name = "panel60";
             this.panel60.Size = new System.Drawing.Size(160, 20);
             this.panel60.TabIndex = 294;
@@ -1525,7 +1536,7 @@
             this.panel53.Controls.Add(this.cmb84);
             this.panel53.Controls.Add(this.txtCriteiaValue84B);
             this.panel53.Controls.Add(this.txtCriteiaValue84A);
-            this.panel53.Location = new System.Drawing.Point(795, 543);
+            this.panel53.Location = new System.Drawing.Point(847, 543);
             this.panel53.Name = "panel53";
             this.panel53.Size = new System.Drawing.Size(160, 20);
             this.panel53.TabIndex = 308;
@@ -1572,7 +1583,7 @@
             this.panel61.Controls.Add(this.cmb93);
             this.panel61.Controls.Add(this.txtCriteiaValue93B);
             this.panel61.Controls.Add(this.txtCriteiaValue93A);
-            this.panel61.Location = new System.Drawing.Point(598, 604);
+            this.panel61.Location = new System.Drawing.Point(650, 604);
             this.panel61.Name = "panel61";
             this.panel61.Size = new System.Drawing.Size(160, 20);
             this.panel61.TabIndex = 286;
@@ -1619,7 +1630,7 @@
             this.panel62.Controls.Add(this.cmb92);
             this.panel62.Controls.Add(this.txtCriteiaValue92B);
             this.panel62.Controls.Add(this.txtCriteiaValue92A);
-            this.panel62.Location = new System.Drawing.Point(401, 604);
+            this.panel62.Location = new System.Drawing.Point(453, 604);
             this.panel62.Name = "panel62";
             this.panel62.Size = new System.Drawing.Size(160, 20);
             this.panel62.TabIndex = 291;
@@ -1666,7 +1677,7 @@
             this.panel54.Controls.Add(this.cmb83);
             this.panel54.Controls.Add(this.txtCriteiaValue83B);
             this.panel54.Controls.Add(this.txtCriteiaValue83A);
-            this.panel54.Location = new System.Drawing.Point(598, 543);
+            this.panel54.Location = new System.Drawing.Point(650, 543);
             this.panel54.Name = "panel54";
             this.panel54.Size = new System.Drawing.Size(160, 20);
             this.panel54.TabIndex = 306;
@@ -1713,7 +1724,7 @@
             this.panel63.Controls.Add(this.cmb91);
             this.panel63.Controls.Add(this.txtCriteiaValue91B);
             this.panel63.Controls.Add(this.txtCriteiaValue91A);
-            this.panel63.Location = new System.Drawing.Point(204, 604);
+            this.panel63.Location = new System.Drawing.Point(256, 604);
             this.panel63.Name = "panel63";
             this.panel63.Size = new System.Drawing.Size(160, 20);
             this.panel63.TabIndex = 273;
@@ -1760,7 +1771,7 @@
             this.panel55.Controls.Add(this.cmb82);
             this.panel55.Controls.Add(this.txtCriteiaValue82B);
             this.panel55.Controls.Add(this.txtCriteiaValue82A);
-            this.panel55.Location = new System.Drawing.Point(401, 543);
+            this.panel55.Location = new System.Drawing.Point(453, 543);
             this.panel55.Name = "panel55";
             this.panel55.Size = new System.Drawing.Size(160, 20);
             this.panel55.TabIndex = 307;
@@ -1822,7 +1833,7 @@
             "Pulse(pulse_eng)",
             "Conscluseness(loc_eng)",
             "Temperature(temperature_eng)"});
-            this.cmbVitalCode9.Location = new System.Drawing.Point(102, 604);
+            this.cmbVitalCode9.Location = new System.Drawing.Point(157, 604);
             this.cmbVitalCode9.Name = "cmbVitalCode9";
             this.cmbVitalCode9.Size = new System.Drawing.Size(90, 20);
             this.cmbVitalCode9.TabIndex = 269;
@@ -1833,7 +1844,7 @@
             this.panel56.Controls.Add(this.cmb81);
             this.panel56.Controls.Add(this.txtCriteiaValue81B);
             this.panel56.Controls.Add(this.txtCriteiaValue81A);
-            this.panel56.Location = new System.Drawing.Point(204, 543);
+            this.panel56.Location = new System.Drawing.Point(256, 543);
             this.panel56.Name = "panel56";
             this.panel56.Size = new System.Drawing.Size(160, 20);
             this.panel56.TabIndex = 303;
@@ -1895,7 +1906,7 @@
             "Pulse(pulse_eng)",
             "Conscluseness(loc_eng)",
             "Temperature(temperature_eng)"});
-            this.cmbVitalCode8.Location = new System.Drawing.Point(102, 543);
+            this.cmbVitalCode8.Location = new System.Drawing.Point(157, 543);
             this.cmbVitalCode8.Name = "cmbVitalCode8";
             this.cmbVitalCode8.Size = new System.Drawing.Size(90, 20);
             this.cmbVitalCode8.TabIndex = 302;
@@ -1906,7 +1917,7 @@
             this.panel43.Controls.Add(this.cmb77);
             this.panel43.Controls.Add(this.txtCriteiaValue77B);
             this.panel43.Controls.Add(this.txtCriteiaValue77A);
-            this.panel43.Location = new System.Drawing.Point(1386, 482);
+            this.panel43.Location = new System.Drawing.Point(1438, 482);
             this.panel43.Name = "panel43";
             this.panel43.Size = new System.Drawing.Size(160, 20);
             this.panel43.TabIndex = 278;
@@ -1953,7 +1964,7 @@
             this.panel36.Controls.Add(this.cmb67);
             this.panel36.Controls.Add(this.txtCriteiaValue67B);
             this.panel36.Controls.Add(this.txtCriteiaValue67A);
-            this.panel36.Location = new System.Drawing.Point(1386, 422);
+            this.panel36.Location = new System.Drawing.Point(1438, 422);
             this.panel36.Name = "panel36";
             this.panel36.Size = new System.Drawing.Size(160, 20);
             this.panel36.TabIndex = 284;
@@ -2000,7 +2011,7 @@
             this.panel44.Controls.Add(this.cmb76);
             this.panel44.Controls.Add(this.txtCriteiaValue76B);
             this.panel44.Controls.Add(this.txtCriteiaValue76A);
-            this.panel44.Location = new System.Drawing.Point(1189, 482);
+            this.panel44.Location = new System.Drawing.Point(1241, 482);
             this.panel44.Name = "panel44";
             this.panel44.Size = new System.Drawing.Size(160, 20);
             this.panel44.TabIndex = 281;
@@ -2047,7 +2058,7 @@
             this.panel37.Controls.Add(this.cmb66);
             this.panel37.Controls.Add(this.txtCriteiaValue66B);
             this.panel37.Controls.Add(this.txtCriteiaValue66A);
-            this.panel37.Location = new System.Drawing.Point(1189, 422);
+            this.panel37.Location = new System.Drawing.Point(1241, 422);
             this.panel37.Name = "panel37";
             this.panel37.Size = new System.Drawing.Size(160, 20);
             this.panel37.TabIndex = 290;
@@ -2094,7 +2105,7 @@
             this.panel45.Controls.Add(this.cmb75);
             this.panel45.Controls.Add(this.txtCriteiaValue75B);
             this.panel45.Controls.Add(this.txtCriteiaValue75A);
-            this.panel45.Location = new System.Drawing.Point(992, 482);
+            this.panel45.Location = new System.Drawing.Point(1044, 482);
             this.panel45.Name = "panel45";
             this.panel45.Size = new System.Drawing.Size(160, 20);
             this.panel45.TabIndex = 298;
@@ -2141,7 +2152,7 @@
             this.panel38.Controls.Add(this.cmb65);
             this.panel38.Controls.Add(this.txtCriteiaValue65B);
             this.panel38.Controls.Add(this.txtCriteiaValue65A);
-            this.panel38.Location = new System.Drawing.Point(992, 422);
+            this.panel38.Location = new System.Drawing.Point(1044, 422);
             this.panel38.Name = "panel38";
             this.panel38.Size = new System.Drawing.Size(160, 20);
             this.panel38.TabIndex = 301;
@@ -2188,7 +2199,7 @@
             this.panel46.Controls.Add(this.cmb74);
             this.panel46.Controls.Add(this.txtCriteiaValue74B);
             this.panel46.Controls.Add(this.txtCriteiaValue74A);
-            this.panel46.Location = new System.Drawing.Point(795, 482);
+            this.panel46.Location = new System.Drawing.Point(847, 482);
             this.panel46.Name = "panel46";
             this.panel46.Size = new System.Drawing.Size(160, 20);
             this.panel46.TabIndex = 295;
@@ -2235,7 +2246,7 @@
             this.panel39.Controls.Add(this.cmb64);
             this.panel39.Controls.Add(this.txtCriteiaValue64B);
             this.panel39.Controls.Add(this.txtCriteiaValue64A);
-            this.panel39.Location = new System.Drawing.Point(795, 422);
+            this.panel39.Location = new System.Drawing.Point(847, 422);
             this.panel39.Name = "panel39";
             this.panel39.Size = new System.Drawing.Size(160, 20);
             this.panel39.TabIndex = 300;
@@ -2282,7 +2293,7 @@
             this.panel47.Controls.Add(this.cmb73);
             this.panel47.Controls.Add(this.txtCriteiaValue73B);
             this.panel47.Controls.Add(this.txtCriteiaValue73A);
-            this.panel47.Location = new System.Drawing.Point(598, 482);
+            this.panel47.Location = new System.Drawing.Point(650, 482);
             this.panel47.Name = "panel47";
             this.panel47.Size = new System.Drawing.Size(160, 20);
             this.panel47.TabIndex = 287;
@@ -2329,7 +2340,7 @@
             this.panel40.Controls.Add(this.cmb63);
             this.panel40.Controls.Add(this.txtCriteiaValue63B);
             this.panel40.Controls.Add(this.txtCriteiaValue63A);
-            this.panel40.Location = new System.Drawing.Point(598, 422);
+            this.panel40.Location = new System.Drawing.Point(650, 422);
             this.panel40.Name = "panel40";
             this.panel40.Size = new System.Drawing.Size(160, 20);
             this.panel40.TabIndex = 293;
@@ -2376,7 +2387,7 @@
             this.panel48.Controls.Add(this.cmb72);
             this.panel48.Controls.Add(this.txtCriteiaValue72B);
             this.panel48.Controls.Add(this.txtCriteiaValue72A);
-            this.panel48.Location = new System.Drawing.Point(401, 482);
+            this.panel48.Location = new System.Drawing.Point(453, 482);
             this.panel48.Name = "panel48";
             this.panel48.Size = new System.Drawing.Size(160, 20);
             this.panel48.TabIndex = 289;
@@ -2423,7 +2434,7 @@
             this.panel41.Controls.Add(this.cmb62);
             this.panel41.Controls.Add(this.txtCriteiaValue62B);
             this.panel41.Controls.Add(this.txtCriteiaValue62A);
-            this.panel41.Location = new System.Drawing.Point(401, 422);
+            this.panel41.Location = new System.Drawing.Point(453, 422);
             this.panel41.Name = "panel41";
             this.panel41.Size = new System.Drawing.Size(160, 20);
             this.panel41.TabIndex = 296;
@@ -2470,7 +2481,7 @@
             this.panel49.Controls.Add(this.cmb71);
             this.panel49.Controls.Add(this.txtCriteiaValue71B);
             this.panel49.Controls.Add(this.txtCriteiaValue71A);
-            this.panel49.Location = new System.Drawing.Point(204, 482);
+            this.panel49.Location = new System.Drawing.Point(256, 482);
             this.panel49.Name = "panel49";
             this.panel49.Size = new System.Drawing.Size(160, 20);
             this.panel49.TabIndex = 274;
@@ -2532,7 +2543,7 @@
             "Pulse(pulse_eng)",
             "Conscluseness(loc_eng)",
             "Temperature(temperature_eng)"});
-            this.cmbVitalCode7.Location = new System.Drawing.Point(102, 482);
+            this.cmbVitalCode7.Location = new System.Drawing.Point(157, 482);
             this.cmbVitalCode7.Name = "cmbVitalCode7";
             this.cmbVitalCode7.Size = new System.Drawing.Size(90, 20);
             this.cmbVitalCode7.TabIndex = 270;
@@ -2543,7 +2554,7 @@
             this.panel42.Controls.Add(this.cmb61);
             this.panel42.Controls.Add(this.txtCriteiaValue61B);
             this.panel42.Controls.Add(this.txtCriteiaValue61A);
-            this.panel42.Location = new System.Drawing.Point(204, 422);
+            this.panel42.Location = new System.Drawing.Point(256, 422);
             this.panel42.Name = "panel42";
             this.panel42.Size = new System.Drawing.Size(160, 20);
             this.panel42.TabIndex = 283;
@@ -2605,7 +2616,7 @@
             "Pulse(pulse_eng)",
             "Conscluseness(loc_eng)",
             "Temperature(temperature_eng)"});
-            this.cmbVitalCode6.Location = new System.Drawing.Point(102, 422);
+            this.cmbVitalCode6.Location = new System.Drawing.Point(157, 422);
             this.cmbVitalCode6.Name = "cmbVitalCode6";
             this.cmbVitalCode6.Size = new System.Drawing.Size(90, 20);
             this.cmbVitalCode6.TabIndex = 279;
@@ -2616,7 +2627,7 @@
             this.panel29.Controls.Add(this.cmb57);
             this.panel29.Controls.Add(this.txtCriteiaValue57B);
             this.panel29.Controls.Add(this.txtCriteiaValue57A);
-            this.panel29.Location = new System.Drawing.Point(1386, 361);
+            this.panel29.Location = new System.Drawing.Point(1438, 361);
             this.panel29.Name = "panel29";
             this.panel29.Size = new System.Drawing.Size(160, 20);
             this.panel29.TabIndex = 263;
@@ -2663,7 +2674,7 @@
             this.panel30.Controls.Add(this.cmb56);
             this.panel30.Controls.Add(this.txtCriteiaValue56B);
             this.panel30.Controls.Add(this.txtCriteiaValue56A);
-            this.panel30.Location = new System.Drawing.Point(1189, 361);
+            this.panel30.Location = new System.Drawing.Point(1241, 361);
             this.panel30.Name = "panel30";
             this.panel30.Size = new System.Drawing.Size(160, 20);
             this.panel30.TabIndex = 264;
@@ -2710,7 +2721,7 @@
             this.panel31.Controls.Add(this.cmb55);
             this.panel31.Controls.Add(this.txtCriteiaValue55B);
             this.panel31.Controls.Add(this.txtCriteiaValue55A);
-            this.panel31.Location = new System.Drawing.Point(992, 361);
+            this.panel31.Location = new System.Drawing.Point(1044, 361);
             this.panel31.Name = "panel31";
             this.panel31.Size = new System.Drawing.Size(160, 20);
             this.panel31.TabIndex = 268;
@@ -2757,7 +2768,7 @@
             this.panel32.Controls.Add(this.cmb54);
             this.panel32.Controls.Add(this.txtCriteiaValue54B);
             this.panel32.Controls.Add(this.txtCriteiaValue54A);
-            this.panel32.Location = new System.Drawing.Point(795, 361);
+            this.panel32.Location = new System.Drawing.Point(847, 361);
             this.panel32.Name = "panel32";
             this.panel32.Size = new System.Drawing.Size(160, 20);
             this.panel32.TabIndex = 267;
@@ -2804,7 +2815,7 @@
             this.panel33.Controls.Add(this.cmb53);
             this.panel33.Controls.Add(this.txtCriteiaValue53B);
             this.panel33.Controls.Add(this.txtCriteiaValue53A);
-            this.panel33.Location = new System.Drawing.Point(598, 361);
+            this.panel33.Location = new System.Drawing.Point(650, 361);
             this.panel33.Name = "panel33";
             this.panel33.Size = new System.Drawing.Size(160, 20);
             this.panel33.TabIndex = 265;
@@ -2851,7 +2862,7 @@
             this.panel34.Controls.Add(this.cmb52);
             this.panel34.Controls.Add(this.txtCriteiaValue52B);
             this.panel34.Controls.Add(this.txtCriteiaValue52A);
-            this.panel34.Location = new System.Drawing.Point(401, 361);
+            this.panel34.Location = new System.Drawing.Point(453, 361);
             this.panel34.Name = "panel34";
             this.panel34.Size = new System.Drawing.Size(160, 20);
             this.panel34.TabIndex = 266;
@@ -2898,7 +2909,7 @@
             this.panel35.Controls.Add(this.cmb51);
             this.panel35.Controls.Add(this.txtCriteiaValue51B);
             this.panel35.Controls.Add(this.txtCriteiaValue51A);
-            this.panel35.Location = new System.Drawing.Point(204, 361);
+            this.panel35.Location = new System.Drawing.Point(256, 361);
             this.panel35.Name = "panel35";
             this.panel35.Size = new System.Drawing.Size(160, 20);
             this.panel35.TabIndex = 262;
@@ -2945,7 +2956,7 @@
             this.panel22.Controls.Add(this.cmb47);
             this.panel22.Controls.Add(this.txtCriteiaValue47B);
             this.panel22.Controls.Add(this.txtCriteiaValue47A);
-            this.panel22.Location = new System.Drawing.Point(1386, 300);
+            this.panel22.Location = new System.Drawing.Point(1438, 300);
             this.panel22.Name = "panel22";
             this.panel22.Size = new System.Drawing.Size(160, 20);
             this.panel22.TabIndex = 256;
@@ -2992,7 +3003,7 @@
             this.panel23.Controls.Add(this.cmb46);
             this.panel23.Controls.Add(this.txtCriteiaValue46B);
             this.panel23.Controls.Add(this.txtCriteiaValue46A);
-            this.panel23.Location = new System.Drawing.Point(1189, 300);
+            this.panel23.Location = new System.Drawing.Point(1241, 300);
             this.panel23.Name = "panel23";
             this.panel23.Size = new System.Drawing.Size(160, 20);
             this.panel23.TabIndex = 257;
@@ -3039,7 +3050,7 @@
             this.panel24.Controls.Add(this.cmb45);
             this.panel24.Controls.Add(this.txtCriteiaValue45B);
             this.panel24.Controls.Add(this.txtCriteiaValue45A);
-            this.panel24.Location = new System.Drawing.Point(992, 300);
+            this.panel24.Location = new System.Drawing.Point(1044, 300);
             this.panel24.Name = "panel24";
             this.panel24.Size = new System.Drawing.Size(160, 20);
             this.panel24.TabIndex = 261;
@@ -3086,7 +3097,7 @@
             this.panel25.Controls.Add(this.cmb44);
             this.panel25.Controls.Add(this.txtCriteiaValue44B);
             this.panel25.Controls.Add(this.txtCriteiaValue44A);
-            this.panel25.Location = new System.Drawing.Point(795, 300);
+            this.panel25.Location = new System.Drawing.Point(847, 300);
             this.panel25.Name = "panel25";
             this.panel25.Size = new System.Drawing.Size(160, 20);
             this.panel25.TabIndex = 260;
@@ -3133,7 +3144,7 @@
             this.panel26.Controls.Add(this.cmb43);
             this.panel26.Controls.Add(this.txtCriteiaValue43B);
             this.panel26.Controls.Add(this.txtCriteiaValue43A);
-            this.panel26.Location = new System.Drawing.Point(598, 300);
+            this.panel26.Location = new System.Drawing.Point(650, 300);
             this.panel26.Name = "panel26";
             this.panel26.Size = new System.Drawing.Size(160, 20);
             this.panel26.TabIndex = 258;
@@ -3180,7 +3191,7 @@
             this.panel27.Controls.Add(this.cmb42);
             this.panel27.Controls.Add(this.txtCriteiaValue42B);
             this.panel27.Controls.Add(this.txtCriteiaValue42A);
-            this.panel27.Location = new System.Drawing.Point(401, 300);
+            this.panel27.Location = new System.Drawing.Point(453, 300);
             this.panel27.Name = "panel27";
             this.panel27.Size = new System.Drawing.Size(160, 20);
             this.panel27.TabIndex = 259;
@@ -3227,7 +3238,7 @@
             this.panel28.Controls.Add(this.cmb41);
             this.panel28.Controls.Add(this.txtCriteiaValue41B);
             this.panel28.Controls.Add(this.txtCriteiaValue41A);
-            this.panel28.Location = new System.Drawing.Point(204, 300);
+            this.panel28.Location = new System.Drawing.Point(256, 300);
             this.panel28.Name = "panel28";
             this.panel28.Size = new System.Drawing.Size(160, 20);
             this.panel28.TabIndex = 255;
@@ -3274,7 +3285,7 @@
             this.panel15.Controls.Add(this.cmb37);
             this.panel15.Controls.Add(this.txtCriteiaValue37B);
             this.panel15.Controls.Add(this.txtCriteiaValue37A);
-            this.panel15.Location = new System.Drawing.Point(1386, 239);
+            this.panel15.Location = new System.Drawing.Point(1438, 239);
             this.panel15.Name = "panel15";
             this.panel15.Size = new System.Drawing.Size(160, 20);
             this.panel15.TabIndex = 249;
@@ -3321,7 +3332,7 @@
             this.panel16.Controls.Add(this.cmb36);
             this.panel16.Controls.Add(this.txtCriteiaValue36B);
             this.panel16.Controls.Add(this.txtCriteiaValue36A);
-            this.panel16.Location = new System.Drawing.Point(1189, 239);
+            this.panel16.Location = new System.Drawing.Point(1241, 239);
             this.panel16.Name = "panel16";
             this.panel16.Size = new System.Drawing.Size(160, 20);
             this.panel16.TabIndex = 250;
@@ -3368,7 +3379,7 @@
             this.panel17.Controls.Add(this.cmb35);
             this.panel17.Controls.Add(this.txtCriteiaValue35B);
             this.panel17.Controls.Add(this.txtCriteiaValue35A);
-            this.panel17.Location = new System.Drawing.Point(992, 239);
+            this.panel17.Location = new System.Drawing.Point(1044, 239);
             this.panel17.Name = "panel17";
             this.panel17.Size = new System.Drawing.Size(160, 20);
             this.panel17.TabIndex = 254;
@@ -3415,7 +3426,7 @@
             this.panel18.Controls.Add(this.cmb34);
             this.panel18.Controls.Add(this.txtCriteiaValue34B);
             this.panel18.Controls.Add(this.txtCriteiaValue34A);
-            this.panel18.Location = new System.Drawing.Point(795, 239);
+            this.panel18.Location = new System.Drawing.Point(847, 239);
             this.panel18.Name = "panel18";
             this.panel18.Size = new System.Drawing.Size(160, 20);
             this.panel18.TabIndex = 253;
@@ -3462,7 +3473,7 @@
             this.panel19.Controls.Add(this.cmb33);
             this.panel19.Controls.Add(this.txtCriteiaValue33B);
             this.panel19.Controls.Add(this.txtCriteiaValue33A);
-            this.panel19.Location = new System.Drawing.Point(598, 239);
+            this.panel19.Location = new System.Drawing.Point(650, 239);
             this.panel19.Name = "panel19";
             this.panel19.Size = new System.Drawing.Size(160, 20);
             this.panel19.TabIndex = 251;
@@ -3509,7 +3520,7 @@
             this.panel20.Controls.Add(this.cmb32);
             this.panel20.Controls.Add(this.txtCriteiaValue32B);
             this.panel20.Controls.Add(this.txtCriteiaValue32A);
-            this.panel20.Location = new System.Drawing.Point(401, 239);
+            this.panel20.Location = new System.Drawing.Point(453, 239);
             this.panel20.Name = "panel20";
             this.panel20.Size = new System.Drawing.Size(160, 20);
             this.panel20.TabIndex = 252;
@@ -3556,7 +3567,7 @@
             this.panel21.Controls.Add(this.cmb31);
             this.panel21.Controls.Add(this.txtCriteiaValue31B);
             this.panel21.Controls.Add(this.txtCriteiaValue31A);
-            this.panel21.Location = new System.Drawing.Point(204, 239);
+            this.panel21.Location = new System.Drawing.Point(256, 239);
             this.panel21.Name = "panel21";
             this.panel21.Size = new System.Drawing.Size(160, 20);
             this.panel21.TabIndex = 248;
@@ -3603,7 +3614,7 @@
             this.panel1.Controls.Add(this.cmb27);
             this.panel1.Controls.Add(this.txtCriteiaValue27B);
             this.panel1.Controls.Add(this.txtCriteiaValue27A);
-            this.panel1.Location = new System.Drawing.Point(1386, 178);
+            this.panel1.Location = new System.Drawing.Point(1438, 178);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(160, 20);
             this.panel1.TabIndex = 242;
@@ -3650,7 +3661,7 @@
             this.panel9.Controls.Add(this.cmb26);
             this.panel9.Controls.Add(this.txtCriteiaValue26B);
             this.panel9.Controls.Add(this.txtCriteiaValue26A);
-            this.panel9.Location = new System.Drawing.Point(1189, 178);
+            this.panel9.Location = new System.Drawing.Point(1241, 178);
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(160, 20);
             this.panel9.TabIndex = 243;
@@ -3697,7 +3708,7 @@
             this.panel10.Controls.Add(this.cmb25);
             this.panel10.Controls.Add(this.txtCriteiaValue25B);
             this.panel10.Controls.Add(this.txtCriteiaValue25A);
-            this.panel10.Location = new System.Drawing.Point(992, 178);
+            this.panel10.Location = new System.Drawing.Point(1044, 178);
             this.panel10.Name = "panel10";
             this.panel10.Size = new System.Drawing.Size(160, 20);
             this.panel10.TabIndex = 247;
@@ -3744,7 +3755,7 @@
             this.panel11.Controls.Add(this.cmb24);
             this.panel11.Controls.Add(this.txtCriteiaValue24B);
             this.panel11.Controls.Add(this.txtCriteiaValue24A);
-            this.panel11.Location = new System.Drawing.Point(795, 178);
+            this.panel11.Location = new System.Drawing.Point(847, 178);
             this.panel11.Name = "panel11";
             this.panel11.Size = new System.Drawing.Size(160, 20);
             this.panel11.TabIndex = 246;
@@ -3791,7 +3802,7 @@
             this.panel12.Controls.Add(this.cmb23);
             this.panel12.Controls.Add(this.txtCriteiaValue23B);
             this.panel12.Controls.Add(this.txtCriteiaValue23A);
-            this.panel12.Location = new System.Drawing.Point(598, 178);
+            this.panel12.Location = new System.Drawing.Point(650, 178);
             this.panel12.Name = "panel12";
             this.panel12.Size = new System.Drawing.Size(160, 20);
             this.panel12.TabIndex = 244;
@@ -3838,7 +3849,7 @@
             this.panel13.Controls.Add(this.cmb22);
             this.panel13.Controls.Add(this.txtCriteiaValue22B);
             this.panel13.Controls.Add(this.txtCriteiaValue22A);
-            this.panel13.Location = new System.Drawing.Point(401, 178);
+            this.panel13.Location = new System.Drawing.Point(453, 178);
             this.panel13.Name = "panel13";
             this.panel13.Size = new System.Drawing.Size(160, 20);
             this.panel13.TabIndex = 245;
@@ -3885,7 +3896,7 @@
             this.panel14.Controls.Add(this.cmb21);
             this.panel14.Controls.Add(this.txtCriteiaValue21B);
             this.panel14.Controls.Add(this.txtCriteiaValue21A);
-            this.panel14.Location = new System.Drawing.Point(204, 178);
+            this.panel14.Location = new System.Drawing.Point(256, 178);
             this.panel14.Name = "panel14";
             this.panel14.Size = new System.Drawing.Size(160, 20);
             this.panel14.TabIndex = 241;
@@ -3947,7 +3958,7 @@
             "Pulse(pulse_eng)",
             "Conscluseness(loc_eng)",
             "Temperature(temperature_eng)"});
-            this.cmbVitalCode5.Location = new System.Drawing.Point(102, 361);
+            this.cmbVitalCode5.Location = new System.Drawing.Point(157, 361);
             this.cmbVitalCode5.Name = "cmbVitalCode5";
             this.cmbVitalCode5.Size = new System.Drawing.Size(90, 20);
             this.cmbVitalCode5.TabIndex = 240;
@@ -3973,7 +3984,7 @@
             "Pulse(pulse_eng)",
             "Conscluseness(loc_eng)",
             "Temperature(temperature_eng)"});
-            this.cmbVitalCode4.Location = new System.Drawing.Point(102, 300);
+            this.cmbVitalCode4.Location = new System.Drawing.Point(157, 300);
             this.cmbVitalCode4.Name = "cmbVitalCode4";
             this.cmbVitalCode4.Size = new System.Drawing.Size(90, 20);
             this.cmbVitalCode4.TabIndex = 239;
@@ -3999,7 +4010,7 @@
             "Pulse(pulse_eng)",
             "Conscluseness(loc_eng)",
             "Temperature(temperature_eng)"});
-            this.cmbVitalCode3.Location = new System.Drawing.Point(102, 239);
+            this.cmbVitalCode3.Location = new System.Drawing.Point(157, 239);
             this.cmbVitalCode3.Name = "cmbVitalCode3";
             this.cmbVitalCode3.Size = new System.Drawing.Size(90, 20);
             this.cmbVitalCode3.TabIndex = 238;
@@ -4025,7 +4036,7 @@
             "Pulse(pulse_eng)",
             "Conscluseness(loc_eng)",
             "Temperature(temperature_eng)"});
-            this.cmbVitalCode2.Location = new System.Drawing.Point(102, 178);
+            this.cmbVitalCode2.Location = new System.Drawing.Point(157, 178);
             this.cmbVitalCode2.Name = "cmbVitalCode2";
             this.cmbVitalCode2.Size = new System.Drawing.Size(90, 20);
             this.cmbVitalCode2.TabIndex = 237;
@@ -4036,7 +4047,7 @@
             this.panel8.Controls.Add(this.cmb17);
             this.panel8.Controls.Add(this.txtCriteiaValue17B);
             this.panel8.Controls.Add(this.txtCriteiaValue17A);
-            this.panel8.Location = new System.Drawing.Point(1386, 117);
+            this.panel8.Location = new System.Drawing.Point(1438, 117);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(160, 20);
             this.panel8.TabIndex = 231;
@@ -4083,7 +4094,7 @@
             this.panel7.Controls.Add(this.cmb16);
             this.panel7.Controls.Add(this.txtCriteiaValue16B);
             this.panel7.Controls.Add(this.txtCriteiaValue16A);
-            this.panel7.Location = new System.Drawing.Point(1189, 117);
+            this.panel7.Location = new System.Drawing.Point(1241, 117);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(160, 20);
             this.panel7.TabIndex = 232;
@@ -4130,7 +4141,7 @@
             this.panel6.Controls.Add(this.cmb15);
             this.panel6.Controls.Add(this.txtCriteiaValue15B);
             this.panel6.Controls.Add(this.txtCriteiaValue15A);
-            this.panel6.Location = new System.Drawing.Point(992, 117);
+            this.panel6.Location = new System.Drawing.Point(1044, 117);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(160, 20);
             this.panel6.TabIndex = 236;
@@ -4177,7 +4188,7 @@
             this.panel5.Controls.Add(this.cmb14);
             this.panel5.Controls.Add(this.txtCriteiaValue14B);
             this.panel5.Controls.Add(this.txtCriteiaValue14A);
-            this.panel5.Location = new System.Drawing.Point(795, 117);
+            this.panel5.Location = new System.Drawing.Point(847, 117);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(160, 20);
             this.panel5.TabIndex = 235;
@@ -4224,7 +4235,7 @@
             this.panel4.Controls.Add(this.cmb13);
             this.panel4.Controls.Add(this.txtCriteiaValue13B);
             this.panel4.Controls.Add(this.txtCriteiaValue13A);
-            this.panel4.Location = new System.Drawing.Point(598, 117);
+            this.panel4.Location = new System.Drawing.Point(650, 117);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(160, 20);
             this.panel4.TabIndex = 233;
@@ -4271,7 +4282,7 @@
             this.panel3.Controls.Add(this.cmb12);
             this.panel3.Controls.Add(this.txtCriteiaValue12B);
             this.panel3.Controls.Add(this.txtCriteiaValue12A);
-            this.panel3.Location = new System.Drawing.Point(401, 117);
+            this.panel3.Location = new System.Drawing.Point(453, 117);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(160, 20);
             this.panel3.TabIndex = 234;
@@ -4318,7 +4329,7 @@
             this.panel2.Controls.Add(this.cmb11);
             this.panel2.Controls.Add(this.txtCriteiaValue11B);
             this.panel2.Controls.Add(this.txtCriteiaValue11A);
-            this.panel2.Location = new System.Drawing.Point(204, 117);
+            this.panel2.Location = new System.Drawing.Point(256, 117);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(160, 20);
             this.panel2.TabIndex = 230;
@@ -4380,7 +4391,7 @@
             "Pulse(pulse_eng)",
             "Conscluseness(loc_eng)",
             "Temperature(temperature_eng)"});
-            this.cmbVitalCode1.Location = new System.Drawing.Point(102, 117);
+            this.cmbVitalCode1.Location = new System.Drawing.Point(157, 117);
             this.cmbVitalCode1.Name = "cmbVitalCode1";
             this.cmbVitalCode1.Size = new System.Drawing.Size(90, 20);
             this.cmbVitalCode1.TabIndex = 229;
@@ -4394,11 +4405,101 @@
             this.lb_ewsid.TabIndex = 228;
             this.lb_ewsid.Text = "EWSID";
             // 
+            // txtDisplayOrder1
+            // 
+            this.txtDisplayOrder1.Location = new System.Drawing.Point(13, 117);
+            this.txtDisplayOrder1.Name = "txtDisplayOrder1";
+            this.txtDisplayOrder1.Size = new System.Drawing.Size(41, 19);
+            this.txtDisplayOrder1.TabIndex = 342;
+            // 
+            // txtDisplayOrder2
+            // 
+            this.txtDisplayOrder2.Location = new System.Drawing.Point(13, 179);
+            this.txtDisplayOrder2.Name = "txtDisplayOrder2";
+            this.txtDisplayOrder2.Size = new System.Drawing.Size(41, 19);
+            this.txtDisplayOrder2.TabIndex = 343;
+            // 
+            // txtDisplayOrder3
+            // 
+            this.txtDisplayOrder3.Location = new System.Drawing.Point(13, 240);
+            this.txtDisplayOrder3.Name = "txtDisplayOrder3";
+            this.txtDisplayOrder3.Size = new System.Drawing.Size(41, 19);
+            this.txtDisplayOrder3.TabIndex = 344;
+            // 
+            // txtDisplayOrder4
+            // 
+            this.txtDisplayOrder4.Location = new System.Drawing.Point(13, 301);
+            this.txtDisplayOrder4.Name = "txtDisplayOrder4";
+            this.txtDisplayOrder4.Size = new System.Drawing.Size(41, 19);
+            this.txtDisplayOrder4.TabIndex = 345;
+            // 
+            // txtDisplayOrder5
+            // 
+            this.txtDisplayOrder5.Location = new System.Drawing.Point(13, 362);
+            this.txtDisplayOrder5.Name = "txtDisplayOrder5";
+            this.txtDisplayOrder5.Size = new System.Drawing.Size(41, 19);
+            this.txtDisplayOrder5.TabIndex = 346;
+            // 
+            // txtDisplayOrder6
+            // 
+            this.txtDisplayOrder6.Location = new System.Drawing.Point(13, 423);
+            this.txtDisplayOrder6.Name = "txtDisplayOrder6";
+            this.txtDisplayOrder6.Size = new System.Drawing.Size(41, 19);
+            this.txtDisplayOrder6.TabIndex = 347;
+            // 
+            // txtDisplayOrder7
+            // 
+            this.txtDisplayOrder7.Location = new System.Drawing.Point(13, 483);
+            this.txtDisplayOrder7.Name = "txtDisplayOrder7";
+            this.txtDisplayOrder7.Size = new System.Drawing.Size(41, 19);
+            this.txtDisplayOrder7.TabIndex = 348;
+            // 
+            // txtDisplayOrder8
+            // 
+            this.txtDisplayOrder8.Location = new System.Drawing.Point(13, 544);
+            this.txtDisplayOrder8.Name = "txtDisplayOrder8";
+            this.txtDisplayOrder8.Size = new System.Drawing.Size(41, 19);
+            this.txtDisplayOrder8.TabIndex = 349;
+            // 
+            // txtDisplayOrder9
+            // 
+            this.txtDisplayOrder9.Location = new System.Drawing.Point(13, 605);
+            this.txtDisplayOrder9.Name = "txtDisplayOrder9";
+            this.txtDisplayOrder9.Size = new System.Drawing.Size(41, 19);
+            this.txtDisplayOrder9.TabIndex = 350;
+            // 
+            // txtDisplayOrder10
+            // 
+            this.txtDisplayOrder10.Location = new System.Drawing.Point(13, 667);
+            this.txtDisplayOrder10.Name = "txtDisplayOrder10";
+            this.txtDisplayOrder10.Size = new System.Drawing.Size(41, 19);
+            this.txtDisplayOrder10.TabIndex = 351;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(-2, 97);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(69, 12);
+            this.label3.TabIndex = 352;
+            this.label3.Text = "Displayorder";
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1570, 867);
+            this.ClientSize = new System.Drawing.Size(1616, 867);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.txtDisplayOrder10);
+            this.Controls.Add(this.txtDisplayOrder9);
+            this.Controls.Add(this.txtDisplayOrder8);
+            this.Controls.Add(this.txtDisplayOrder7);
+            this.Controls.Add(this.txtDisplayOrder6);
+            this.Controls.Add(this.txtDisplayOrder5);
+            this.Controls.Add(this.txtDisplayOrder4);
+            this.Controls.Add(this.txtDisplayOrder3);
+            this.Controls.Add(this.txtDisplayOrder2);
+            this.Controls.Add(this.txtDisplayOrder1);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.txtCreateEWSID);
             this.Controls.Add(this.txtCreateEwsName);
@@ -5059,5 +5160,16 @@
         private System.Windows.Forms.TextBox txtCriteiaValue11A;
         private System.Windows.Forms.ComboBox cmbVitalCode1;
         private System.Windows.Forms.Label lb_ewsid;
+        private System.Windows.Forms.TextBox txtDisplayOrder1;
+        private System.Windows.Forms.TextBox txtDisplayOrder2;
+        private System.Windows.Forms.TextBox txtDisplayOrder3;
+        private System.Windows.Forms.TextBox txtDisplayOrder4;
+        private System.Windows.Forms.TextBox txtDisplayOrder5;
+        private System.Windows.Forms.TextBox txtDisplayOrder6;
+        private System.Windows.Forms.TextBox txtDisplayOrder7;
+        private System.Windows.Forms.TextBox txtDisplayOrder8;
+        private System.Windows.Forms.TextBox txtDisplayOrder9;
+        private System.Windows.Forms.TextBox txtDisplayOrder10;
+        private System.Windows.Forms.Label label3;
     }
 }

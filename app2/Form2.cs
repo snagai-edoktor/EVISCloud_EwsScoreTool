@@ -24,6 +24,7 @@ namespace app2
         private TextBox[,] _txtCriteiaValueB;
         private ComboBox[,] _cmb;
         private ComboBox[] _vitalcode;
+        private TextBox[] _txtDisplayOrder;
         //CREATE用
         private TextBox[,] _BtxtCriteiaValueA;
         private TextBox[,] _BtxtCriteiaValueB;
@@ -356,18 +357,32 @@ namespace app2
                 var RecordList_Vital = new List<Record>();
                 var intlist = new List<int>();
 
+
+
                 for (int j = 0; j < 7; j++)//jは列数　７の部分を定数にしたほうがきれいかも
                 {
                     if (_txtCriteiaValueA[i, j].Text == "" && _txtCriteiaValueB[i, j].Text == "")
                     {
                         continue;
+                    }else if (_txtDisplayOrder[i].Text == "")
+                    {
+                        ////ファイルの行番号取得           
+                        string errMsg = GetLineNumber().ToString() + " 行目" + " [i] = " + i;    //この行（サンプルでは50行目）が表示される
+                                                                                                //メッセージボックスで行番号を表示
+                        MessageBox.Show(errMsg
+                                        , "DisplayOrder未入力"
+                                        , MessageBoxButtons.OK
+                                        , MessageBoxIcon.Information);
+                        check_input = false;
+                        break;
                     }
                     else
                     {
-                        check_input = CreatRecord(RecordList, intlist, _vitalcode[i].Text, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, _cmbDataTypeUP[i].SelectedIndex);
+                        check_input = CreatRecord(RecordList, intlist, _vitalcode[i].Text, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], Convert.ToInt32(_txtDisplayOrder[i].Text), _cmbDataTypeUP[i].SelectedIndex);
                     }
 
                 }
+                
 
                 //int double
                 if (intlist.Count != 0)
@@ -678,8 +693,11 @@ namespace app2
                     if (GetRecords[i + 1, j].Count != 0)
                     {
                         //Getrecordsにはi=1から実データが入ってる
+                        //VitalCodeコンボボックスに該当するバイタルコードを登録
                         string str = GetRecords[i + 1, j].First().VitalCode;
                         _vitalcode[i].SelectedIndex = _vitalcode[i].FindString(str);
+                        //DisplayOrderテキストボックスに値を代入
+                        _txtDisplayOrder[i].Text = GetRecords[i + 1, j].First().DisplayOrder.ToString();
                         fl = true;
                     }
                     if (fl) break;
@@ -939,6 +957,8 @@ namespace app2
 
             _cmbDataTypeUP = new ComboBox[10];
             _cmbDataTypeCRE = new ComboBox[10];
+
+            _txtDisplayOrder= new TextBox[10];
 
             //A 1行目
             _txtCriteiaValueA[0, 0] = txtCriteiaValue11A;
@@ -1208,6 +1228,18 @@ namespace app2
             _cmbDataTypeUP[7] = cmbDataTypeUP8;
             _cmbDataTypeUP[8] = cmbDataTypeUP9;
             _cmbDataTypeUP[9] = cmbDataTypeUP10;
+
+            _txtDisplayOrder[0] = txtDisplayOrder1;
+            _txtDisplayOrder[1] = txtDisplayOrder2;
+            _txtDisplayOrder[2] = txtDisplayOrder3;
+            _txtDisplayOrder[3] = txtDisplayOrder4;
+            _txtDisplayOrder[4] = txtDisplayOrder5;
+            _txtDisplayOrder[5] = txtDisplayOrder6;
+            _txtDisplayOrder[6] = txtDisplayOrder7;
+            _txtDisplayOrder[7] = txtDisplayOrder8;
+            _txtDisplayOrder[8] = txtDisplayOrder9;
+            _txtDisplayOrder[9] = txtDisplayOrder10;
+
         }
         /// <summary>
         /// 表示中の表を削除
@@ -1234,6 +1266,7 @@ namespace app2
                 }
                 _vitalcode[i].SelectedIndex = -1;
                 _cmbDataTypeUP[i].SelectedIndex = -1;
+                _txtDisplayOrder[i].ResetText();
             }
 
             EWSID.ResetText();
@@ -1263,19 +1296,32 @@ namespace app2
             for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
             {
                 var intlist = new List<int>();
+                
                 for (int j = 0; j < 7; j++)//jは列数　７の部分を定数にしたほうがきれいかも
                 {
                     if (_txtCriteiaValueA[i, j].Text == "" && _txtCriteiaValueB[i, j].Text == "")
                     {
                         continue;
                     }
+                    else if(_txtDisplayOrder[i].Text == "")
+                    {
+                        ////ファイルの行番号取得           
+                        string errMsg = GetLineNumber().ToString() + " 行目" + " [i] = " + i;    //この行（サンプルでは50行目）が表示される
+                                                                                                //メッセージボックスで行番号を表示
+                        MessageBox.Show(errMsg
+                                        , "DisplayOrder未入力"
+                                        , MessageBoxButtons.OK
+                                        , MessageBoxIcon.Information);
+                        check_input = false;
+                        break;
+                    }
                     else
                     {
-                        if(!CreatRecord_Update(RecordList, intlist, _vitalcode[i].Text, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], i + 1, Convert.ToInt32(txtSeqNo.Text), _cmbDataTypeUP[i].SelectedIndex))
+                        if (!CreatRecord_Update(RecordList, intlist, _vitalcode[i].Text, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], Convert.ToInt32(_txtDisplayOrder[i].Text), Convert.ToInt32(txtSeqNo.Text), _cmbDataTypeUP[i].SelectedIndex))
                         {
                             ////ファイルの行番号取得           
-                            string errMsg = GetLineNumber().ToString() + " 行目" +" [i,j] = " + i + " " + j;    //この行（サンプルでは50行目）が表示される
-                            //メッセージボックスで行番号を表示
+                            string errMsg = GetLineNumber().ToString() + " 行目" + " [i,j] = " + i + " " + j;    //この行（サンプルでは50行目）が表示される
+                                                                                                                //メッセージボックスで行番号を表示
                             MessageBox.Show(errMsg
                                             , "エラー"
                                             , MessageBoxButtons.OK
@@ -1284,7 +1330,7 @@ namespace app2
                         }
                     }
                 }
-
+                
                 //入力制限判定
                 //int double
                 if (intlist.Count != 0)
