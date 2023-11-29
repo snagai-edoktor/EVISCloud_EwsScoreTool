@@ -26,12 +26,9 @@ namespace app2
         private ComboBox[] _vitalcode;
         private TextBox[] _txtDisplayOrder;
         //CREATE用
-        private TextBox[,] _BtxtCriteiaValueA;
-        private TextBox[,] _BtxtCriteiaValueB;
-        private ComboBox[,] _Bcmb;
-        private ComboBox[] _Bvitalcode;
+
         private ComboBox[] _cmbDataTypeUP;
-        private ComboBox[] _cmbDataTypeCRE;
+
 
         private int[] _score = new int[7];
         //private TextBox[] _ScoreLv;
@@ -723,6 +720,8 @@ namespace app2
             //レコード表示処理
             OutScore();
             cmbEwsName.SelectedIndex = selectindex;
+            InitTxtBoxColor();
+
         }
 
         /// <summary>
@@ -950,15 +949,8 @@ namespace app2
             _cmb = new ComboBox[10, 7];//vitaltype, score
             _vitalcode = new ComboBox[10];
 
-            _BtxtCriteiaValueA = new TextBox[10, 7];//vitaltype, score
-            _BtxtCriteiaValueB = new TextBox[10, 7];//vitaltype, score
-            _Bcmb = new ComboBox[10, 7];//vitaltype, score
-            _Bvitalcode = new ComboBox[10];
-
-            _cmbDataTypeUP = new ComboBox[10];
-            _cmbDataTypeCRE = new ComboBox[10];
-
             _txtDisplayOrder= new TextBox[10];
+            _cmbDataTypeUP = new ComboBox[10];
 
             //A 1行目
             _txtCriteiaValueA[0, 0] = txtCriteiaValue11A;
@@ -1239,6 +1231,15 @@ namespace app2
             _txtDisplayOrder[7] = txtDisplayOrder8;
             _txtDisplayOrder[8] = txtDisplayOrder9;
             _txtDisplayOrder[9] = txtDisplayOrder10;
+
+            for(int i= 0; i < 10; i++)
+            {
+                for(int j=0; j < 7; j++)
+                {
+                    _txtCriteiaValueA[i, j].TextChanged += new System.EventHandler(txtCriteiaValueA_TextChanged);
+                    _txtCriteiaValueB[i, j].TextChanged += new System.EventHandler(txtCriteiaValueB_TextChanged);
+                }
+            }
 
         }
         /// <summary>
@@ -1826,8 +1827,8 @@ namespace app2
                 }
             }
             AllClear();//shundbg 入力されているが消してもいいか？って聞く処理がない
+            InitTxtBoxColor();
 
-            
             //登録されているvitalcodeを取ってきてスタックしておく（重複を許していない）
             var vitalcodes = new HashSet<string>();
             //登録可能なIDをDBからとってくる。登録時に勝手に付けられるから意味ないけど画面で見れたほうがいいかもだから残す
@@ -1854,6 +1855,61 @@ namespace app2
             finally
             {
                 con.Close();
+            }
+        }
+
+        private void txtCriteiaValueA_TextChanged(object sender, EventArgs e)
+        {
+            var ind = new indexx();
+            ind = IndexofIandJ( _txtCriteiaValueA, ((TextBox)sender));
+            _txtCriteiaValueA[ind.i, ind.j].BackColor = Color.Yellow;
+
+        }
+
+        private void txtCriteiaValueB_TextChanged(object sender, EventArgs e)
+        {
+            var ind = new indexx();
+            ind = IndexofIandJ(_txtCriteiaValueB, ((TextBox)sender));
+            _txtCriteiaValueB[ind.i, ind.j].BackColor = Color.Yellow;
+        }
+
+        private void InitTxtBoxColor()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    _txtCriteiaValueA[i,j].BackColor = SystemColors.Window;
+                    _txtCriteiaValueB[i,j].BackColor = SystemColors.Window;
+                }
+            }
+        }
+
+        private indexx IndexofIandJ(TextBox[,] list, TextBox obj)
+        {
+            var res = new indexx();
+            for(int i=0; i < 10; i++)
+            {
+                for(int j = 0; j < 7; j++)
+                {
+                    if (list[i,j] == obj)
+                    {
+                        res.i = i;
+                        res.j = j;
+                        return res;
+                    }
+                }
+            }
+            return (res);
+        }
+        public class indexx
+        {
+            public int i;
+            public int j;
+            public indexx()
+            {
+                i = 99;
+                j = 99;
             }
         }
     }
