@@ -657,9 +657,9 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP10.Location = new System.Drawing.Point(24, 666);
+            this.cmbDataTypeUP10.Location = new System.Drawing.Point(11, 666);
             this.cmbDataTypeUP10.Name = "cmbDataTypeUP10";
-            this.cmbDataTypeUP10.Size = new System.Drawing.Size(72, 20);
+            this.cmbDataTypeUP10.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP10.TabIndex = 331;
             this.cmbDataTypeUP10.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
@@ -671,9 +671,9 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP9.Location = new System.Drawing.Point(24, 604);
+            this.cmbDataTypeUP9.Location = new System.Drawing.Point(11, 604);
             this.cmbDataTypeUP9.Name = "cmbDataTypeUP9";
-            this.cmbDataTypeUP9.Size = new System.Drawing.Size(72, 20);
+            this.cmbDataTypeUP9.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP9.TabIndex = 330;
             this.cmbDataTypeUP9.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
@@ -685,9 +685,9 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP8.Location = new System.Drawing.Point(24, 543);
+            this.cmbDataTypeUP8.Location = new System.Drawing.Point(11, 543);
             this.cmbDataTypeUP8.Name = "cmbDataTypeUP8";
-            this.cmbDataTypeUP8.Size = new System.Drawing.Size(72, 20);
+            this.cmbDataTypeUP8.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP8.TabIndex = 329;
             this.cmbDataTypeUP8.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
@@ -699,9 +699,9 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP7.Location = new System.Drawing.Point(24, 482);
+            this.cmbDataTypeUP7.Location = new System.Drawing.Point(11, 482);
             this.cmbDataTypeUP7.Name = "cmbDataTypeUP7";
-            this.cmbDataTypeUP7.Size = new System.Drawing.Size(72, 20);
+            this.cmbDataTypeUP7.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP7.TabIndex = 328;
             this.cmbDataTypeUP7.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
@@ -713,9 +713,9 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP6.Location = new System.Drawing.Point(24, 422);
+            this.cmbDataTypeUP6.Location = new System.Drawing.Point(11, 422);
             this.cmbDataTypeUP6.Name = "cmbDataTypeUP6";
-            this.cmbDataTypeUP6.Size = new System.Drawing.Size(72, 20);
+            this.cmbDataTypeUP6.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP6.TabIndex = 327;
             this.cmbDataTypeUP6.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
@@ -727,9 +727,9 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP5.Location = new System.Drawing.Point(24, 360);
+            this.cmbDataTypeUP5.Location = new System.Drawing.Point(11, 360);
             this.cmbDataTypeUP5.Name = "cmbDataTypeUP5";
-            this.cmbDataTypeUP5.Size = new System.Drawing.Size(72, 20);
+            this.cmbDataTypeUP5.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP5.TabIndex = 326;
             this.cmbDataTypeUP5.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
@@ -741,9 +741,9 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP4.Location = new System.Drawing.Point(24, 300);
+            this.cmbDataTypeUP4.Location = new System.Drawing.Point(11, 300);
             this.cmbDataTypeUP4.Name = "cmbDataTypeUP4";
-            this.cmbDataTypeUP4.Size = new System.Drawing.Size(72, 20);
+            this.cmbDataTypeUP4.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP4.TabIndex = 325;
             this.cmbDataTypeUP4.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
@@ -755,9 +755,9 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP3.Location = new System.Drawing.Point(24, 239);
+            this.cmbDataTypeUP3.Location = new System.Drawing.Point(11, 239);
             this.cmbDataTypeUP3.Name = "cmbDataTypeUP3";
-            this.cmbDataTypeUP3.Size = new System.Drawing.Size(72, 20);
+            this.cmbDataTypeUP3.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP3.TabIndex = 324;
             this.cmbDataTypeUP3.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
@@ -769,9 +769,9 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP2.Location = new System.Drawing.Point(24, 178);
+            this.cmbDataTypeUP2.Location = new System.Drawing.Point(11, 178);
             this.cmbDataTypeUP2.Name = "cmbDataTypeUP2";
-            this.cmbDataTypeUP2.Size = new System.Drawing.Size(72, 20);
+            this.cmbDataTypeUP2.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP2.TabIndex = 323;
             this.cmbDataTypeUP2.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 
@@ -783,9 +783,9 @@
             "INT型",
             "DOUBLE型",
             "STRIGN型"});
-            this.cmbDataTypeUP1.Location = new System.Drawing.Point(24, 117);
+            this.cmbDataTypeUP1.Location = new System.Drawing.Point(11, 117);
             this.cmbDataTypeUP1.Name = "cmbDataTypeUP1";
-            this.cmbDataTypeUP1.Size = new System.Drawing.Size(72, 20);
+            this.cmbDataTypeUP1.Size = new System.Drawing.Size(85, 20);
             this.cmbDataTypeUP1.TabIndex = 322;
             this.cmbDataTypeUP1.SelectedIndexChanged += new System.EventHandler(this.cmbDataTypeUP_SelectedIndexChanged);
             // 

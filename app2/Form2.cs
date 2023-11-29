@@ -874,63 +874,11 @@ namespace app2
                     _cmb[i, j].Items.Add("～");
                     _cmb[i, j].Items.Add("≦");
                     _cmb[i, j].Items.Add("≧");
-                    _cmb[i, j].SelectedIndex = 0;
-                    /*_Bcmb[i, j].Items.Clear(); shundbg
-                    _Bcmb[i, j].Items.Add("");
-                    _Bcmb[i, j].Items.Add("=");
-                    _Bcmb[i, j].Items.Add(",");
-                    _Bcmb[i, j].Items.Add("～");
-                    _Bcmb[i, j].Items.Add("≦");
-                    _Bcmb[i, j].Items.Add("≧");
-                    _Bcmb[i, j].SelectedIndex = 0;
-                    */
+                    _cmb[i, j].SelectedIndex = 0; 
                 }
 
                 _vitalcode[i].SelectedIndex = 0;
                 _vitalcode[i].Items.Clear();
-
-                /*shundbg
-                _Bvitalcode[i].SelectedIndex = 0;
-                _Bvitalcode[i].Items.Clear();
-                */
-
-
-
-                /*string[] VitalTypeFile = File.ReadAllLines("..\\..\\VitalType.txt");
-                var splits = new List<string>();
-                int ele = 0;
-                foreach (string s in VitalTypeFile)
-                {
-                    _vitalcode[i].Items.Add(s);
-                    //shundbg_Bvitalcode[i].Items.Add(s);
-                    ele++;
-                }
-                //配列に情報を書き込みたいだけなので一度だけの実行でいい
-                if (i == 0)
-                {
-                    //VitalCodeName[0]="..."
-                    VitalCodeName.Add("...");
-                    //コンボボックス_vitalcodeの要素からVitalNameを抜き出す
-                    foreach (string word in _vitalcode[i].Items)
-                    {
-                        //()に囲まれた文字列をサーチ
-                        var Matches = new Regex(@"\((.+?)\)").Matches(word);
-                        //VitalCodeName[]に追加
-                        foreach (var word2 in Matches)
-                        {
-                            string s = word2.ToString();
-                            //抜き出した文字列が(****)となっているため()を外す
-                            string[] charDelete = new string[] { "(", ")" };
-                            foreach (var c in charDelete)
-                            {
-                                s = s.Replace(c, "");
-                            }
-                            //VitalNameを追加
-                            VitalCodeName.Add(s);
-                        }
-
-                    }
-                }*/ 
             }
             //shundbg
             foreach (string s in VitalCodeName)
@@ -991,8 +939,6 @@ namespace app2
 
             _cmbDataTypeUP = new ComboBox[10];
             _cmbDataTypeCRE = new ComboBox[10];
-
-            //_ScoreLv = new TextBox[7];
 
             //A 1行目
             _txtCriteiaValueA[0, 0] = txtCriteiaValue11A;
@@ -1251,268 +1197,6 @@ namespace app2
             _vitalcode[8] = cmbVitalCode9;
             _vitalcode[9] = cmbVitalCode10;
 
-
-
-            /* shundbg
-             * //BControl----------------------------------------------------------
-            //A 1行目
-            _BtxtCriteiaValueA[0, 0] = BtxtCriteiaValue11A;
-            _BtxtCriteiaValueA[0, 1] = BtxtCriteiaValue12A;
-            _BtxtCriteiaValueA[0, 2] = BtxtCriteiaValue13A;
-            _BtxtCriteiaValueA[0, 3] = BtxtCriteiaValue14A;
-            _BtxtCriteiaValueA[0, 4] = BtxtCriteiaValue15A;
-            _BtxtCriteiaValueA[0, 5] = BtxtCriteiaValue16A;
-            _BtxtCriteiaValueA[0, 6] = BtxtCriteiaValue17A;
-            //A 2行目
-            _BtxtCriteiaValueA[1, 0] = BtxtCriteiaValue21A;
-            _BtxtCriteiaValueA[1, 1] = BtxtCriteiaValue22A;
-            _BtxtCriteiaValueA[1, 2] = BtxtCriteiaValue23A;
-            _BtxtCriteiaValueA[1, 3] = BtxtCriteiaValue24A;
-            _BtxtCriteiaValueA[1, 4] = BtxtCriteiaValue25A;
-            _BtxtCriteiaValueA[1, 5] = BtxtCriteiaValue26A;
-            _BtxtCriteiaValueA[1, 6] = BtxtCriteiaValue27A;
-            //A 3行目
-            _BtxtCriteiaValueA[2, 0] = BtxtCriteiaValue31A;
-            _BtxtCriteiaValueA[2, 1] = BtxtCriteiaValue32A;
-            _BtxtCriteiaValueA[2, 2] = BtxtCriteiaValue33A;
-            _BtxtCriteiaValueA[2, 3] = BtxtCriteiaValue34A;
-            _BtxtCriteiaValueA[2, 4] = BtxtCriteiaValue35A;
-            _BtxtCriteiaValueA[2, 5] = BtxtCriteiaValue36A;
-            _BtxtCriteiaValueA[2, 6] = BtxtCriteiaValue37A;
-            //A 4行目
-            _BtxtCriteiaValueA[3, 0] = BtxtCriteiaValue41A;
-            _BtxtCriteiaValueA[3, 1] = BtxtCriteiaValue42A;
-            _BtxtCriteiaValueA[3, 2] = BtxtCriteiaValue43A;
-            _BtxtCriteiaValueA[3, 3] = BtxtCriteiaValue44A;
-            _BtxtCriteiaValueA[3, 4] = BtxtCriteiaValue45A;
-            _BtxtCriteiaValueA[3, 5] = BtxtCriteiaValue46A;
-            _BtxtCriteiaValueA[3, 6] = BtxtCriteiaValue47A;
-            //A 5行目
-            _BtxtCriteiaValueA[4, 0] = BtxtCriteiaValue51A;
-            _BtxtCriteiaValueA[4, 1] = BtxtCriteiaValue52A;
-            _BtxtCriteiaValueA[4, 2] = BtxtCriteiaValue53A;
-            _BtxtCriteiaValueA[4, 3] = BtxtCriteiaValue54A;
-            _BtxtCriteiaValueA[4, 4] = BtxtCriteiaValue55A;
-            _BtxtCriteiaValueA[4, 5] = BtxtCriteiaValue56A;
-            _BtxtCriteiaValueA[4, 6] = BtxtCriteiaValue57A;
-            //A 6行目
-            _BtxtCriteiaValueA[5, 0] = BtxtCriteiaValue61A;
-            _BtxtCriteiaValueA[5, 1] = BtxtCriteiaValue62A;
-            _BtxtCriteiaValueA[5, 2] = BtxtCriteiaValue63A;
-            _BtxtCriteiaValueA[5, 3] = BtxtCriteiaValue64A;
-            _BtxtCriteiaValueA[5, 4] = BtxtCriteiaValue65A;
-            _BtxtCriteiaValueA[5, 5] = BtxtCriteiaValue66A;
-            _BtxtCriteiaValueA[5, 6] = BtxtCriteiaValue67A;
-            //A 7行目
-            _BtxtCriteiaValueA[6, 0] = BtxtCriteiaValue71A;
-            _BtxtCriteiaValueA[6, 1] = BtxtCriteiaValue72A;
-            _BtxtCriteiaValueA[6, 2] = BtxtCriteiaValue73A;
-            _BtxtCriteiaValueA[6, 3] = BtxtCriteiaValue74A;
-            _BtxtCriteiaValueA[6, 4] = BtxtCriteiaValue75A;
-            _BtxtCriteiaValueA[6, 5] = BtxtCriteiaValue76A;
-            _BtxtCriteiaValueA[6, 6] = BtxtCriteiaValue77A;
-            //A 8行目
-            _BtxtCriteiaValueA[7, 0] = BtxtCriteiaValue81A;
-            _BtxtCriteiaValueA[7, 1] = BtxtCriteiaValue82A;
-            _BtxtCriteiaValueA[7, 2] = BtxtCriteiaValue83A;
-            _BtxtCriteiaValueA[7, 3] = BtxtCriteiaValue84A;
-            _BtxtCriteiaValueA[7, 4] = BtxtCriteiaValue85A;
-            _BtxtCriteiaValueA[7, 5] = BtxtCriteiaValue86A;
-            _BtxtCriteiaValueA[7, 6] = BtxtCriteiaValue87A;
-            //A 9行目
-            _BtxtCriteiaValueA[8, 0] = BtxtCriteiaValue91A;
-            _BtxtCriteiaValueA[8, 1] = BtxtCriteiaValue92A;
-            _BtxtCriteiaValueA[8, 2] = BtxtCriteiaValue93A;
-            _BtxtCriteiaValueA[8, 3] = BtxtCriteiaValue94A;
-            _BtxtCriteiaValueA[8, 4] = BtxtCriteiaValue95A;
-            _BtxtCriteiaValueA[8, 5] = BtxtCriteiaValue96A;
-            _BtxtCriteiaValueA[8, 6] = BtxtCriteiaValue97A;
-            //A 10行目
-            _BtxtCriteiaValueA[9, 0] = BtxtCriteiaValue101A;
-            _BtxtCriteiaValueA[9, 1] = BtxtCriteiaValue102A;
-            _BtxtCriteiaValueA[9, 2] = BtxtCriteiaValue103A;
-            _BtxtCriteiaValueA[9, 3] = BtxtCriteiaValue104A;
-            _BtxtCriteiaValueA[9, 4] = BtxtCriteiaValue105A;
-            _BtxtCriteiaValueA[9, 5] = BtxtCriteiaValue106A;
-            _BtxtCriteiaValueA[9, 6] = BtxtCriteiaValue107A;
-
-
-            //B 1行目
-            _BtxtCriteiaValueB[0, 0] = BtxtCriteiaValue11B;
-            _BtxtCriteiaValueB[0, 1] = BtxtCriteiaValue12B;
-            _BtxtCriteiaValueB[0, 2] = BtxtCriteiaValue13B;
-            _BtxtCriteiaValueB[0, 3] = BtxtCriteiaValue14B;
-            _BtxtCriteiaValueB[0, 4] = BtxtCriteiaValue15B;
-            _BtxtCriteiaValueB[0, 5] = BtxtCriteiaValue16B;
-            _BtxtCriteiaValueB[0, 6] = BtxtCriteiaValue17B;
-            //B 2行目
-            _BtxtCriteiaValueB[1, 0] = BtxtCriteiaValue21B;
-            _BtxtCriteiaValueB[1, 1] = BtxtCriteiaValue22B;
-            _BtxtCriteiaValueB[1, 2] = BtxtCriteiaValue23B;
-            _BtxtCriteiaValueB[1, 3] = BtxtCriteiaValue24B;
-            _BtxtCriteiaValueB[1, 4] = BtxtCriteiaValue25B;
-            _BtxtCriteiaValueB[1, 5] = BtxtCriteiaValue26B;
-            _BtxtCriteiaValueB[1, 6] = BtxtCriteiaValue27B;
-            //B 3行目
-            _BtxtCriteiaValueB[2, 0] = BtxtCriteiaValue31B;
-            _BtxtCriteiaValueB[2, 1] = BtxtCriteiaValue32B;
-            _BtxtCriteiaValueB[2, 2] = BtxtCriteiaValue33B;
-            _BtxtCriteiaValueB[2, 3] = BtxtCriteiaValue34B;
-            _BtxtCriteiaValueB[2, 4] = BtxtCriteiaValue35B;
-            _BtxtCriteiaValueB[2, 5] = BtxtCriteiaValue36B;
-            _BtxtCriteiaValueB[2, 6] = BtxtCriteiaValue37B;
-            //B 4行目
-            _BtxtCriteiaValueB[3, 0] = BtxtCriteiaValue41B;
-            _BtxtCriteiaValueB[3, 1] = BtxtCriteiaValue42B;
-            _BtxtCriteiaValueB[3, 2] = BtxtCriteiaValue43B;
-            _BtxtCriteiaValueB[3, 3] = BtxtCriteiaValue44B;
-            _BtxtCriteiaValueB[3, 4] = BtxtCriteiaValue45B;
-            _BtxtCriteiaValueB[3, 5] = BtxtCriteiaValue46B;
-            _BtxtCriteiaValueB[3, 6] = BtxtCriteiaValue47B;
-            //B 5行目
-            _BtxtCriteiaValueB[4, 0] = BtxtCriteiaValue51B;
-            _BtxtCriteiaValueB[4, 1] = BtxtCriteiaValue52B;
-            _BtxtCriteiaValueB[4, 2] = BtxtCriteiaValue53B;
-            _BtxtCriteiaValueB[4, 3] = BtxtCriteiaValue54B;
-            _BtxtCriteiaValueB[4, 4] = BtxtCriteiaValue55B;
-            _BtxtCriteiaValueB[4, 5] = BtxtCriteiaValue56B;
-            _BtxtCriteiaValueB[4, 6] = BtxtCriteiaValue57B;
-            //B 6行目
-            _BtxtCriteiaValueB[5, 0] = BtxtCriteiaValue61B;
-            _BtxtCriteiaValueB[5, 1] = BtxtCriteiaValue62B;
-            _BtxtCriteiaValueB[5, 2] = BtxtCriteiaValue63B;
-            _BtxtCriteiaValueB[5, 3] = BtxtCriteiaValue64B;
-            _BtxtCriteiaValueB[5, 4] = BtxtCriteiaValue65B;
-            _BtxtCriteiaValueB[5, 5] = BtxtCriteiaValue66B;
-            _BtxtCriteiaValueB[5, 6] = BtxtCriteiaValue67B;
-            //B 7行目
-            _BtxtCriteiaValueB[6, 0] = BtxtCriteiaValue71B;
-            _BtxtCriteiaValueB[6, 1] = BtxtCriteiaValue72B;
-            _BtxtCriteiaValueB[6, 2] = BtxtCriteiaValue73B;
-            _BtxtCriteiaValueB[6, 3] = BtxtCriteiaValue74B;
-            _BtxtCriteiaValueB[6, 4] = BtxtCriteiaValue75B;
-            _BtxtCriteiaValueB[6, 5] = BtxtCriteiaValue76B;
-            _BtxtCriteiaValueB[6, 6] = BtxtCriteiaValue77B;
-            //B 8行目
-            _BtxtCriteiaValueB[7, 0] = BtxtCriteiaValue81B;
-            _BtxtCriteiaValueB[7, 1] = BtxtCriteiaValue82B;
-            _BtxtCriteiaValueB[7, 2] = BtxtCriteiaValue83B;
-            _BtxtCriteiaValueB[7, 3] = BtxtCriteiaValue84B;
-            _BtxtCriteiaValueB[7, 4] = BtxtCriteiaValue85B;
-            _BtxtCriteiaValueB[7, 5] = BtxtCriteiaValue86B;
-            _BtxtCriteiaValueB[7, 6] = BtxtCriteiaValue87B;
-            //B 9行目
-            _BtxtCriteiaValueB[8, 0] = BtxtCriteiaValue91B;
-            _BtxtCriteiaValueB[8, 1] = BtxtCriteiaValue92B;
-            _BtxtCriteiaValueB[8, 2] = BtxtCriteiaValue93B;
-            _BtxtCriteiaValueB[8, 3] = BtxtCriteiaValue94B;
-            _BtxtCriteiaValueB[8, 4] = BtxtCriteiaValue95B;
-            _BtxtCriteiaValueB[8, 5] = BtxtCriteiaValue96B;
-            _BtxtCriteiaValueB[8, 6] = BtxtCriteiaValue97B;
-            //B 10行目
-            _BtxtCriteiaValueB[9, 0] = BtxtCriteiaValue101B;
-            _BtxtCriteiaValueB[9, 1] = BtxtCriteiaValue102B;
-            _BtxtCriteiaValueB[9, 2] = BtxtCriteiaValue103B;
-            _BtxtCriteiaValueB[9, 3] = BtxtCriteiaValue104B;
-            _BtxtCriteiaValueB[9, 4] = BtxtCriteiaValue105B;
-            _BtxtCriteiaValueB[9, 5] = BtxtCriteiaValue106B;
-            _BtxtCriteiaValueB[9, 6] = BtxtCriteiaValue107B;
-
-            //Bcmb 1行目
-            _Bcmb[0, 0] = Bcmb11;
-            _Bcmb[0, 1] = Bcmb12;
-            _Bcmb[0, 2] = Bcmb13;
-            _Bcmb[0, 3] = Bcmb14;
-            _Bcmb[0, 4] = Bcmb15;
-            _Bcmb[0, 5] = Bcmb16;
-            _Bcmb[0, 6] = Bcmb17;
-            //Bcmb 2行目
-            _Bcmb[1, 0] = Bcmb21;
-            _Bcmb[1, 1] = Bcmb22;
-            _Bcmb[1, 2] = Bcmb23;
-            _Bcmb[1, 3] = Bcmb24;
-            _Bcmb[1, 4] = Bcmb25;
-            _Bcmb[1, 5] = Bcmb26;
-            _Bcmb[1, 6] = Bcmb27;
-            //Bcmb 3行目
-            _Bcmb[2, 0] = Bcmb31;
-            _Bcmb[2, 1] = Bcmb32;
-            _Bcmb[2, 2] = Bcmb33;
-            _Bcmb[2, 3] = Bcmb34;
-            _Bcmb[2, 4] = Bcmb35;
-            _Bcmb[2, 5] = Bcmb36;
-            _Bcmb[2, 6] = Bcmb37;
-            //Bcmb 4行目
-            _Bcmb[3, 0] = Bcmb41;
-            _Bcmb[3, 1] = Bcmb42;
-            _Bcmb[3, 2] = Bcmb43;
-            _Bcmb[3, 3] = Bcmb44;
-            _Bcmb[3, 4] = Bcmb45;
-            _Bcmb[3, 5] = Bcmb46;
-            _Bcmb[3, 6] = Bcmb47;
-            //Bcmb 5行目
-            _Bcmb[4, 0] = Bcmb51;
-            _Bcmb[4, 1] = Bcmb52;
-            _Bcmb[4, 2] = Bcmb53;
-            _Bcmb[4, 3] = Bcmb54;
-            _Bcmb[4, 4] = Bcmb55;
-            _Bcmb[4, 5] = Bcmb56;
-            _Bcmb[4, 6] = Bcmb57;
-            //Bcmb 6行目
-            _Bcmb[5, 0] = Bcmb61;
-            _Bcmb[5, 1] = Bcmb62;
-            _Bcmb[5, 2] = Bcmb63;
-            _Bcmb[5, 3] = Bcmb64;
-            _Bcmb[5, 4] = Bcmb65;
-            _Bcmb[5, 5] = Bcmb66;
-            _Bcmb[5, 6] = Bcmb67;
-            //Bcmb 7行目
-            _Bcmb[6, 0] = Bcmb71;
-            _Bcmb[6, 1] = Bcmb72;
-            _Bcmb[6, 2] = Bcmb73;
-            _Bcmb[6, 3] = Bcmb74;
-            _Bcmb[6, 4] = Bcmb75;
-            _Bcmb[6, 5] = Bcmb76;
-            _Bcmb[6, 6] = Bcmb77;
-            //Bcmb 8行目
-            _Bcmb[7, 0] = Bcmb81;
-            _Bcmb[7, 1] = Bcmb82;
-            _Bcmb[7, 2] = Bcmb83;
-            _Bcmb[7, 3] = Bcmb84;
-            _Bcmb[7, 4] = Bcmb85;
-            _Bcmb[7, 5] = Bcmb86;
-            _Bcmb[7, 6] = Bcmb87;
-            //Bcmb 9行目
-            _Bcmb[8, 0] = Bcmb91;
-            _Bcmb[8, 1] = Bcmb92;
-            _Bcmb[8, 2] = Bcmb93;
-            _Bcmb[8, 3] = Bcmb94;
-            _Bcmb[8, 4] = Bcmb95;
-            _Bcmb[8, 5] = Bcmb96;
-            _Bcmb[8, 6] = Bcmb97;
-            //Bcmb 10行目
-            _Bcmb[9, 0] = Bcmb101;
-            _Bcmb[9, 1] = Bcmb102;
-            _Bcmb[9, 2] = Bcmb103;
-            _Bcmb[9, 3] = Bcmb104;
-            _Bcmb[9, 4] = Bcmb105;
-            _Bcmb[9, 5] = Bcmb106;
-            _Bcmb[9, 6] = Bcmb107;
-
-
-            //Bcmbvital
-            _Bvitalcode[0] = BcmbVitalCode1;
-            _Bvitalcode[1] = BcmbVitalCode2;
-            _Bvitalcode[2] = BcmbVitalCode3;
-            _Bvitalcode[3] = BcmbVitalCode4;
-            _Bvitalcode[4] = BcmbVitalCode5;
-            _Bvitalcode[5] = BcmbVitalCode6;
-            _Bvitalcode[6] = BcmbVitalCode7;
-            _Bvitalcode[7] = BcmbVitalCode8;
-            _Bvitalcode[8] = BcmbVitalCode9;
-            _Bvitalcode[9] = BcmbVitalCode10;
-            */
-
             //_cmbDataType
             _cmbDataTypeUP[0] = cmbDataTypeUP1;
             _cmbDataTypeUP[1] = cmbDataTypeUP2;
@@ -1524,30 +1208,6 @@ namespace app2
             _cmbDataTypeUP[7] = cmbDataTypeUP8;
             _cmbDataTypeUP[8] = cmbDataTypeUP9;
             _cmbDataTypeUP[9] = cmbDataTypeUP10;
-            
-            /* shundbg
-             * _cmbDataTypeCRE[0] = cmbDataTypeCRE1;
-            _cmbDataTypeCRE[1] = cmbDataTypeCRE2;
-            _cmbDataTypeCRE[2] = cmbDataTypeCRE3;
-            _cmbDataTypeCRE[3] = cmbDataTypeCRE4;
-            _cmbDataTypeCRE[4] = cmbDataTypeCRE5;
-            _cmbDataTypeCRE[5] = cmbDataTypeCRE6;
-            _cmbDataTypeCRE[6] = cmbDataTypeCRE7;
-            _cmbDataTypeCRE[7] = cmbDataTypeCRE8;
-            _cmbDataTypeCRE[8] = cmbDataTypeCRE9;
-            _cmbDataTypeCRE[9] = cmbDataTypeCRE10;
-            */
-            
-
-            /*
-            _ScoreLv[0] = txtScoreLv3L;
-            _ScoreLv[1] = txtScoreLv2L;
-            _ScoreLv[2] = txtScoreLv1L;
-            //_ScoreLv[3] = ;
-            _ScoreLv[4] = txtScoreLv1L;
-            _ScoreLv[5] = txtScoreLv2R;
-            _ScoreLv[6] = txtScoreLv3R;
-            */
         }
         /// <summary>
         /// 表示中の表を削除
@@ -1561,9 +1221,6 @@ namespace app2
                 {
                     _txtCriteiaValueA[i, j].ResetText();
                     _txtCriteiaValueB[i, j].ResetText();
-                    /*_BtxtCriteiaValueA[i, j].ResetText();
-                    _BtxtCriteiaValueB[i, j].ResetText();
-                    shundbg*/
 
                     //txtcombobox
                     _cmb[i, j].Items.Clear();
@@ -1574,32 +1231,9 @@ namespace app2
                     _cmb[i, j].Items.Add("≦");
                     _cmb[i, j].Items.Add("≧");
                     _cmb[i, j].SelectedIndex = 0;
-                    //削除予定
-                    /* shundbg
-                    _Bcmb[i, j].Items.Clear();
-                    _Bcmb[i, j].Items.Add("");
-                    _Bcmb[i, j].Items.Add("=");
-                    _Bcmb[i, j].Items.Add(",");
-                    _Bcmb[i, j].Items.Add("～");
-                    _Bcmb[i, j].Items.Add("≦");
-                    _Bcmb[i, j].Items.Add("≧");
-                    _Bcmb[i, j].SelectedIndex = 0;
-                    */
-
-                    _cmb[i, j].Items.Clear();
-                    _cmb[i, j].Items.Add("");
-                    _cmb[i, j].Items.Add("=");
-                    _cmb[i, j].Items.Add(",");
-                    _cmb[i, j].Items.Add("～");
-                    _cmb[i, j].Items.Add("≦");
-                    _cmb[i, j].Items.Add("≧");
-                    _cmb[i, j].SelectedIndex = 0;
                 }
                 _vitalcode[i].SelectedIndex = -1;
-                //_Bvitalcode[i].Items.Clear();
                 _cmbDataTypeUP[i].SelectedIndex = -1;
-                //_cmbDataTypeCRE[i].SelectedIndex = -1;shundbg
-
             }
 
             EWSID.ResetText();
@@ -1962,7 +1596,7 @@ namespace app2
                     }
 
                     break;
-                case "≧":// >= memo １つレコード：A,Bが空かどうか判別が必要一回聞きたいそういう表記になってるだけで入力するときの感覚的にはおかしいかもしれない
+                case "≧":// >= memo １つレコード：
                     var record4 = new Record(EWSID.Text);
                     record4.Score = score;
                     record4.VitalCode = vitalcode;
@@ -2176,22 +1810,5 @@ namespace app2
                 con.Close();
             }
         }
-
-        private void txtScoreLv3L_TextChanged_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtScoreLv2L_TextChanged_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtScoreLv1L_TextChanged_1(object sender, EventArgs e)
-        {
-
-        }
-
-
     }
 }
