@@ -799,16 +799,13 @@ namespace app2
                                 _txtCriteiaValueA[i, j].Text += record.CriteriaValue + ",";
                             }
                             _txtCriteiaValueA[i, j].Text = _txtCriteiaValueA[i, j].Text.Remove(_txtCriteiaValueA[i, j].Text.Length - 1);
-                            Save_TxtA[i, j] = _txtCriteiaValueA[i, j].Text;
-
                             _cmb[i, j].SelectedIndex = 2;
-                            Save_Cmb[i, j] = ",";
                             datatype = 2;
                         }
                         //case 0 "="
                         else
                         {
-                            _txtCriteiaValueA[i, j].Text += GetRecords[i + 1, j].First().CriteriaValue;                       
+                            _txtCriteiaValueA[i, j].Text += GetRecords[i + 1, j].First().CriteriaValue;           
                             _cmb[i, j].SelectedIndex = 1;
                             datatype = 2;
                         }
@@ -1016,8 +1013,8 @@ namespace app2
             Save_Cmb          = new string[10,7];
             Save_Score        = new string[7]    ;
 
-        //A 1行目
-        _txtCriteiaValueA[0, 0] = txtCriteiaValue11A;
+            //A 1行目
+            _txtCriteiaValueA[0, 0] = txtCriteiaValue11A;
             _txtCriteiaValueA[0, 1] = txtCriteiaValue12A;
             _txtCriteiaValueA[0, 2] = txtCriteiaValue13A;
             _txtCriteiaValueA[0, 3] = txtCriteiaValue14A;
