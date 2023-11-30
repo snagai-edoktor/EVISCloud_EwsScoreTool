@@ -19,17 +19,23 @@ namespace app2
 {
     public partial class Form2 : Form
     {
-        //UPDATE用
         private TextBox[,] _txtCriteiaValueA;
         private TextBox[,] _txtCriteiaValueB;
         private ComboBox[,] _cmb;
         private ComboBox[] _vitalcode;
         private TextBox[] _txtDisplayOrder;
         private TextBox[] _txtScore;
-        //CREATE用
-
         private ComboBox[] _cmbDataTypeUP;
 
+        //DB読込時の値保存用
+        private string[] Save_DisplayOrder;
+        private int[] Save_DataType;
+        private string[] Save_VitalCode;
+        private string[,] Save_TxtA;
+        private string[,] Save_TxtB;
+        private string[,] Save_Cmb;
+        private string[] Save_Score;
+        
 
         private int[] _score = new int[7];
         //private TextBox[] _ScoreLv;
@@ -660,26 +666,31 @@ namespace app2
             IOrderedEnumerable<int> result = scoreset.OrderByDescending(x =>x);
             if(4 < cnt)
             {
-                //エラー
+                //エラー スコアの項目が多い
             }
             else
             {
                 foreach (var score in result)
                 {
-                    //ここの変更で_score[]の値も変更される？
                     switch (cnt)
                     {
                         case 2:
                             cnt--;
                             txtScoreLv1L.Text = score.ToString();
+                            Save_Score[2] = txtScoreLv1L.Text;
+                            Save_Score[4] = txtScoreLv1L.Text;
                             break;
                         case 3:
                             cnt--;
                             txtScoreLv2L.Text = score.ToString();
+                            Save_Score[1] = txtScoreLv2L.Text;
+                            Save_Score[5] = txtScoreLv2L.Text;
                             break;
                         case 4:
                             cnt--;
                             txtScoreLv3L.Text = score.ToString();
+                            Save_Score[0] = txtScoreLv3L.Text;
+                            Save_Score[6] = txtScoreLv3L.Text;
                             break;
                         default:
                             break;
@@ -689,6 +700,7 @@ namespace app2
             }
 
             scoreindex = scoreset.ToArray();
+            //スコアとターゲット,ディスプレイオーダーによって振り分ける
             foreach(var record in stackrecords)
             {
                 if (record.Target == 0)
@@ -728,8 +740,10 @@ namespace app2
                         //VitalCodeコンボボックスに該当するバイタルコードを登録
                         string str = GetRecords[i + 1, j].First().VitalCode;
                         _vitalcode[i].SelectedIndex = _vitalcode[i].FindString(str);
+                        Save_VitalCode[i] = str;
                         //DisplayOrderテキストボックスに値を代入
                         _txtDisplayOrder[i].Text = GetRecords[i + 1, j].First().DisplayOrder.ToString();
+                        Save_DisplayOrder[i] = GetRecords[i + 1, j].First().DisplayOrder.ToString();
                         fl = true;
                     }
                     if (fl) break;
@@ -785,14 +799,16 @@ namespace app2
                                 _txtCriteiaValueA[i, j].Text += record.CriteriaValue + ",";
                             }
                             _txtCriteiaValueA[i, j].Text = _txtCriteiaValueA[i, j].Text.Remove(_txtCriteiaValueA[i, j].Text.Length - 1);
+                            Save_TxtA[i, j] = _txtCriteiaValueA[i, j].Text;
 
                             _cmb[i, j].SelectedIndex = 2;
+                            Save_Cmb[i, j] = ",";
                             datatype = 2;
                         }
                         //case 0 "="
                         else
                         {
-                            _txtCriteiaValueA[i, j].Text += GetRecords[i + 1, j].First().CriteriaValue;
+                            _txtCriteiaValueA[i, j].Text += GetRecords[i + 1, j].First().CriteriaValue;                       
                             _cmb[i, j].SelectedIndex = 1;
                             datatype = 2;
                         }
@@ -848,6 +864,9 @@ namespace app2
                     {
                         txtOutSql.Text += string.Format($"OutScore error {i} {j} \r\n");
                     }
+                    Save_TxtA[i, j] = _txtCriteiaValueA[i, j].Text;
+                    Save_TxtB[i, j] = _txtCriteiaValueB[i, j].Text;
+                    Save_Cmb[i, j] = _cmb[i, j].Text;
                 }
 
                 if(datatype == 0)
@@ -862,7 +881,9 @@ namespace app2
                 {
                     _cmbDataTypeUP[i].SelectedIndex = 2;
                 }
+                Save_DataType[i] = _cmbDataTypeUP[i].SelectedIndex;
             }
+
         }
         /// <summary>
         /// txtboxに表示テスト用
@@ -987,9 +1008,16 @@ namespace app2
             _txtDisplayOrder  = new TextBox[10];
             _cmbDataTypeUP    = new ComboBox[10];
             _txtScore = new TextBox[7];
+            Save_DisplayOrder = new string[10];
+            Save_DataType     = new int[10];
+            Save_VitalCode    = new string[10];
+            Save_TxtA         = new string[10,7];
+            Save_TxtB         = new string[10,7];
+            Save_Cmb          = new string[10,7];
+            Save_Score        = new string[7]    ;
 
-            //A 1行目
-            _txtCriteiaValueA[0, 0] = txtCriteiaValue11A;
+        //A 1行目
+        _txtCriteiaValueA[0, 0] = txtCriteiaValue11A;
             _txtCriteiaValueA[0, 1] = txtCriteiaValue12A;
             _txtCriteiaValueA[0, 2] = txtCriteiaValue13A;
             _txtCriteiaValueA[0, 3] = txtCriteiaValue14A;
@@ -1284,16 +1312,29 @@ namespace app2
                     _txtCriteiaValueB[i, j].TextChanged += new System.EventHandler(txtCriteiaValueB_TextChanged);
                     _cmb[i,j].SelectedIndexChanged += new System.EventHandler(symbolcmb_SelectedIndexChanged);
                     _cmb[i, j].FlatStyle = FlatStyle.Popup;
-                    if( j != 3) _txtScore[j].TextChanged += new System.EventHandler(txtScore_TextChanged);
+                    if (j != 3)
+                    {
+                        _txtScore[j].TextChanged += new System.EventHandler(txtScore_TextChanged);
+                        Save_Score[j] = null;
+                    }
+                    //save配列null
+                    Save_TxtA[i,j] = null;
+                    Save_TxtB[i, j] = null;
+                    Save_Cmb[i, j] = "";
                 }
                 _txtDisplayOrder[i].TextChanged += new System.EventHandler(txtDisplayOrder_TextChanged);
                 _cmbDataTypeUP[i].SelectedIndexChanged += new System.EventHandler(DataTypeCmb_SelectedIndexChanged);
                 _cmbDataTypeUP[i].FlatStyle = FlatStyle.Popup;
                 _vitalcode[i].SelectedIndexChanged += new System.EventHandler(VitalCodeCmb_SelectedIndexChanged);
                 _vitalcode[i].FlatStyle = FlatStyle.Popup;
+
+                //save配列Null埋め
+                Save_DisplayOrder[i] = null;
+                Save_DataType[i] = -1;//あやしいかもしれない
+                Save_VitalCode[i] = null;
                 
             }
-    }
+        }
         /// <summary>
         /// 表示中の表を削除
         /// </summary>
@@ -1916,15 +1957,28 @@ namespace app2
         {
             var ind = new indexx();
             ind = Text_IndexofIandJ( _txtCriteiaValueA, ((TextBox)sender));
-            _txtCriteiaValueA[ind.i, ind.j].BackColor = Color.Yellow;
-
+            if (Save_TxtA[ind.i,ind.j] != _txtCriteiaValueA[ind.i, ind.j].Text)
+            {
+                _txtCriteiaValueA[ind.i, ind.j].BackColor = Color.Yellow;
+            }
+            else
+            {
+                _txtCriteiaValueA[ind.i, ind.j].BackColor = SystemColors.Window;
+            }
         }
 
         private void txtCriteiaValueB_TextChanged(object sender, EventArgs e)
         {
             var ind = new indexx();
             ind = Text_IndexofIandJ(_txtCriteiaValueB, ((TextBox)sender));
-            _txtCriteiaValueB[ind.i, ind.j].BackColor = Color.Yellow;
+            if (Save_TxtB[ind.i, ind.j] != _txtCriteiaValueB[ind.i, ind.j].Text)
+            {
+                _txtCriteiaValueB[ind.i, ind.j].BackColor = Color.Yellow;
+            }
+            else
+            {
+                _txtCriteiaValueB[ind.i, ind.j].BackColor = SystemColors.Window;
+            }
         }
         /// <summary>
         /// ボックスの背景色をデフォルトに戻す
@@ -2005,8 +2059,14 @@ namespace app2
             }
 
             //前回値と違っていれば色を変える＊今は全部変わる
-            //if()
-            _cmb[ind.i, ind.j].BackColor = Color.Yellow;
+            if (Save_Cmb[ind.i, ind.j] != _cmb[ind.i, ind.j].Text)
+            {
+                _cmb[ind.i, ind.j].BackColor = Color.Yellow;
+            }
+            else
+            {
+                _cmb[ind.i, ind.j].BackColor = SystemColors.Window;
+            }     
         }
 
         private void txtDisplayOrder_TextChanged(object sender, EventArgs e)
@@ -2014,7 +2074,14 @@ namespace app2
             for(int i = 0; i<10; i++)
             {
                 if( ((TextBox)sender) == _txtDisplayOrder[i] ){
-                    _txtDisplayOrder[i].BackColor = Color.Yellow;
+                    if( Save_DisplayOrder[i] != _txtDisplayOrder[i].Text)
+                    {
+                        _txtDisplayOrder[i].BackColor = Color.Yellow;
+                    }
+                    else
+                    {
+                        _txtDisplayOrder[i].BackColor = SystemColors.Window;
+                    }
                 }
             }
         }
@@ -2025,7 +2092,14 @@ namespace app2
             {
                 if (((ComboBox)sender) == _cmbDataTypeUP[i])
                 {
-                    _cmbDataTypeUP[i].BackColor = Color.Yellow;
+                    if( Save_DataType[i] != _cmbDataTypeUP[i].SelectedIndex)
+                    {
+                        _cmbDataTypeUP[i].BackColor = Color.Yellow;
+                    }
+                    else
+                    {
+                        _cmbDataTypeUP[i].BackColor = SystemColors.Window;
+                    }
                 }
             }
         }
@@ -2035,7 +2109,14 @@ namespace app2
             {
                 if ( ((ComboBox)sender) == _vitalcode[i] )
                 {
-                    _vitalcode[i].BackColor = Color.Yellow;
+                    if (Save_VitalCode[i] != _vitalcode[i].Text)
+                    {
+                        _vitalcode[i].BackColor = Color.Yellow;
+                    }
+                    else
+                    {
+                        _vitalcode[i].BackColor = SystemColors.Window;
+                    }                  
                 }
             }
         }
@@ -2046,7 +2127,14 @@ namespace app2
             {
                 if(i != 3)
                 {
-                    if (((TextBox)sender) == _txtScore[i]) _txtScore[i].BackColor = Color.Yellow;
+                    if(Save_Score[i] != _txtScore[i].Text)
+                    {
+                        _txtScore[i].BackColor = Color.Yellow;
+                    }
+                    else
+                    {
+                        _txtScore[i].BackColor = SystemColors.Window;
+                    }
                 }
             }
         }
