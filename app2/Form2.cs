@@ -25,6 +25,7 @@ namespace app2
         private ComboBox[,] _cmb;
         private ComboBox[] _vitalcode;
         private TextBox[] _txtDisplayOrder;
+        private TextBox[] _txtScore;
         //CREATE用
 
         private ComboBox[] _cmbDataTypeUP;
@@ -42,12 +43,14 @@ namespace app2
         public Form2()
         {
             InitializeComponent();
-        }
-        private void Form2_Load(object sender, EventArgs e)
-        {
             InitControl();
             InitComboBox();
             InitEwsName();
+            InitTxtBoxColor();
+
+        }
+        private void Form2_Load(object sender, EventArgs e)
+        {
         }
         /// <summary>
         /// 入力されたスコアを判定用の配列にコピー、コピー時降順になっているかチェック
@@ -981,8 +984,9 @@ namespace app2
             _cmb = new ComboBox[10, 7];//vitaltype, score
             _vitalcode = new ComboBox[10];
 
-            _txtDisplayOrder= new TextBox[10];
-            _cmbDataTypeUP = new ComboBox[10];
+            _txtDisplayOrder  = new TextBox[10];
+            _cmbDataTypeUP    = new ComboBox[10];
+            _txtScore = new TextBox[7];
 
             //A 1行目
             _txtCriteiaValueA[0, 0] = txtCriteiaValue11A;
@@ -1264,17 +1268,32 @@ namespace app2
             _txtDisplayOrder[8] = txtDisplayOrder9;
             _txtDisplayOrder[9] = txtDisplayOrder10;
 
-            for(int i= 0; i < 10; i++)
+            _txtScore[0] = txtScoreLv3L;
+            _txtScore[1] = txtScoreLv2L;
+            _txtScore[2] = txtScoreLv1L;
+            //_txtScore[3]
+            _txtScore[4] = txtScoreLv1R;
+            _txtScore[5] = txtScoreLv2R;
+            _txtScore[6] = txtScoreLv3R;
+
+            for (int i= 0; i < 10; i++)
             {
                 for(int j=0; j < 7; j++)
                 {
                     _txtCriteiaValueA[i, j].TextChanged += new System.EventHandler(txtCriteiaValueA_TextChanged);
                     _txtCriteiaValueB[i, j].TextChanged += new System.EventHandler(txtCriteiaValueB_TextChanged);
-                    _cmb[i,j].SelectedIndexChanged += new System.EventHandler(cmb_SelectedIndexChanged);
+                    _cmb[i,j].SelectedIndexChanged += new System.EventHandler(symbolcmb_SelectedIndexChanged);
+                    _cmb[i, j].FlatStyle = FlatStyle.Popup;
+                    if( j != 3) _txtScore[j].TextChanged += new System.EventHandler(txtScore_TextChanged);
                 }
+                _txtDisplayOrder[i].TextChanged += new System.EventHandler(txtDisplayOrder_TextChanged);
+                _cmbDataTypeUP[i].SelectedIndexChanged += new System.EventHandler(DataTypeCmb_SelectedIndexChanged);
+                _cmbDataTypeUP[i].FlatStyle = FlatStyle.Popup;
+                _vitalcode[i].SelectedIndexChanged += new System.EventHandler(VitalCodeCmb_SelectedIndexChanged);
+                _vitalcode[i].FlatStyle = FlatStyle.Popup;
+                
             }
-
-        }
+    }
         /// <summary>
         /// 表示中の表を削除
         /// </summary>
@@ -1907,16 +1926,23 @@ namespace app2
             ind = Text_IndexofIandJ(_txtCriteiaValueB, ((TextBox)sender));
             _txtCriteiaValueB[ind.i, ind.j].BackColor = Color.Yellow;
         }
-
+        /// <summary>
+        /// ボックスの背景色をデフォルトに戻す
+        /// </summary>
         private void InitTxtBoxColor()
         {
             for (int i = 0; i < 10; i++)
             {
                 for (int j = 0; j < 7; j++)
                 {
+                    if(i==0 && j != 3) _txtScore[j].BackColor = SystemColors.Window;
                     _txtCriteiaValueA[i,j].BackColor = SystemColors.Window;
                     _txtCriteiaValueB[i,j].BackColor = SystemColors.Window;
+                    _cmb[i,j].BackColor = SystemColors.Window;
                 }
+                _txtDisplayOrder[i].BackColor = SystemColors.Window;
+                _cmbDataTypeUP[i].BackColor = SystemColors.Window;
+                _vitalcode[i].BackColor = SystemColors.Window;
             }
         }
 
@@ -1965,22 +1991,65 @@ namespace app2
             }
         }
 
-        private void cmb_SelectedIndexChanged(object sender, EventArgs e)
+        private void symbolcmb_SelectedIndexChanged(object sender, EventArgs e)
         {
+            var ind = new indexx();
+            ind = Combo_IndexofIandJ(_cmb, ((ComboBox)sender));
             if ( ((ComboBox)sender).SelectedItem.ToString() == "≦" || ((ComboBox)sender).SelectedItem.ToString()  == "≧")
             {
-                var ind = new indexx();
-                ind = Combo_IndexofIandJ(_cmb, ((ComboBox)sender));
-
                 _txtCriteiaValueA[ind.i, ind.j].Enabled = false;
             }
             else
             {
-                var ind = new indexx();
-                ind = Combo_IndexofIandJ(_cmb, ((ComboBox)sender));
-
                 _txtCriteiaValueA[ind.i, ind.j].Enabled = true;
             }
+
+            //前回値と違っていれば色を変える＊今は全部変わる
+            //if()
+            _cmb[ind.i, ind.j].BackColor = Color.Yellow;
         }
+
+        private void txtDisplayOrder_TextChanged(object sender, EventArgs e)
+        {
+            for(int i = 0; i<10; i++)
+            {
+                if( ((TextBox)sender) == _txtDisplayOrder[i] ){
+                    _txtDisplayOrder[i].BackColor = Color.Yellow;
+                }
+            }
+        }
+
+        private void DataTypeCmb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                if (((ComboBox)sender) == _cmbDataTypeUP[i])
+                {
+                    _cmbDataTypeUP[i].BackColor = Color.Yellow;
+                }
+            }
+        }
+        private void VitalCodeCmb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                if ( ((ComboBox)sender) == _vitalcode[i] )
+                {
+                    _vitalcode[i].BackColor = Color.Yellow;
+                }
+            }
+        }
+
+        private void txtScore_TextChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                if(i != 3)
+                {
+                    if (((TextBox)sender) == _txtScore[i]) _txtScore[i].BackColor = Color.Yellow;
+                }
+            }
+        }
+
     }
 }
