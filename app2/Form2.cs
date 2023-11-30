@@ -1296,6 +1296,7 @@ namespace app2
                     _cmb[i, j].Items.Add("≦");
                     _cmb[i, j].Items.Add("≧");
                     _cmb[i, j].SelectedIndex = 0;
+                    _cmb[i, j].Enabled = true;
                 }
                 _vitalcode[i].SelectedIndex = -1;
                 _cmbDataTypeUP[i].SelectedIndex = -1;
@@ -1971,6 +1972,13 @@ namespace app2
                 ind = Combo_IndexofIandJ(_cmb, ((ComboBox)sender));
 
                 _txtCriteiaValueA[ind.i, ind.j].Enabled = false;
+            }
+            else
+            {
+                var ind = new indexx();
+                ind = Combo_IndexofIandJ(_cmb, ((ComboBox)sender));
+
+                _txtCriteiaValueA[ind.i, ind.j].Enabled = true;
             }
         }
     }
