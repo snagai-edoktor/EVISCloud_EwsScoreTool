@@ -433,8 +433,11 @@ namespace app2
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
             SqlConnection con = new SqlConnection(constr);
             con.Open();
+            int Ewsid = 0;
             try
             {
+                //更新後出力用変数
+                
                 //M_EwsTypeへレコード登録
                 string sqlstr = $"INSERT INTO M_EwsType (EwsName, WarningThresholds) VALUES('{txtCreateEwsName.Text}','{txtCreateWarningThresolds.Text}')";
                 SqlCommand createEwsTypecom = new SqlCommand(sqlstr, con);
@@ -458,6 +461,7 @@ namespace app2
                     //seqno=1固定でいいんじゃないか？新規追加だし
                     sb.Append($"VALUES( {record.EWSId},1, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
                     SqlCommand com = new SqlCommand(sb.ToString(), con);
+                    Ewsid = record.EWSId;
                     var result2 = com.ExecuteNonQuery();
                     if (result2 == 0) MessageBox.Show("T_EwsScoreCriteria to INSERT Failed in CreatButton_Click()");
                 }
@@ -469,6 +473,9 @@ namespace app2
             }
             
             InitEwsName();
+            EWSID.Text = Ewsid.ToString();
+            txtSeqNo.Text = "1";
+            cmbEwsName.SelectedIndex = cmbEwsName.FindString(txtCreateEwsName.Text);
         }
         
 
@@ -1909,7 +1916,7 @@ namespace app2
             public indexx()
             {
                 i = 99;
-                j = 99;
+                j = 87;
             }
         }
     }
