@@ -500,6 +500,7 @@ namespace app2
             EWSID.Text = Ewsid.ToString();
             txtSeqNo.Text = "1";
             cmbEwsName.SelectedIndex = cmbEwsName.FindString(txtCreateEwsName.Text);
+            InitTxtBoxColor();
         }
         
 
