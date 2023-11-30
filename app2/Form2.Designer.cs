@@ -4315,7 +4315,6 @@
             this.txtCriteiaValue12B.Name = "txtCriteiaValue12B";
             this.txtCriteiaValue12B.Size = new System.Drawing.Size(60, 19);
             this.txtCriteiaValue12B.TabIndex = 10;
-            
             // 
             // txtCriteiaValue12A
             // 
@@ -4370,7 +4369,6 @@
             this.txtCriteiaValue11A.Name = "txtCriteiaValue11A";
             this.txtCriteiaValue11A.Size = new System.Drawing.Size(60, 19);
             this.txtCriteiaValue11A.TabIndex = 12;
-            
             // 
             // cmbVitalCode1
             // 

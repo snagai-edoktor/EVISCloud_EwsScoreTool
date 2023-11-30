@@ -49,7 +49,13 @@ namespace app2
             InitComboBox();
             InitEwsName();
         }
-        private void Update_scorearray()
+        /// <summary>
+        /// 入力されたスコアを判定用の配列にコピー、コピー時降順になっているかチェック
+        /// </summary>
+        /// <returns>
+        /// True,false=スコアが降順に入力されていない
+        /// </returns>
+        private bool Update_scorearray()
         {
             if (txtScoreLv3L.Text != "") _score[0] = Int32.Parse(txtScoreLv3L.Text);
             else                         _score[0] = -1;     
@@ -71,16 +77,34 @@ namespace app2
             if (txtScoreLv3L.Text != "") _score[6] = Int32.Parse(txtScoreLv3L.Text);
             else                         _score[6] = -1;
 
+
+
+
+            var ScoreCheck = new List<int>();
+
             for (int i=0;i<3;i++)
             {
-                if (_score[i] < _score[i + 1])
-                {
-                    MessageBox.Show("スコアが間違っています");
-                    break;
-                }
-            }
+                if (_score[i] != -1) ScoreCheck.Add(_score[i]);
 
-           
+
+
+
+                if (_score[i] == -1 || _score[i+1] == -1) 
+                {
+                    continue;
+                }
+                else
+                {
+                    if ( _score[i] < _score[i + 1] )
+                    {
+                        MessageBox.Show("スコアが間違っています");
+                        return false; 
+                    }
+                }
+
+                
+            }
+            return true;           
         }
 
         //行番号取得用メソッド
@@ -347,7 +371,7 @@ namespace app2
         {
             var RecordList = new List<Record>();
             bool check_input = true;
-            Update_scorearray();
+            check_input = Update_scorearray();
             //入力情報をレコードに変換する
             for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
             {
@@ -1245,6 +1269,7 @@ namespace app2
                 {
                     _txtCriteiaValueA[i, j].TextChanged += new System.EventHandler(txtCriteiaValueA_TextChanged);
                     _txtCriteiaValueB[i, j].TextChanged += new System.EventHandler(txtCriteiaValueB_TextChanged);
+                    _cmb[i,j].SelectedIndexChanged += new System.EventHandler(cmb_SelectedIndexChanged);
                 }
             }
 
@@ -1297,10 +1322,11 @@ namespace app2
         private void UPDATE_Click(object sender, EventArgs e)
         {
             var RecordList = new List<Record>();
-            //score配列を入力したscoreLVに更新する
-            Update_scorearray();
-            //入力エラーチェックフラグ
             bool check_input = true;
+            //score配列を入力したscoreLVに更新する
+            check_input = Update_scorearray();
+            //入力エラーチェックフラグ
+            
             for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
             {
                 var intlist = new List<int>();
@@ -1868,7 +1894,7 @@ namespace app2
         private void txtCriteiaValueA_TextChanged(object sender, EventArgs e)
         {
             var ind = new indexx();
-            ind = IndexofIandJ( _txtCriteiaValueA, ((TextBox)sender));
+            ind = Text_IndexofIandJ( _txtCriteiaValueA, ((TextBox)sender));
             _txtCriteiaValueA[ind.i, ind.j].BackColor = Color.Yellow;
 
         }
@@ -1876,7 +1902,7 @@ namespace app2
         private void txtCriteiaValueB_TextChanged(object sender, EventArgs e)
         {
             var ind = new indexx();
-            ind = IndexofIandJ(_txtCriteiaValueB, ((TextBox)sender));
+            ind = Text_IndexofIandJ(_txtCriteiaValueB, ((TextBox)sender));
             _txtCriteiaValueB[ind.i, ind.j].BackColor = Color.Yellow;
         }
 
@@ -1892,7 +1918,7 @@ namespace app2
             }
         }
 
-        private indexx IndexofIandJ(TextBox[,] list, TextBox obj)
+        private indexx Text_IndexofIandJ(TextBox[,] list, TextBox obj)
         {
             var res = new indexx();
             for(int i=0; i < 10; i++)
@@ -1900,6 +1926,23 @@ namespace app2
                 for(int j = 0; j < 7; j++)
                 {
                     if (list[i,j] == obj)
+                    {
+                        res.i = i;
+                        res.j = j;
+                        return res;
+                    }
+                }
+            }
+            return (res);
+        }
+        private indexx Combo_IndexofIandJ(ComboBox[,] list, ComboBox obj)
+        {
+            var res = new indexx();
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    if (list[i, j] == obj)
                     {
                         res.i = i;
                         res.j = j;
@@ -1917,6 +1960,17 @@ namespace app2
             {
                 i = 99;
                 j = 87;
+            }
+        }
+
+        private void cmb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if ( ((ComboBox)sender).SelectedItem.ToString() == "≦" || ((ComboBox)sender).SelectedItem.ToString()  == "≧")
+            {
+                var ind = new indexx();
+                ind = Combo_IndexofIandJ(_cmb, ((ComboBox)sender));
+
+                _txtCriteiaValueA[ind.i, ind.j].Enabled = false;
             }
         }
     }
