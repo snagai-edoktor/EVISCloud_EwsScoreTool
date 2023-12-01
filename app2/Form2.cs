@@ -544,7 +544,7 @@ namespace app2
             return fl;
         }
 
-        private void CreatButton_Click(object sender, EventArgs e)
+        private void CreatButton_Click()
         {
             var RecordList = new List<Record>();
             var ErrorList  = new List<ErrorRecord>();
@@ -721,7 +721,7 @@ namespace app2
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void UPDATE_Click(object sender, EventArgs e)
+        private void UPDATE_Click()
         {
             var RecordList = new List<Record>();
             var ErrorList = new List<ErrorRecord>();
@@ -951,6 +951,11 @@ namespace app2
                 }
             }
 
+            if( SelectedItem == "-新規追加-"){
+                btnInitforCreate_Click();
+                cmbEwsName.SelectedIndex = selectindex;
+                return;
+            }
             //EwsNameに対応するEwsidのレコードを取得しtxtに出力する
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
             SqlConnection con = new SqlConnection(constr);
@@ -1259,6 +1264,7 @@ namespace app2
         {
             EwsName.Clear();
             cmbEwsName.Items.Clear();
+            cmbEwsName.Items.Add("-新規追加-");
 
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
 
@@ -1846,7 +1852,7 @@ namespace app2
 
         }
 
-        private void btnInitforCreate_Click(object sender, EventArgs e)
+        private void btnInitforCreate_Click()
         {
             //表に値が入力済みかチェックして初期化
             bool fl_Completed = false;
@@ -2153,5 +2159,16 @@ namespace app2
             }
         }
 
+        private void btnCreateRecord_Click(object sender, EventArgs e)
+        {
+            if(cmbEwsName.SelectedIndex == 0)
+            {
+                CreatButton_Click();
+            }
+            else
+            {
+                UPDATE_Click();
+            }
+        }
     }
 }

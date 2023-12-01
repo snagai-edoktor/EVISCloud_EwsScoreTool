@@ -41,8 +41,6 @@
             this.txtSeqNo = new System.Windows.Forms.TextBox();
             this.txtOutSql = new System.Windows.Forms.TextBox();
             this.EWSID = new System.Windows.Forms.TextBox();
-            this.btnInitforCreate = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -59,7 +57,6 @@
             this.cmbDataTypeUP1 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnUPDATE = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.cmbEwsName = new System.Windows.Forms.ComboBox();
             this.panel64 = new System.Windows.Forms.Panel();
@@ -434,6 +431,7 @@
             this.txtDisplayOrder9 = new System.Windows.Forms.TextBox();
             this.txtDisplayOrder10 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnCreateRecord = new System.Windows.Forms.Button();
             this.panel64.SuspendLayout();
             this.panel57.SuspendLayout();
             this.panel65.SuspendLayout();
@@ -603,26 +601,6 @@
             this.EWSID.Name = "EWSID";
             this.EWSID.Size = new System.Drawing.Size(35, 19);
             this.EWSID.TabIndex = 227;
-            // 
-            // btnInitforCreate
-            // 
-            this.btnInitforCreate.Location = new System.Drawing.Point(1128, 713);
-            this.btnInitforCreate.Name = "btnInitforCreate";
-            this.btnInitforCreate.Size = new System.Drawing.Size(150, 56);
-            this.btnInitforCreate.TabIndex = 339;
-            this.btnInitforCreate.Text = "新規登録用初期化";
-            this.btnInitforCreate.UseVisualStyleBackColor = true;
-            this.btnInitforCreate.Click += new System.EventHandler(this.btnInitforCreate_Click);
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(1314, 713);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(172, 49);
-            this.button5.TabIndex = 338;
-            this.button5.Text = "新規登録";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.CreatButton_Click);
             // 
             // label9
             // 
@@ -817,16 +795,6 @@
             this.label1.Size = new System.Drawing.Size(34, 12);
             this.label1.TabIndex = 320;
             this.label1.Text = "Score";
-            // 
-            // btnUPDATE
-            // 
-            this.btnUPDATE.Location = new System.Drawing.Point(1314, 777);
-            this.btnUPDATE.Name = "btnUPDATE";
-            this.btnUPDATE.Size = new System.Drawing.Size(172, 49);
-            this.btnUPDATE.TabIndex = 313;
-            this.btnUPDATE.Text = "更新分登録";
-            this.btnUPDATE.UseVisualStyleBackColor = true;
-            this.btnUPDATE.Click += new System.EventHandler(this.UPDATE_Click);
             // 
             // label5
             // 
@@ -4484,11 +4452,22 @@
             this.label3.TabIndex = 352;
             this.label3.Text = "Displayorder";
             // 
+            // btnCreateRecord
+            // 
+            this.btnCreateRecord.Location = new System.Drawing.Point(1310, 727);
+            this.btnCreateRecord.Name = "btnCreateRecord";
+            this.btnCreateRecord.Size = new System.Drawing.Size(141, 71);
+            this.btnCreateRecord.TabIndex = 353;
+            this.btnCreateRecord.Text = "button1";
+            this.btnCreateRecord.UseVisualStyleBackColor = true;
+            this.btnCreateRecord.Click += new System.EventHandler(this.btnCreateRecord_Click);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1616, 867);
+            this.Controls.Add(this.btnCreateRecord);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtDisplayOrder10);
             this.Controls.Add(this.txtDisplayOrder9);
@@ -4513,8 +4492,6 @@
             this.Controls.Add(this.txtSeqNo);
             this.Controls.Add(this.txtOutSql);
             this.Controls.Add(this.EWSID);
-            this.Controls.Add(this.btnInitforCreate);
-            this.Controls.Add(this.button5);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label18);
             this.Controls.Add(this.label7);
@@ -4531,7 +4508,6 @@
             this.Controls.Add(this.cmbDataTypeUP1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnUPDATE);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.cmbEwsName);
             this.Controls.Add(this.panel64);
@@ -4778,8 +4754,6 @@
         private System.Windows.Forms.TextBox txtSeqNo;
         private System.Windows.Forms.TextBox txtOutSql;
         private System.Windows.Forms.TextBox EWSID;
-        private System.Windows.Forms.Button btnInitforCreate;
-        private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label7;
@@ -4796,7 +4770,6 @@
         private System.Windows.Forms.ComboBox cmbDataTypeUP1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnUPDATE;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox cmbEwsName;
         private System.Windows.Forms.Panel panel64;
@@ -5171,5 +5144,6 @@
         private System.Windows.Forms.TextBox txtDisplayOrder9;
         private System.Windows.Forms.TextBox txtDisplayOrder10;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button btnCreateRecord;
     }
 }
