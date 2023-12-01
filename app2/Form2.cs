@@ -367,54 +367,25 @@ namespace app2
         /// <param name="tarval"></param>
         /// <param name="displayorder"></param>
         /// <param name="seqno"></param>
-        public bool CreatRecord_Update(List<Record> RecList, List<int> intlist, string vitalcode, string txtA, string symb, string txtB, int score, int tarval, int displayorder, int seqno, int datatype)
+        public int CreatRecord_Update(List<Record> RecList, List<int> intlist, string vitalcode, string txtA, string symb, string txtB, int score, int tarval, int displayorder, int seqno, int datatype)
         {
             double d;
             int i;
-            bool fl = true;
-            if (datatype == -1)
-            {
-                //エラー
-                ////ファイルの行番号取得           
-                string strMsg = GetLineNumber().ToString() + " 行目 DATATYPEが未選択です";    //この行（サンプルでは50行目）が表示される
-
-                //メッセージボックスで行番号を表示
-                MessageBox.Show(strMsg
-                                , "入力値エラー"
-                                , MessageBoxButtons.OK
-                                , MessageBoxIcon.Information);
-                fl = false;
-                return fl;
-            }
+            int fl = 0;
 
             if (score == -1)
             {
-                //エラー
-                ////ファイルの行番号取得           
-                string strMsg = GetLineNumber().ToString() + " 行目 SCOREが未入力です";    //この行（サンプルでは50行目）が表示される
-
-                //メッセージボックスで行番号を表示
-                MessageBox.Show(strMsg
-                                , "入力値エラー"
-                                , MessageBoxButtons.OK
-                                , MessageBoxIcon.Information);
-                fl = false;
-                return fl;
+                //エラー　入力値に対するスコアがありません。
+                return 7;
             }
             //string[] words;
             switch (symb)
             {
                 case "":
-                    //エラー この関数を呼ぶ前にtxtA,bに中身があるか確認してるからここには来ないはず
-                    MessageBox.Show("コンボボックスが未選択です");
-                    fl = false;
+                    //エラー 記号コンボボックスが未設定です。ここには来ないが
+                    fl = 6;
                     break;
                 case "="://   "="memo 1つのレコード作成
-                    if (datatype != 2)
-                    {
-                        //エラー 数値入力なのに単一文字列が含まれている
-                        fl = false; break;
-                    }
                     var record0 = new Record(EWSID.Text);
 
                     record0.Score = score;
@@ -428,19 +399,6 @@ namespace app2
                     RecList.Add(record0);
                     break;
                 case ",":// , memo レコード数に限りない
-                    if (datatype != 2)
-                    {
-                        //エラー
-                        ////ファイルの行番号取得           
-                        string strMsg = GetLineNumber().ToString() + " 行目";    //この行（サンプルでは50行目）が表示される
-
-                        //メッセージボックスで行番号を表示
-                        MessageBox.Show(strMsg
-                                        , "入力値エラー"
-                                        , MessageBoxButtons.OK
-                                        , MessageBoxIcon.Information);
-                        fl = false; break;
-                    }
                     string[] words = txtA.Split(',');
                     foreach (var word in words)
                     {
@@ -457,6 +415,50 @@ namespace app2
                     }
                     break;
                 case "～":// ~ memo 2つレコードを作ればいい
+                    //入力制限判定用
+                    //double入力
+                    if (double.TryParse(txtB, out d) && txtB.Contains('.'))
+                    {
+                        double da;
+                        double.TryParse(txtB, out d);
+                        double.TryParse(txtA, out da);
+                        int a = (int)(da * 10);
+                        int b = (int)(d * 10);
+                        for (int k = a; k <= b; k++)
+                        {
+                            intlist.Add(k);
+                        }
+                    }//int入力
+                    else if (int.TryParse(txtB, out i))
+                    {
+                        int ia;
+                        int.TryParse(txtB, out i);
+                        int.TryParse(txtA, out ia);
+                        for (int start = ia; start <= i; start++)
+                        {
+                            intlist.Add(start);
+                        }
+                    }
+                    else
+                    {
+                        if (!(double.TryParse(txtA, out d) && txtA.Contains('.')) && !(int.TryParse(txtA, out i)))//shundbg 少し不安な条件式かも
+                        {
+                            //エラー　データタイプが数値型の場合文字列の入力は出来ません。
+                            fl = 100;
+                            break;
+                        }
+                        //エラー　データタイプが数値型の場合文字列の入力は出来ません。
+                        fl = 11;
+                        break;
+                    }
+
+                    if (!(double.TryParse(txtA, out d) && txtA.Contains('.')) && !(int.TryParse(txtA, out i)))//shundbg 少し不安な条件式かも
+                    {
+                        //エラー　データタイプが数値型の場合文字列の入力は出来ません。
+                        fl = 8;
+                        break;
+                    }
+
                     var record21 = new Record(EWSID.Text);
                     record21.Score = score;
                     record21.VitalCode = vitalcode;
@@ -479,108 +481,8 @@ namespace app2
 
                     RecList.Add(record22);
 
-                    //入力制限判定用
-                    //double入力
-                    if (datatype == 1)
-                    {
-                        double da;
-                        double.TryParse(txtB, out d);
-                        double.TryParse(txtA, out da);
-                        int a = (int)(da * 10);
-                        int b = (int)(d * 10);
-                        for (int k = a; k <= b; k++)
-                        {
-                            intlist.Add(k);
-                        }
-                    }//int入力
-                    else if (datatype == 0)
-                    {
-                        int ia;
-                        int.TryParse(txtB, out i);
-                        int.TryParse(txtA, out ia);
-                        for (int start = ia; start <= i; start++)
-                        {
-                            intlist.Add(start);
-                        }
-                    }
-                    else
-                    {
-                        //エラー　数値入力のはずなのに文字列入力されている
-                        ////ファイルの行番号取得           
-                        string strMsg = GetLineNumber().ToString() + " 行目";
-
-                        //メッセージボックスで行番号を表示
-                        MessageBox.Show(strMsg
-                                        , "入力値エラー"
-                                        , MessageBoxButtons.OK
-                                        , MessageBoxIcon.Information);
-                        fl = false; break;
-                    }
-
                     break;
                 case "≦":// <= memo １つレコード：A,Bが空かどうか判別が必要かな一回ききたい
-                    var record3 = new Record(EWSID.Text);
-                    record3.Score = score;
-                    record3.VitalCode = vitalcode;
-                    record3.CriteriaValue = txtB;
-                    record3.CriteriaSign = 0;
-                    record3.Target = tarval;
-                    record3.SeqNo = seqno + 1;
-                    record3.DisplayOrder = displayorder;
-
-                    RecList.Add(record3);
-
-                    //入力制限用
-                    //double
-                    if (datatype == 1)
-                    {
-                        double da;
-                        double.TryParse(txtB, out d);
-                        double.TryParse(txtA, out da);
-                        int a = (int)(da * 10);
-                        int b = (int)(d * 10);
-                        for (int k = a; k <= b; k++)
-                        {
-                            intlist.Add(k);
-                        }
-                    }//int入力
-                    else if (datatype == 0)
-                    {
-                        int ia;
-                        int.TryParse(txtB, out i);
-                        int.TryParse(txtA, out ia);
-                        for (int start = ia; start <= i; start++)
-                        {
-                            intlist.Add(start);
-                        }
-                    }
-                    else
-                    {
-                        //エラー　数値入力のはずなのに文字列入力されている
-                        ////ファイルの行番号取得           
-                        string strMsg = GetLineNumber().ToString() + " 行目";
-
-                        //メッセージボックスで行番号を表示
-                        MessageBox.Show(strMsg
-                                        , "入力値エラー"
-                                        , MessageBoxButtons.OK
-                                        , MessageBoxIcon.Information);
-                        fl = false; break;
-                    }
-
-                    break;
-                case "≧":// >= memo １つレコード：
-                    var record4 = new Record(EWSID.Text);
-                    record4.Score = score;
-                    record4.VitalCode = vitalcode;
-                    record4.CriteriaValue = txtB;
-                    record4.CriteriaSign = 1;//shundbg 
-                    record4.Target = tarval;
-                    record4.SeqNo = seqno + 1;
-                    record4.DisplayOrder = displayorder;
-
-                    RecList.Add(record4);
-
                     //入力制限用
                     //double
                     if (double.TryParse(txtB, out d) && txtB.Contains('.'))
@@ -593,17 +495,49 @@ namespace app2
                     }
                     else
                     {
-                        //エラー　数値入力のはずなのに文字列入力されている
-                        ////ファイルの行番号取得           
-                        string strMsg = GetLineNumber().ToString() + " 行目";
-
-                        //メッセージボックスで行番号を表示
-                        MessageBox.Show(strMsg
-                                        , "入力値エラー"
-                                        , MessageBoxButtons.OK
-                                        , MessageBoxIcon.Information);
-                        fl = false; break;
+                        //エラー　データタイプが数値型の場合文字列の入力は出来ません。
+                        fl = 8;
+                        break;
                     }
+                    var record3 = new Record(EWSID.Text);
+                    record3.Score = score;
+                    record3.VitalCode = vitalcode;
+                    record3.CriteriaValue = txtB;
+                    record3.CriteriaSign = 0;
+                    record3.Target = tarval;
+                    record3.SeqNo = seqno + 1;
+                    record3.DisplayOrder = displayorder;
+
+                    RecList.Add(record3);
+
+                    break;
+                case "≧":// >= memo １つレコード：
+                    //入力制限用
+                    //double
+                    if (double.TryParse(txtB, out d) && txtB.Contains('.'))
+                    {
+                        intlist.Add((int)(d * 10));
+                    }//int
+                    else if (int.TryParse(txtB, out i))
+                    {
+                        intlist.Add(i);
+                    }
+                    else
+                    {
+                        //エラー　データタイプが数値型の場合文字列の入力は出来ません。
+                        fl = 11;
+                        break;
+                    }
+                    var record4 = new Record(EWSID.Text);
+                    record4.Score = score;
+                    record4.VitalCode = vitalcode;
+                    record4.CriteriaValue = txtB;
+                    record4.CriteriaSign = 1;//shundbg 
+                    record4.Target = tarval;
+                    record4.SeqNo = seqno + 1;
+                    record4.DisplayOrder = displayorder;
+
+                    RecList.Add(record4);
 
                     break;
             }
@@ -745,7 +679,7 @@ namespace app2
                 if (result1 == 0) MessageBox.Show("M_EwsType INSERT Failed in CreatButton_Click()");
                 foreach (var record in RecordList)
                 {
-                    //test　テキストボックスに登録する情報を出力、確認用 shundbg
+                    /*test　テキストボックスに登録する情報を出力、確認用 shundbg
                     int EwsId = record.EWSId;
                     string VitalCode = record.VitalCode;
                     int Score = record.Score;
@@ -753,7 +687,7 @@ namespace app2
                     int CriteriaSign = record.CriteriaSign;
                     int Target = record.Target;
                     txtOutSql.Text += string.Format("{0} / {1} /{2} / {3} / {4} / {5} / {6}  \r\n", EwsId, VitalCode, Score, CriteriaValue, CriteriaSign, Target, record.DisplayOrder);
-                    //test 
+                    //test */
 
                     //T_EwsScoreCriteriaへレコード追加
                     var sb = new StringBuilder();
@@ -790,14 +724,20 @@ namespace app2
         private void UPDATE_Click(object sender, EventArgs e)
         {
             var RecordList = new List<Record>();
+            var ErrorList = new List<ErrorRecord>();
             int check_input = 0;
             //score配列を入力したscoreLVに更新する
             check_input = Update_scorearray();
-            //入力エラーチェックフラグ
+            if (check_input != 0)
+            {
+                var err = new ErrorRecord(check_input, 99, 99);
+                ErrorList.Add(err);
+            }
 
             for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
             {
                 var intlist = new List<int>();
+                bool exrec = false;
 
                 for (int j = 0; j < 7; j++)//jは列数　７の部分を定数にしたほうがきれいかも
                 {
@@ -805,31 +745,55 @@ namespace app2
                     {
                         continue;
                     }
-                    else if (_txtDisplayOrder[i].Text == "")
+                    else if (_cmb[i, j].SelectedIndex == -1)
                     {
-                        ////ファイルの行番号取得           
-                        string errMsg = GetLineNumber().ToString() + " 行目" + " [i] = " + i;    //この行（サンプルでは50行目）が表示される
-                                                                                               //メッセージボックスで行番号を表示
-                        MessageBox.Show(errMsg
-                                        , "DisplayOrder未入力"
-                                        , MessageBoxButtons.OK
-                                        , MessageBoxIcon.Information);
-                        check_input = 0;
-                        break;
+                        check_input = 6;//入力記号が設定されていません。
+                        var err = new ErrorRecord(check_input, i, j);
+                        ErrorList.Add(err);
+                        continue;
                     }
                     else
                     {
-                        if (!CreatRecord_Update(RecordList, intlist, _vitalcode[i].Text, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], Convert.ToInt32(_txtDisplayOrder[i].Text), Convert.ToInt32(txtSeqNo.Text), _cmbDataTypeUP[i].SelectedIndex))
+                        exrec = true;
+                        check_input = CreatRecord_Update(RecordList, intlist, _vitalcode[i].Text, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], Convert.ToInt32(_txtDisplayOrder[i].Text), Convert.ToInt32(txtSeqNo.Text), _cmbDataTypeUP[i].SelectedIndex) ;
+                    }
+                    if (check_input != 0)
+                    {
+                        if (check_input == 100)
                         {
-                            ////ファイルの行番号取得           
-                            string errMsg = GetLineNumber().ToString() + " 行目" + " [i,j] = " + i + " " + j;    //この行（サンプルでは50行目）が表示される
-                                                                                                               //メッセージボックスで行番号を表示
-                            MessageBox.Show(errMsg
-                                            , "エラー"
-                                            , MessageBoxButtons.OK
-                                            , MessageBoxIcon.Information);
-                            check_input = 0;
+                            var errA = new ErrorRecord(8, i, j);
+                            ErrorList.Add(errA);
+                            var errB = new ErrorRecord(11, i, j);
+                            ErrorList.Add(errB);
                         }
+                        else
+                        {
+                            var err = new ErrorRecord(check_input, i, j);
+                            ErrorList.Add(err);
+                        }
+                    }
+                }
+
+                //その行が未入力ならエラーなしでいい
+                if (exrec)
+                {
+                    if (_txtDisplayOrder[i].Text == "")
+                    {
+                        check_input = 3;//ディスプレイオーダーが設定されていません。
+                        var err = new ErrorRecord(check_input, i, 99);
+                        ErrorList.Add(err);
+                    }
+                    if (_cmbDataTypeUP[i].SelectedIndex == -1)
+                    {
+                        check_input = 4;//データタイプが設定されていません。
+                        var err = new ErrorRecord(check_input, i, 99);
+                        ErrorList.Add(err);
+                    }
+                    if (_vitalcode[i].SelectedIndex == -1)
+                    {
+                        check_input = 5;//バイタルコードが設定されていません。
+                        var err = new ErrorRecord(check_input, i, 99);
+                        ErrorList.Add(err);
                     }
                 }
 
@@ -850,39 +814,33 @@ namespace app2
                     //エラー処理
                     if (!fl)
                     {
-                        MessageBox.Show("int error");
+                        //エラー　数値が連続していません。9
+                        check_input = 9;
+                        var err = new ErrorRecord(check_input, i, 99);
+                        ErrorList.Add(err);
                     }
-                }//string
-                else
-                {
                 }
             }
 
-            if (RecordList.Count == 0)
+            if ( RecordList.Count == 0 )
             {
-                ////ファイルの行番号取得           
-                string strMsg = GetLineNumber().ToString() + " 行目 レコードが作成されていません";    //この行（サンプルでは50行目）が表示される
-
-                //メッセージボックスで行番号を表示
-                MessageBox.Show(strMsg
-                                , "情報"
-                                , MessageBoxButtons.OK
-                                , MessageBoxIcon.Information);
-                check_input = 0;
+                //レコード無し
+                check_input = 10;
+                var err = new ErrorRecord(check_input, 99, 99);
+                ErrorList.Add(err);
             }
 
-            if (check_input != 0)
+            if (ErrorList.Count != 0)
             {
-                ////ファイルの行番号取得           
-                string strMsg = GetLineNumber().ToString() + " 行目 レコード登録中止";    //この行（サンプルでは50行目）が表示される
-
-                //メッセージボックスで行番号を表示
-                MessageBox.Show(strMsg
-                                , "情報"
-                                , MessageBoxButtons.OK
-                                , MessageBoxIcon.Information);
+                //ErrorListにたまったエラーを処理して背景色に反映＋テキストログに残す
+                foreach (var err in ErrorList)
+                {
+                    Error_ColorChange(err);
+                    txtOutSql.Text += $"Errid = {err.ErrorId}  i = {err.i},  j = {err.j} ErrMessage = {ErrorMessage[err.ErrorId]} \r\n";
+                }
                 return;
             }
+
             //EVISCloudに接続
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
 
@@ -893,7 +851,7 @@ namespace app2
                 bool first = true;
                 foreach (var record in RecordList)
                 {
-                    //test　テキストボックスに登録する情報を出力、確認用 shundbg
+                    /*test　テキストボックスに登録する情報を出力、確認用 shundbg
                     int EwsId = record.EWSId;
                     string VitalCode = record.VitalCode;
                     int Score = record.Score;
@@ -901,7 +859,7 @@ namespace app2
                     int CriteriaSign = record.CriteriaSign;
                     int Target = record.Target;
                     txtOutSql.Text += string.Format("{0} / {1} /{2} / {3} / {4} / {5} / {6}  \r\n", EwsId, VitalCode, Score, CriteriaValue, CriteriaSign, Target, record.DisplayOrder);
-                    //test 
+                    //test */
 
                     var sb = new StringBuilder();
                     sb.Append("INSERT INTO T_EwsScoreCriteria(EwsId, SeqNo, VitalCode, Score, CriteriaValue, CriteriaSign, Target, DisplayOrder)");
@@ -1009,8 +967,6 @@ namespace app2
                 //shundbg
                 SqlCommand com = new SqlCommand(sqlstr, con);
                 SqlDataReader sdr = com.ExecuteReader();
-
-                txtOutSql.Text += "Get record -------------------------------------------\r\n";
                 while (sdr.Read() == true)
                 {
                     //EVIS                   
@@ -1160,9 +1116,7 @@ namespace app2
                     {
                         OutRecord(s);
                     }
-                    txtOutSql.Text += "|||||||||||||||||||||||||||\r\n";
                 }
-                txtOutSql.Text += "*******************\r\n";
             }
             //shundbg
 
@@ -1259,7 +1213,9 @@ namespace app2
                     //error
                     else
                     {
+                        /*shundbg
                         txtOutSql.Text += string.Format($"OutScore error {i} {j} \r\n");
+                        */
                     }
                     Save_TxtA[i, j] = _txtCriteiaValueA[i, j].Text;
                     Save_TxtB[i, j] = _txtCriteiaValueB[i, j].Text;
@@ -1291,7 +1247,9 @@ namespace app2
             string outstr = "";
 
             outstr += string.Format($"EwsId:{record.EWSId}, SeqNo:{record.SeqNo}, VitalCode:{record.VitalCode}, Score:{record.Score}, CriteriaValue:{record.CriteriaValue}, CriteriaSign:{record.CriteriaSign}, Target:{record.Target}, DisplayOrder:{record.DisplayOrder}  \r\n");
+            /*shundbg
             txtOutSql.Text += outstr;
+            */
         }
 
         /// <summary>
@@ -1316,7 +1274,9 @@ namespace app2
                 {
                     EwsName.Add((string)sdr["EwsName"], (int)sdr["Id"]);
                     string str = (string)sdr["EwsName"];
+                    /*shundbg
                     txtOutSql.Text += string.Format($"name{str},id{EwsName[str]} \r\n");
+                    */
                     cmbEwsName.Items.Add(str);
                 }
                 sdr.Close();
@@ -1350,11 +1310,11 @@ namespace app2
                 _vitalcode[i].SelectedIndex = 0;
                 _vitalcode[i].Items.Clear();
             }
-            //shundbg
+            /*shundbg
             foreach (string s in VitalCodeName)
             {
                 txtOutSql.Text += s + "\r\n";
-            }
+            }*/
 
             //登録されているvitalcodeを取ってきてスタックしておく（重複を許していない）
             var vitalcodes = new HashSet<string>();
@@ -2172,7 +2132,7 @@ namespace app2
                     _txtCriteiaValueA[err.i, err.j].BackColor= Color.Red;
                     break;
                 case 9://"数値が連続していません。" shundbg -> 値が入ってるところだけにしてもいいかも
-                    for(int j=0; j < 10; j++)
+                    for(int j=0; j < 7; j++)
                     {
                         _txtCriteiaValueA[err.i, j].BackColor = Color.Red;
                         _txtCriteiaValueB[err.i, j].BackColor = Color.Red;
