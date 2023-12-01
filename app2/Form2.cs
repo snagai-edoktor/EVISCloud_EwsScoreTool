@@ -46,6 +46,38 @@ namespace app2
         //vital配列10、score配列7、リストを作りたい
         List<Record>[,] GetRecords = new List<Record>[11, 7];
         List<string> VitalCodeName = new List<string>();
+
+        public class Record
+        {
+            public int EWSId;
+            public int Score;
+            public int SeqNo;
+            public string VitalCode;
+            public string CriteriaValue;
+            public int CriteriaSign;
+            public int Target;
+            public int DisplayOrder = 0;
+
+            public Record(string ID)
+            {
+                EWSId = int.Parse(ID);
+            }
+
+        }
+        public class error
+        {
+            public int ErrorId;
+            public int i;
+            public int j;
+        }
+
+        private string[] ErrorMessage = new string[]
+        {
+            "",
+            "",
+            "",
+            "",
+        };
         public Form2()
         {
             InitializeComponent();
@@ -376,6 +408,261 @@ namespace app2
             return fl;
         }
 
+        /// <summary>
+        /// UPDATE用レコード作成
+        /// </summary>
+        /// <param name="RecList"></param>
+        /// <param name="vitalcode"></param>
+        /// <param name="txtA"></param>
+        /// <param name="symb"></param>
+        /// <param name="txtB"></param>
+        /// <param name="score"></param>
+        /// <param name="tarval"></param>
+        /// <param name="displayorder"></param>
+        /// <param name="seqno"></param>
+        public bool CreatRecord_Update(List<Record> RecList, List<int> intlist, string vitalcode, string txtA, string symb, string txtB, int score, int tarval, int displayorder, int seqno, int datatype)
+        {
+            double d;
+            int i;
+            bool fl = true;
+            if (datatype == -1)
+            {
+                //エラー
+                ////ファイルの行番号取得           
+                string strMsg = GetLineNumber().ToString() + " 行目 DATATYPEが未選択です";    //この行（サンプルでは50行目）が表示される
+
+                //メッセージボックスで行番号を表示
+                MessageBox.Show(strMsg
+                                , "入力値エラー"
+                                , MessageBoxButtons.OK
+                                , MessageBoxIcon.Information);
+                fl = false;
+                return fl;
+            }
+
+            if (score == -1)
+            {
+                //エラー
+                ////ファイルの行番号取得           
+                string strMsg = GetLineNumber().ToString() + " 行目 SCOREが未入力です";    //この行（サンプルでは50行目）が表示される
+
+                //メッセージボックスで行番号を表示
+                MessageBox.Show(strMsg
+                                , "入力値エラー"
+                                , MessageBoxButtons.OK
+                                , MessageBoxIcon.Information);
+                fl = false;
+                return fl;
+            }
+            //string[] words;
+            switch (symb)
+            {
+                case "":
+                    //エラー この関数を呼ぶ前にtxtA,bに中身があるか確認してるからここには来ないはず
+                    MessageBox.Show("コンボボックスが未選択です");
+                    fl = false;
+                    break;
+                case "="://   "="memo 1つのレコード作成
+                    if (datatype != 2)
+                    {
+                        //エラー 数値入力なのに単一文字列が含まれている
+                        fl = false; break;
+                    }
+                    var record0 = new Record(EWSID.Text);
+
+                    record0.Score = score;
+                    record0.VitalCode = vitalcode;
+                    record0.CriteriaValue = txtA;
+                    record0.CriteriaSign = 2;
+                    record0.Target = tarval;
+                    record0.SeqNo = seqno + 1;
+                    record0.DisplayOrder = displayorder;
+
+                    RecList.Add(record0);
+                    break;
+                case ",":// , memo レコード数に限りない
+                    if (datatype != 2)
+                    {
+                        //エラー
+                        ////ファイルの行番号取得           
+                        string strMsg = GetLineNumber().ToString() + " 行目";    //この行（サンプルでは50行目）が表示される
+
+                        //メッセージボックスで行番号を表示
+                        MessageBox.Show(strMsg
+                                        , "入力値エラー"
+                                        , MessageBoxButtons.OK
+                                        , MessageBoxIcon.Information);
+                        fl = false; break;
+                    }
+                    string[] words = txtA.Split(',');
+                    foreach (var word in words)
+                    {
+                        var record1 = new Record(EWSID.Text);
+                        record1.Score = score;
+                        record1.VitalCode = vitalcode;
+                        record1.CriteriaValue = word;
+                        record1.CriteriaSign = 2;
+                        record1.Target = tarval;
+                        record1.SeqNo = seqno + 1;
+                        record1.DisplayOrder = displayorder;
+
+                        RecList.Add(record1);
+                    }
+                    break;
+                case "～":// ~ memo 2つレコードを作ればいい
+                    var record21 = new Record(EWSID.Text);
+                    record21.Score = score;
+                    record21.VitalCode = vitalcode;
+                    record21.CriteriaValue = txtA;
+                    record21.CriteriaSign = 1;
+                    record21.Target = tarval;
+                    record21.SeqNo = seqno + 1;
+                    record21.DisplayOrder = displayorder;
+
+                    RecList.Add(record21);
+
+                    var record22 = new Record(EWSID.Text);
+                    record22.Score = score;
+                    record22.VitalCode = vitalcode;
+                    record22.CriteriaValue = txtB;
+                    record22.CriteriaSign = 0;
+                    record22.Target = tarval;
+                    record22.SeqNo = seqno + 1;
+                    record22.DisplayOrder = displayorder;
+
+                    RecList.Add(record22);
+
+                    //入力制限判定用
+                    //double入力
+                    if (datatype == 1)
+                    {
+                        double da;
+                        double.TryParse(txtB, out d);
+                        double.TryParse(txtA, out da);
+                        int a = (int)(da * 10);
+                        int b = (int)(d * 10);
+                        for (int k = a; k <= b; k++)
+                        {
+                            intlist.Add(k);
+                        }
+                    }//int入力
+                    else if (datatype == 0)
+                    {
+                        int ia;
+                        int.TryParse(txtB, out i);
+                        int.TryParse(txtA, out ia);
+                        for (int start = ia; start <= i; start++)
+                        {
+                            intlist.Add(start);
+                        }
+                    }
+                    else
+                    {
+                        //エラー　数値入力のはずなのに文字列入力されている
+                        ////ファイルの行番号取得           
+                        string strMsg = GetLineNumber().ToString() + " 行目";
+
+                        //メッセージボックスで行番号を表示
+                        MessageBox.Show(strMsg
+                                        , "入力値エラー"
+                                        , MessageBoxButtons.OK
+                                        , MessageBoxIcon.Information);
+                        fl = false; break;
+                    }
+
+                    break;
+                case "≦":// <= memo １つレコード：A,Bが空かどうか判別が必要かな一回ききたい
+                    var record3 = new Record(EWSID.Text);
+                    record3.Score = score;
+                    record3.VitalCode = vitalcode;
+                    record3.CriteriaValue = txtB;
+                    record3.CriteriaSign = 0;
+                    record3.Target = tarval;
+                    record3.SeqNo = seqno + 1;
+                    record3.DisplayOrder = displayorder;
+
+                    RecList.Add(record3);
+
+                    //入力制限用
+                    //double
+                    if (datatype == 1)
+                    {
+                        double da;
+                        double.TryParse(txtB, out d);
+                        double.TryParse(txtA, out da);
+                        int a = (int)(da * 10);
+                        int b = (int)(d * 10);
+                        for (int k = a; k <= b; k++)
+                        {
+                            intlist.Add(k);
+                        }
+                    }//int入力
+                    else if (datatype == 0)
+                    {
+                        int ia;
+                        int.TryParse(txtB, out i);
+                        int.TryParse(txtA, out ia);
+                        for (int start = ia; start <= i; start++)
+                        {
+                            intlist.Add(start);
+                        }
+                    }
+                    else
+                    {
+                        //エラー　数値入力のはずなのに文字列入力されている
+                        ////ファイルの行番号取得           
+                        string strMsg = GetLineNumber().ToString() + " 行目";
+
+                        //メッセージボックスで行番号を表示
+                        MessageBox.Show(strMsg
+                                        , "入力値エラー"
+                                        , MessageBoxButtons.OK
+                                        , MessageBoxIcon.Information);
+                        fl = false; break;
+                    }
+
+                    break;
+                case "≧":// >= memo １つレコード：
+                    var record4 = new Record(EWSID.Text);
+                    record4.Score = score;
+                    record4.VitalCode = vitalcode;
+                    record4.CriteriaValue = txtB;
+                    record4.CriteriaSign = 1;//shundbg 
+                    record4.Target = tarval;
+                    record4.SeqNo = seqno + 1;
+                    record4.DisplayOrder = displayorder;
+
+                    RecList.Add(record4);
+
+                    //入力制限用
+                    //double
+                    if (double.TryParse(txtB, out d) && txtB.Contains('.'))
+                    {
+                        intlist.Add((int)(d * 10));
+                    }//int
+                    else if (int.TryParse(txtB, out i))
+                    {
+                        intlist.Add(i);
+                    }
+                    else
+                    {
+                        //エラー　数値入力のはずなのに文字列入力されている
+                        ////ファイルの行番号取得           
+                        string strMsg = GetLineNumber().ToString() + " 行目";
+
+                        //メッセージボックスで行番号を表示
+                        MessageBox.Show(strMsg
+                                        , "入力値エラー"
+                                        , MessageBoxButtons.OK
+                                        , MessageBoxIcon.Information);
+                        fl = false; break;
+                    }
+
+                    break;
+            }
+            return fl;
+        }
+
         private void CreatButton_Click(object sender, EventArgs e)
         {
             var RecordList = new List<Record>();
@@ -511,25 +798,156 @@ namespace app2
             cmbEwsName.SelectedIndex = cmbEwsName.FindString(txtCreateEwsName.Text);
             InitTxtBoxColor();
         }
-        
 
-        public class Record
+        /// <summary>
+        /// btnUPDATEクリック時処理
+        /// 選択されたEwsNameの情報をＤＢから取ってきて表示
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UPDATE_Click(object sender, EventArgs e)
         {
-            public int EWSId;
-            public int Score;
-            public int SeqNo;
-            public string VitalCode;
-            public string CriteriaValue;
-            public int CriteriaSign;
-            public int Target;
-            public int DisplayOrder = 0;
+            var RecordList = new List<Record>();
+            bool check_input = true;
+            //score配列を入力したscoreLVに更新する
+            check_input = Update_scorearray();
+            //入力エラーチェックフラグ
 
-            public Record(string ID)
+            for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
             {
-                EWSId = int.Parse(ID);
+                var intlist = new List<int>();
+
+                for (int j = 0; j < 7; j++)//jは列数　７の部分を定数にしたほうがきれいかも
+                {
+                    if (_txtCriteiaValueA[i, j].Text == "" && _txtCriteiaValueB[i, j].Text == "")
+                    {
+                        continue;
+                    }
+                    else if (_txtDisplayOrder[i].Text == "")
+                    {
+                        ////ファイルの行番号取得           
+                        string errMsg = GetLineNumber().ToString() + " 行目" + " [i] = " + i;    //この行（サンプルでは50行目）が表示される
+                                                                                               //メッセージボックスで行番号を表示
+                        MessageBox.Show(errMsg
+                                        , "DisplayOrder未入力"
+                                        , MessageBoxButtons.OK
+                                        , MessageBoxIcon.Information);
+                        check_input = false;
+                        break;
+                    }
+                    else
+                    {
+                        if (!CreatRecord_Update(RecordList, intlist, _vitalcode[i].Text, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], Convert.ToInt32(_txtDisplayOrder[i].Text), Convert.ToInt32(txtSeqNo.Text), _cmbDataTypeUP[i].SelectedIndex))
+                        {
+                            ////ファイルの行番号取得           
+                            string errMsg = GetLineNumber().ToString() + " 行目" + " [i,j] = " + i + " " + j;    //この行（サンプルでは50行目）が表示される
+                                                                                                               //メッセージボックスで行番号を表示
+                            MessageBox.Show(errMsg
+                                            , "エラー"
+                                            , MessageBoxButtons.OK
+                                            , MessageBoxIcon.Information);
+                            check_input = false;
+                        }
+                    }
+                }
+
+                //入力制限判定
+                //int double
+                if (intlist.Count != 0)
+                {
+                    bool fl = true;
+                    for (int s = 0; s < intlist.Count - 1; s++)
+                    {
+                        if (intlist[s + 1] - intlist[s] != 1)
+                        {
+                            fl = false;
+                            check_input = false;
+                            break;
+                        }
+                    }
+                    //エラー処理
+                    if (!fl)
+                    {
+                        MessageBox.Show("int error");
+                    }
+                }//string
+                else
+                {
+                }
             }
 
+            if (RecordList.Count == 0)
+            {
+                ////ファイルの行番号取得           
+                string strMsg = GetLineNumber().ToString() + " 行目 レコードが作成されていません";    //この行（サンプルでは50行目）が表示される
+
+                //メッセージボックスで行番号を表示
+                MessageBox.Show(strMsg
+                                , "情報"
+                                , MessageBoxButtons.OK
+                                , MessageBoxIcon.Information);
+                check_input = false;
+            }
+
+            if (!check_input)
+            {
+                ////ファイルの行番号取得           
+                string strMsg = GetLineNumber().ToString() + " 行目 レコード登録中止";    //この行（サンプルでは50行目）が表示される
+
+                //メッセージボックスで行番号を表示
+                MessageBox.Show(strMsg
+                                , "情報"
+                                , MessageBoxButtons.OK
+                                , MessageBoxIcon.Information);
+                return;
+            }
+            //EVISCloudに接続
+            string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
+
+            SqlConnection con = new SqlConnection(constr);
+            con.Open();
+            try
+            {
+                bool first = true;
+                foreach (var record in RecordList)
+                {
+                    //test　テキストボックスに登録する情報を出力、確認用 shundbg
+                    int EwsId = record.EWSId;
+                    string VitalCode = record.VitalCode;
+                    int Score = record.Score;
+                    string CriteriaValue = record.CriteriaValue;
+                    int CriteriaSign = record.CriteriaSign;
+                    int Target = record.Target;
+                    txtOutSql.Text += string.Format("{0} / {1} /{2} / {3} / {4} / {5} / {6}  \r\n", EwsId, VitalCode, Score, CriteriaValue, CriteriaSign, Target, record.DisplayOrder);
+                    //test 
+
+                    var sb = new StringBuilder();
+                    sb.Append("INSERT INTO T_EwsScoreCriteria(EwsId, SeqNo, VitalCode, Score, CriteriaValue, CriteriaSign, Target, DisplayOrder)");
+                    sb.Append($"VALUES( {record.EWSId}, {record.SeqNo}, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
+                    //shundbg
+                    //sb.Append($"VALUES( 3000, {record.SeqNo}, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
+                    SqlCommand com = new SqlCommand(sb.ToString(), con);
+
+                    var result = com.ExecuteNonQuery();
+                    if (result == 0) MessageBox.Show("T_EwsScoreCriteria to UPDATE Failed in UPDATE_Click()");
+
+                    if (first)
+                    {
+                        //過去分のinvalidflagを立てる必要がある
+                        string sqlreststr = $"UPDATE T_EwsScoreCriteria SET InvalidFlag = 1 WHERE EwsId = {record.EWSId} AND SeqNo = {record.SeqNo - 1}";
+                        SqlCommand comreset = new SqlCommand(sqlreststr, con);
+                        var resultreset = comreset.ExecuteNonQuery();
+                        first = false;
+                    }
+                }
+            }
+            finally
+            {
+                MessageBox.Show("UPDATE Done");
+                con.Close();
+            }
         }
+
         /// <summary>
         /// DB->app スコア表示用関数 
         /// 変更　btnReadDB_Click -> ReadEwsScoreBoard
@@ -1315,8 +1733,8 @@ namespace app2
                         Save_Score[j] = null;
                     }
                     //save配列null
-                    Save_TxtA[i,j] = null;
-                    Save_TxtB[i, j] = null;
+                    Save_TxtA[i,j] = "";
+                    Save_TxtB[i, j] = "";
                     Save_Cmb[i, j] = "";
                 }
                 _txtDisplayOrder[i].TextChanged += new System.EventHandler(txtDisplayOrder_TextChanged);
@@ -1326,9 +1744,9 @@ namespace app2
                 _vitalcode[i].FlatStyle = FlatStyle.Popup;
 
                 //save配列Null埋め
-                Save_DisplayOrder[i] = null;
+                Save_DisplayOrder[i] = "";
                 Save_DataType[i] = -1;//あやしいかもしれない
-                Save_VitalCode[i] = null;
+                Save_VitalCode[i] = "";
                 
             }
         }
@@ -1372,409 +1790,9 @@ namespace app2
             txtScoreLv1L.ResetText();
         }
 
-        /// <summary>
-        /// btnUPDATEクリック時処理
-        /// 選択されたEwsNameの情報をＤＢから取ってきて表示
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void UPDATE_Click(object sender, EventArgs e)
-        {
-            var RecordList = new List<Record>();
-            bool check_input = true;
-            //score配列を入力したscoreLVに更新する
-            check_input = Update_scorearray();
-            //入力エラーチェックフラグ
-            
-            for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
-            {
-                var intlist = new List<int>();
-                
-                for (int j = 0; j < 7; j++)//jは列数　７の部分を定数にしたほうがきれいかも
-                {
-                    if (_txtCriteiaValueA[i, j].Text == "" && _txtCriteiaValueB[i, j].Text == "")
-                    {
-                        continue;
-                    }
-                    else if(_txtDisplayOrder[i].Text == "")
-                    {
-                        ////ファイルの行番号取得           
-                        string errMsg = GetLineNumber().ToString() + " 行目" + " [i] = " + i;    //この行（サンプルでは50行目）が表示される
-                                                                                                //メッセージボックスで行番号を表示
-                        MessageBox.Show(errMsg
-                                        , "DisplayOrder未入力"
-                                        , MessageBoxButtons.OK
-                                        , MessageBoxIcon.Information);
-                        check_input = false;
-                        break;
-                    }
-                    else
-                    {
-                        if (!CreatRecord_Update(RecordList, intlist, _vitalcode[i].Text, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], Convert.ToInt32(_txtDisplayOrder[i].Text), Convert.ToInt32(txtSeqNo.Text), _cmbDataTypeUP[i].SelectedIndex))
-                        {
-                            ////ファイルの行番号取得           
-                            string errMsg = GetLineNumber().ToString() + " 行目" + " [i,j] = " + i + " " + j;    //この行（サンプルでは50行目）が表示される
-                                                                                                                //メッセージボックスで行番号を表示
-                            MessageBox.Show(errMsg
-                                            , "エラー"
-                                            , MessageBoxButtons.OK
-                                            , MessageBoxIcon.Information);
-                            check_input = false;
-                        }
-                    }
-                }
-                
-                //入力制限判定
-                //int double
-                if (intlist.Count != 0)
-                {
-                    bool fl = true;
-                    for (int s = 0; s < intlist.Count - 1; s++)
-                    {
-                        if (intlist[s + 1] - intlist[s] != 1)
-                        {
-                            fl = false;
-                            check_input = false;
-                            break;
-                        }
-                    }
-                    //エラー処理
-                    if (!fl)
-                    {
-                        MessageBox.Show("int error");
-                    }
-                }//string
-                else
-                {
-                }
-            }
+        
 
-            if (RecordList.Count == 0)
-            {
-                ////ファイルの行番号取得           
-                string strMsg = GetLineNumber().ToString() + " 行目 レコードが作成されていません";    //この行（サンプルでは50行目）が表示される
-
-                //メッセージボックスで行番号を表示
-                MessageBox.Show(strMsg
-                                , "情報"
-                                , MessageBoxButtons.OK
-                                , MessageBoxIcon.Information);
-                check_input = false;
-            }
-
-            if (!check_input)
-            {
-                ////ファイルの行番号取得           
-                string strMsg = GetLineNumber().ToString() + " 行目 レコード登録中止";    //この行（サンプルでは50行目）が表示される
-
-                //メッセージボックスで行番号を表示
-                MessageBox.Show(strMsg
-                                , "情報"
-                                , MessageBoxButtons.OK
-                                , MessageBoxIcon.Information);
-                return ;
-            }
-            //EVISCloudに接続
-            string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
-
-            SqlConnection con = new SqlConnection(constr);
-            con.Open();
-            try
-            {
-                bool first = true;              
-                foreach (var record in RecordList)
-                {
-                    //test　テキストボックスに登録する情報を出力、確認用 shundbg
-                    int EwsId = record.EWSId;
-                    string VitalCode = record.VitalCode;
-                    int Score = record.Score;
-                    string CriteriaValue = record.CriteriaValue;
-                    int CriteriaSign = record.CriteriaSign;
-                    int Target = record.Target;
-                    txtOutSql.Text += string.Format("{0} / {1} /{2} / {3} / {4} / {5} / {6}  \r\n", EwsId, VitalCode, Score, CriteriaValue, CriteriaSign, Target, record.DisplayOrder);
-                    //test 
-
-                    var sb = new StringBuilder();
-                    sb.Append("INSERT INTO T_EwsScoreCriteria(EwsId, SeqNo, VitalCode, Score, CriteriaValue, CriteriaSign, Target, DisplayOrder)");
-                    sb.Append($"VALUES( {record.EWSId}, {record.SeqNo}, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
-                    //shundbg
-                    //sb.Append($"VALUES( 3000, {record.SeqNo}, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
-                    SqlCommand com = new SqlCommand(sb.ToString(), con);
-
-                    var result = com.ExecuteNonQuery();
-                    if (result == 0) MessageBox.Show("T_EwsScoreCriteria to UPDATE Failed in UPDATE_Click()");
-                    
-                    if (first)
-                    {
-                        //過去分のinvalidflagを立てる必要がある
-                        string sqlreststr = $"UPDATE T_EwsScoreCriteria SET InvalidFlag = 1 WHERE EwsId = {record.EWSId} AND SeqNo = {record.SeqNo - 1}";
-                        SqlCommand comreset = new SqlCommand(sqlreststr, con);
-                        var resultreset = comreset.ExecuteNonQuery();
-                        first = false;
-                    }
-                }
-            }
-            finally
-            {
-                MessageBox.Show("UPDATE Done");
-                con.Close();
-            }
-        }
-
-        /// <summary>
-        /// UPDATE用レコード作成
-        /// </summary>
-        /// <param name="RecList"></param>
-        /// <param name="vitalcode"></param>
-        /// <param name="txtA"></param>
-        /// <param name="symb"></param>
-        /// <param name="txtB"></param>
-        /// <param name="score"></param>
-        /// <param name="tarval"></param>
-        /// <param name="displayorder"></param>
-        /// <param name="seqno"></param>
-        public bool CreatRecord_Update(List<Record> RecList, List<int> intlist, string vitalcode, string txtA, string symb, string txtB, int score, int tarval, int displayorder, int seqno, int datatype)
-        {
-            double d;
-            int i;
-            bool fl = true;
-            if(datatype == -1)
-            {
-                //エラー
-                ////ファイルの行番号取得           
-                string strMsg = GetLineNumber().ToString() + " 行目 DATATYPEが未選択です";    //この行（サンプルでは50行目）が表示される
-
-                //メッセージボックスで行番号を表示
-                MessageBox.Show(strMsg
-                                , "入力値エラー"
-                                , MessageBoxButtons.OK
-                                , MessageBoxIcon.Information);
-                fl = false;
-                return fl;
-            }
-
-            if (score == -1)
-            {
-                //エラー
-                ////ファイルの行番号取得           
-                string strMsg = GetLineNumber().ToString() + " 行目 SCOREが未入力です";    //この行（サンプルでは50行目）が表示される
-
-                //メッセージボックスで行番号を表示
-                MessageBox.Show(strMsg
-                                , "入力値エラー"
-                                , MessageBoxButtons.OK
-                                , MessageBoxIcon.Information);
-                fl = false;
-                return fl;
-            }
-            //string[] words;
-            switch (symb)
-            {
-                case "":
-                    //エラー この関数を呼ぶ前にtxtA,bに中身があるか確認してるからここには来ないはず
-                    MessageBox.Show("コンボボックスが未選択です");
-                    fl = false;
-                    break;
-                case "="://   "="memo 1つのレコード作成
-                    if (datatype != 2)
-                    {
-                        //エラー 数値入力なのに単一文字列が含まれている
-                        fl = false; break;
-                    }
-                    var record0 = new Record(EWSID.Text);
-
-                    record0.Score = score;
-                    record0.VitalCode = vitalcode;
-                    record0.CriteriaValue = txtA;
-                    record0.CriteriaSign = 2;
-                    record0.Target = tarval;
-                    record0.SeqNo = seqno + 1;
-                    record0.DisplayOrder = displayorder;
-
-                    RecList.Add(record0);
-                    break;
-                case ",":// , memo レコード数に限りない
-                    if (datatype != 2)
-                    {
-                        //エラー
-                        ////ファイルの行番号取得           
-                        string strMsg = GetLineNumber().ToString() + " 行目";    //この行（サンプルでは50行目）が表示される
-
-                        //メッセージボックスで行番号を表示
-                        MessageBox.Show(strMsg
-                                        , "入力値エラー"
-                                        , MessageBoxButtons.OK
-                                        , MessageBoxIcon.Information);
-                        fl = false; break;
-                    }
-                    string[] words = txtA.Split(',');
-                    foreach (var word in words)
-                    {
-                        var record1 = new Record(EWSID.Text);
-                        record1.Score = score;
-                        record1.VitalCode = vitalcode;
-                        record1.CriteriaValue = word;
-                        record1.CriteriaSign = 2;
-                        record1.Target = tarval;
-                        record1.SeqNo = seqno + 1;
-                        record1.DisplayOrder = displayorder;
-
-                        RecList.Add(record1);
-                    }
-                    break;
-                case "～"    :// ~ memo 2つレコードを作ればいい
-                    var record21 = new Record(EWSID.Text);
-                    record21.Score = score;
-                    record21.VitalCode = vitalcode;
-                    record21.CriteriaValue = txtA;
-                    record21.CriteriaSign = 1;
-                    record21.Target = tarval;
-                    record21.SeqNo = seqno + 1;
-                    record21.DisplayOrder = displayorder;
-
-                    RecList.Add(record21);
-
-                    var record22 = new Record(EWSID.Text);
-                    record22.Score = score;
-                    record22.VitalCode = vitalcode;
-                    record22.CriteriaValue = txtB;
-                    record22.CriteriaSign = 0;
-                    record22.Target = tarval;
-                    record22.SeqNo = seqno + 1;
-                    record22.DisplayOrder = displayorder;
-
-                    RecList.Add(record22);
-
-                    //入力制限判定用
-                    //double入力
-                    if (datatype == 1)
-                    {
-                        double da;
-                        double.TryParse(txtB, out d);
-                        double.TryParse(txtA, out da);
-                        int a = (int)(da * 10);
-                        int b = (int)(d * 10);
-                        for (int k = a; k <= b; k++)
-                        {
-                            intlist.Add(k);
-                        }
-                    }//int入力
-                    else if (datatype == 0)
-                    {
-                        int ia;
-                        int.TryParse(txtB, out i);
-                        int.TryParse(txtA, out ia);
-                        for (int start = ia; start <= i; start++)
-                        {
-                            intlist.Add(start);
-                        }
-                    }
-                    else
-                    {
-                        //エラー　数値入力のはずなのに文字列入力されている
-                        ////ファイルの行番号取得           
-                        string strMsg = GetLineNumber().ToString() + " 行目";
-
-                        //メッセージボックスで行番号を表示
-                        MessageBox.Show(strMsg
-                                        , "入力値エラー"
-                                        , MessageBoxButtons.OK
-                                        , MessageBoxIcon.Information);
-                        fl = false; break;
-                    }
-
-                    break;
-                case "≦":// <= memo １つレコード：A,Bが空かどうか判別が必要かな一回ききたい
-                    var record3 = new Record(EWSID.Text);
-                    record3.Score = score;
-                    record3.VitalCode = vitalcode;
-                    record3.CriteriaValue = txtB;
-                    record3.CriteriaSign = 0;
-                    record3.Target = tarval;
-                    record3.SeqNo = seqno + 1;
-                    record3.DisplayOrder = displayorder;
-
-                    RecList.Add(record3);
-
-                    //入力制限用
-                    //double
-                    if (datatype == 1)
-                    {
-                        double da;
-                        double.TryParse(txtB, out d);
-                        double.TryParse(txtA, out da);
-                        int a = (int)(da * 10);
-                        int b = (int)(d * 10);
-                        for (int k = a; k <= b; k++)
-                        {
-                            intlist.Add(k);
-                        }
-                    }//int入力
-                    else if (datatype == 0)
-                    {
-                        int ia;
-                        int.TryParse(txtB, out i);
-                        int.TryParse(txtA, out ia);
-                        for (int start = ia; start <= i; start++)
-                        {
-                            intlist.Add(start);
-                        }
-                    }
-                    else
-                    {
-                        //エラー　数値入力のはずなのに文字列入力されている
-                        ////ファイルの行番号取得           
-                        string strMsg = GetLineNumber().ToString() + " 行目";
-
-                        //メッセージボックスで行番号を表示
-                        MessageBox.Show(strMsg
-                                        , "入力値エラー"
-                                        , MessageBoxButtons.OK
-                                        , MessageBoxIcon.Information);
-                        fl = false; break;
-                    }
-
-                    break;
-                case "≧":// >= memo １つレコード：
-                    var record4 = new Record(EWSID.Text);
-                    record4.Score = score;
-                    record4.VitalCode = vitalcode;
-                    record4.CriteriaValue = txtB;
-                    record4.CriteriaSign = 1;//shundbg 
-                    record4.Target = tarval;
-                    record4.SeqNo = seqno + 1;
-                    record4.DisplayOrder = displayorder;
-
-                    RecList.Add(record4);
-
-                    //入力制限用
-                    //double
-                    if (double.TryParse(txtB, out d) && txtB.Contains('.'))
-                    {
-                        intlist.Add((int)(d * 10));
-                    }//int
-                    else if (int.TryParse(txtB, out i))
-                    {
-                        intlist.Add(i);
-                    }
-                    else
-                    {
-                        //エラー　数値入力のはずなのに文字列入力されている
-                        ////ファイルの行番号取得           
-                        string strMsg = GetLineNumber().ToString() + " 行目";
-
-                        //メッセージボックスで行番号を表示
-                        MessageBox.Show(strMsg
-                                        , "入力値エラー"
-                                        , MessageBoxButtons.OK
-                                        , MessageBoxIcon.Information);
-                        fl = false; break;
-                    }
-
-                    break;
-            }
-            return fl;
-        }
+       
 
         private void txtScoreLv1L_TextChanged(object sender, EventArgs e)
         {
@@ -1793,7 +1811,7 @@ namespace app2
 
         /// <summary>
         /// DataTypeコンボボックス選択時処理(UPDATEページ)
-        /// 数値、文字列の二つの条件に合わせてコンボボックスのアイテムを設定する
+        /// 数値、文字列の二つの条件に合わせて記号コンボボックスのアイテムを設定する
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
