@@ -541,6 +541,7 @@
             this.txtScoreLv3R.Name = "txtScoreLv3R";
             this.txtScoreLv3R.Size = new System.Drawing.Size(40, 19);
             this.txtScoreLv3R.TabIndex = 319;
+            this.txtScoreLv3R.TextChanged += new System.EventHandler(this.txtScoreLv3R_TextChanged);
             // 
             // txtScoreLv2R
             // 
@@ -548,6 +549,7 @@
             this.txtScoreLv2R.Name = "txtScoreLv2R";
             this.txtScoreLv2R.Size = new System.Drawing.Size(40, 19);
             this.txtScoreLv2R.TabIndex = 318;
+            this.txtScoreLv2R.TextChanged += new System.EventHandler(this.txtScoreLv2R_TextChanged);
             // 
             // txtScoreLv1R
             // 
@@ -555,6 +557,7 @@
             this.txtScoreLv1R.Name = "txtScoreLv1R";
             this.txtScoreLv1R.Size = new System.Drawing.Size(40, 19);
             this.txtScoreLv1R.TabIndex = 317;
+            this.txtScoreLv1R.TextChanged += new System.EventHandler(this.txtScoreLv1R_TextChanged);
             // 
             // txtScoreLv1L
             // 

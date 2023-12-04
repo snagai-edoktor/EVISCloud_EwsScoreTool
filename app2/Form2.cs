@@ -1884,6 +1884,20 @@ namespace app2
             txtScoreLv3R.Text = txtScoreLv3L.Text;
         }
 
+        private void txtScoreLv1R_TextChanged(object sender, EventArgs e)
+        {
+            txtScoreLv1L.Text = txtScoreLv1R.Text;
+        }
+
+        private void txtScoreLv2R_TextChanged(object sender, EventArgs e)
+        {
+            txtScoreLv2L.Text = txtScoreLv2R.Text;
+        }
+
+        private void txtScoreLv3R_TextChanged(object sender, EventArgs e)
+        {
+            txtScoreLv3L.Text = txtScoreLv3R.Text;
+        }
         /// <summary>
         /// DataTypeコンボボックス選択時処理(UPDATEページ)
         /// 数値、文字列の二つの条件に合わせて記号コンボボックスのアイテムを設定する
@@ -2306,5 +2320,6 @@ namespace app2
                 UPDATE_Click();
             }
         }
+
     }
 }
