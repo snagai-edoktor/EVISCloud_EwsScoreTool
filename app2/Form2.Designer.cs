@@ -432,6 +432,7 @@
             this.txtDisplayOrder10 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnCreateRecord = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
             this.panel64.SuspendLayout();
             this.panel57.SuspendLayout();
             this.panel65.SuspendLayout();
@@ -4454,19 +4455,29 @@
             // 
             // btnCreateRecord
             // 
-            this.btnCreateRecord.Location = new System.Drawing.Point(1310, 727);
+            this.btnCreateRecord.Location = new System.Drawing.Point(1214, 727);
             this.btnCreateRecord.Name = "btnCreateRecord";
-            this.btnCreateRecord.Size = new System.Drawing.Size(141, 71);
+            this.btnCreateRecord.Size = new System.Drawing.Size(187, 71);
             this.btnCreateRecord.TabIndex = 353;
-            this.btnCreateRecord.Text = "button1";
+            this.btnCreateRecord.Text = "登録";
             this.btnCreateRecord.UseVisualStyleBackColor = true;
             this.btnCreateRecord.Click += new System.EventHandler(this.btnCreateRecord_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(46, 699);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(32, 12);
+            this.label4.TabIndex = 354;
+            this.label4.Text = "エラー";
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1616, 867);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.btnCreateRecord);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtDisplayOrder10);
@@ -5145,5 +5156,6 @@
         private System.Windows.Forms.TextBox txtDisplayOrder10;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnCreateRecord;
+        private System.Windows.Forms.Label label4;
     }
 }

@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.Collections;
 using System.Runtime.CompilerServices;
 using System.Reflection;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace app2
 {
@@ -92,13 +93,15 @@ namespace app2
             "数値が連続していません。",//9 j=99
             "レコードが作成されていません。",//10  i=99,j=99
             "データタイプが数値型の場合文字列の入力は出来ません。",//11 txtB用
+            "スコアの入力値は数値である必要があります。",//12
+            "DisPlayOrderが重複しています。",//13
             "",//
             "",//
             "",//
             "",//
             "",//
-            "",//
-            "",//
+            "",//50 + x スコアは
+            "",//100 A,Bどっちも文字列
         };
         public Form2()
         {
@@ -120,29 +123,73 @@ namespace app2
         /// </returns>
         private int Update_scorearray()
         {
-            if (txtScoreLv3L.Text != "") _score[0] = Int32.Parse(txtScoreLv3L.Text);
-            else                         _score[0] = -1;     
+            int sum = 0;
+            if (txtScoreLv3L.Text != "")
+            {
+                if(!Int32.TryParse(txtScoreLv3L.Text, out _score[0]))
+                {
+                    sum += 4;
+                }
+                
+            }
+            else _score[0] = -1;
 
-            if (txtScoreLv2L.Text != "") _score[1] = Int32.Parse(txtScoreLv2L.Text);
-            else                         _score[1] = -1;
+            if (txtScoreLv2L.Text != "")
+            {
+                if (!Int32.TryParse(txtScoreLv2L.Text, out _score[1]))
+                {
+                    sum += 2;
+                }
 
-            if (txtScoreLv1L.Text != "") _score[2] = Int32.Parse(txtScoreLv1L.Text);
-            else                         _score[2] = -1;
+            }
+            else _score[1] = -1;
 
-                                         _score[3] = 0;
+            if (txtScoreLv1L.Text != "")
+            {
+                if (!Int32.TryParse(txtScoreLv1L.Text, out _score[2]))
+                {
+                    sum += 1;
+                }
 
-            if (txtScoreLv1L.Text != "") _score[4] = Int32.Parse(txtScoreLv1L.Text);
-            else                         _score[4] = -1;
+            }
+            else _score[2] = -1;
 
-            if (txtScoreLv2L.Text != "") _score[5] = Int32.Parse(txtScoreLv2L.Text);
-            else                         _score[5] = -1;
+           _score[3] = 0;
 
-            if (txtScoreLv3L.Text != "") _score[6] = Int32.Parse(txtScoreLv3L.Text);
-            else                         _score[6] = -1;
+            if (txtScoreLv1R.Text != "")
+            {
+                if (!Int32.TryParse(txtScoreLv1R.Text, out _score[4]))
+                {
+                   // return 12;//スコアの入力値は数値である必要があります。
+                }
 
+            }
+            else _score[4] = -1;
 
+            if (txtScoreLv2R.Text != "")
+            {
+                if (!Int32.TryParse(txtScoreLv2R.Text, out _score[5]))
+                {
+                    //return 12;//スコアの入力値は数値である必要があります。
+                }
 
+            }
+            else _score[5] = -1;
 
+            if (txtScoreLv3R.Text != "")
+            {
+                if (!Int32.TryParse(txtScoreLv3R.Text, out _score[6]))
+                {
+                    //return 12;//スコアの入力値は数値である必要があります。
+                }
+
+            }
+            else _score[6] = -1;
+
+            if( 0 < sum)
+            {
+                return 50 + sum;
+            }
             var ScoreCheck = new List<int>();
 
             for (int i=0;i<3;i++)
@@ -553,9 +600,44 @@ namespace app2
             check_input = Update_scorearray();
             if (check_input != 0)
             {
-                var err = new ErrorRecord(check_input, 99, 99);
-                ErrorList.Add(err);
+                if(check_input > 50)
+                {
+                    int num = check_input % 10;
+                    for(int i= 0; i<3; i++)
+                    {
+                        //scorelv,３か所のフラグを調べて立っている部分にエラーを出す。
+                        if( (num & ( 1 << i)) > 0)
+                        {
+                            var err = new ErrorRecord(12, i, 99);
+                            ErrorList.Add(err);
+                        }
+                    }
+                }
+                else
+                {
+                    var err = new ErrorRecord(check_input, 99, 99);
+                    ErrorList.Add(err);
+                }
             }
+
+            //DisplayOrderに重複がないか確認
+            List<int>[] DispList = new List<int>[10];
+            for(int i = 0; i < 10; i++)
+            {
+                DispList[Convert.ToInt32(_txtDisplayOrder[i].Text) -1].Add(i);
+            }
+            for(int i = 0; i < 10; i++)
+            {
+                if (DispList[i].Count >= 2)
+                {
+                    foreach(var ii in DispList[i])
+                    {
+                        var err = new ErrorRecord(13, ii, 99);
+                        ErrorList.Add(err);
+                    }                  
+                }
+            }
+                
             //入力情報をレコードに変換する
             for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
             {
@@ -730,9 +812,52 @@ namespace app2
             check_input = Update_scorearray();
             if (check_input != 0)
             {
-                var err = new ErrorRecord(check_input, 99, 99);
-                ErrorList.Add(err);
+                if (check_input > 50)
+                {
+                    int num = check_input % 10;
+                    for (int i = 0; i < 3; i++)
+                    {
+                        //scorelv,３か所のフラグを調べて立っている部分にエラーを出す。
+                        if ((num & (1 << i)) > 0)
+                        {
+                            var err = new ErrorRecord(12, i, 99);
+                            ErrorList.Add(err);
+                        }
+                    }
+                }
+                else
+                {
+                    var err = new ErrorRecord(check_input, 99, 99);
+                    ErrorList.Add(err);
+                }
             }
+
+            //DisplayOrderに重複がないか確認
+            List<int>[] DispList = new List<int>[10];
+            for (int i = 0; i < 10; i++)
+            {
+                DispList[i] = new List<int>();
+
+            }
+            for (int i = 0; i < 10; i++)
+            {
+                if(_txtDisplayOrder[i].Text != "")
+                {
+                    DispList[Convert.ToInt32(_txtDisplayOrder[i].Text) -1 ].Add(i);
+                }
+            }
+            for (int i = 0; i < 10; i++)
+            {
+                if (DispList[i].Count >= 2)
+                {
+                    foreach (var ii in DispList[i])
+                    {
+                        var err = new ErrorRecord(13, ii, 99);
+                        ErrorList.Add(err);
+                    }
+                }
+            }
+
 
             for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
             {
@@ -1703,6 +1828,8 @@ namespace app2
         /// </summary>
         private void AllClear()
         {
+            //エラーボックス初期化
+            txtOutSql.Text = "";
             //表のテキストボックスを初期化
             for (int i = 0; i < 10; i++)
             {
@@ -2156,12 +2283,21 @@ namespace app2
                 case 11://"データタイプが数値型の場合文字列の入力は出来ません。"
                     _txtCriteiaValueB[err.i, err.j].BackColor = Color.Red;
                     break;
+                case 12://"スコアの入力値は数値である必要があります。"
+                    _txtScore[3 + (err.i + 1)].BackColor = Color.Red;
+                    _txtScore[3 - (err.i + 1)].BackColor = Color.Red;
+                    break;
+                case 13://"DisPlayOrderが重複しています。"
+                    _txtDisplayOrder[err.i].BackColor= Color.Red;
+                    break;
+
             }
         }
 
         private void btnCreateRecord_Click(object sender, EventArgs e)
         {
-            if(cmbEwsName.SelectedIndex == 0)
+            txtOutSql.Text = "";
+            if (cmbEwsName.SelectedIndex == 0)
             {
                 CreatButton_Click();
             }
