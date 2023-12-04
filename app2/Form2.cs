@@ -97,6 +97,8 @@ namespace app2
             "DisPlayOrderが重複しています。",//13
             "DisplayOrderは10より大きい値を入力出来ません。",//14
             "DisplayOrderは数値以外の入力は出来ません。",//15
+            "EwsNameが未入力です。",//16
+            "WarningThresoldsが未入力です。",//17
             "",//
             "",//
             "",//
@@ -600,6 +602,20 @@ namespace app2
             //エラーチェック変数 0がエラーなし
             int check_input = 0;
 
+
+            //Ewsname,WarnigThreshholdsが入力済みか確認
+            if(txtCreateEwsName.Text == "")
+            {
+                var err = new ErrorRecord(16, 99, 99);
+                ErrorList.Add(err);
+                check_input = 16;
+            }
+            if(txtCreateWarningThresolds.Text == "")
+            {
+                var err = new ErrorRecord(17, 99, 99);
+                ErrorList.Add(err);
+                check_input = 17;
+            }
             //Scoreの入力が正常値か確認
             check_input = Update_scorearray();
             if (check_input != 0)
@@ -776,6 +792,13 @@ namespace app2
                     Error_ColorChange(err);
                     txtOutSql.Text += $"Errid = {err.ErrorId}  i = {err.i},  j = {err.j} ErrMessage = {ErrorMessage[err.ErrorId]} \r\n";
                 }
+                ////ファイルの行番号取得           
+                string strMsg = "入力値が間違っているため終了します。";
+                //メッセージボックスで行番号を表示
+                MessageBox.Show(strMsg
+                                , "エラー"
+                                , MessageBoxButtons.OK
+                                , MessageBoxIcon.Information);
                 return;
             }
            
@@ -1019,6 +1042,13 @@ namespace app2
                     Error_ColorChange(err);
                     txtOutSql.Text += $"Errid = {err.ErrorId}  i = {err.i},  j = {err.j} ErrMessage = {ErrorMessage[err.ErrorId]} \r\n";
                 }
+                ////ファイルの行番号取得           
+                string strMsg = "入力値が間違っているため終了します。";
+                //メッセージボックスで行番号を表示
+                MessageBox.Show(strMsg
+                                , "エラー"
+                                , MessageBoxButtons.OK
+                                , MessageBoxIcon.Information);
                 return;
             }
 
@@ -2194,6 +2224,8 @@ namespace app2
                 _cmbDataTypeUP[i].BackColor = SystemColors.Window;
                 _vitalcode[i].BackColor = SystemColors.Window;
             }
+            txtCreateEwsName.BackColor = SystemColors.Window;
+            txtCreateWarningThresolds.BackColor = SystemColors.Window;
         }
 
         private indexx Text_IndexofIandJ(TextBox[,] list, TextBox obj)
@@ -2402,7 +2434,12 @@ namespace app2
                 case 15:
                     _txtDisplayOrder[err.i].BackColor = Color.Red;
                     break;
-
+                case 16:
+                    txtCreateEwsName.BackColor = Color.Red;
+                    break;
+                case 17:
+                    txtCreateWarningThresolds.BackColor = Color.Red;
+                    break;
             }
         }
 
