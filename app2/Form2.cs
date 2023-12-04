@@ -205,7 +205,7 @@ namespace app2
             {
                 for (int i = 0; i < ScoreCheck.Count - 1; i++)
                 {
-                    if (ScoreCheck[i] < ScoreCheck[i + 1])
+                    if (ScoreCheck[i] <= ScoreCheck[i + 1])
                     {
                         return 1;//スコアが0に向かって降順に設定されていません。
                     }
