@@ -433,6 +433,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.btnCreateRecord = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.panel64.SuspendLayout();
             this.panel57.SuspendLayout();
             this.panel65.SuspendLayout();
@@ -816,7 +817,7 @@
             this.cmbEwsName.Name = "cmbEwsName";
             this.cmbEwsName.Size = new System.Drawing.Size(101, 20);
             this.cmbEwsName.TabIndex = 310;
-            this.cmbEwsName.DropDownClosed += new System.EventHandler(this.ReadEwsScoreBoard);
+            this.cmbEwsName.DropDownClosed += new System.EventHandler(this.cmbEwsName_DropDownClosed);
             // 
             // panel64
             // 
@@ -4475,11 +4476,21 @@
             this.label4.TabIndex = 354;
             this.label4.Text = "エラー";
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(153, 34);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(55, 12);
+            this.label8.TabIndex = 355;
+            this.label8.Text = "EwsName";
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1616, 867);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.btnCreateRecord);
             this.Controls.Add(this.label3);
@@ -5160,5 +5171,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnCreateRecord;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label8;
     }
 }

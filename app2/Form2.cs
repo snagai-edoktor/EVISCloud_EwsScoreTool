@@ -1027,7 +1027,7 @@ namespace app2
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ReadEwsScoreBoard(object sender, EventArgs e)
+        private void cmbEwsName_DropDownClosed(object sender, EventArgs e)
         {
             var scoreset = new SortedSet<int>();
             scoreset.Add(0);
@@ -1089,6 +1089,13 @@ namespace app2
                 cmbEwsName.SelectedIndex = selectindex;
                 return;
             }
+
+            //UPDATE時に必要のないテキストボックスを非表示に
+            txtCreateEWSID.Enabled = false;
+            txtCreateEwsName.Enabled = false;
+            txtCreateWarningThresolds.Enabled = false;
+
+
             //EwsNameに対応するEwsidのレコードを取得しtxtに出力する
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
             SqlConnection con = new SqlConnection(constr);
@@ -2063,6 +2070,11 @@ namespace app2
             {
                 con.Close();
             }
+
+            //UPDATE時に必要のなかったテキストボックスを表示
+            txtCreateEWSID.Enabled = true;
+            txtCreateEwsName.Enabled = true;
+            txtCreateWarningThresolds.Enabled = true;
         }
 
         private void txtCriteiaValueA_TextChanged(object sender, EventArgs e)
@@ -2327,6 +2339,7 @@ namespace app2
             {
                 UPDATE_Click();
             }
+
         }
 
     }
