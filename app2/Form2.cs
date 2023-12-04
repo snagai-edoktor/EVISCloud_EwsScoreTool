@@ -95,6 +95,8 @@ namespace app2
             "データタイプが数値型の場合文字列の入力は出来ません。",//11 txtB用
             "スコアの入力値は数値である必要があります。",//12
             "DisPlayOrderが重複しています。",//13
+            "DisplayOrderは10より大きい値を入力出来ません。",//14
+            "DisplayOrderは数値以外の入力は出来ません。",//15
             "",//
             "",//
             "",//
@@ -597,6 +599,8 @@ namespace app2
             var ErrorList  = new List<ErrorRecord>();
             //エラーチェック変数 0がエラーなし
             int check_input = 0;
+
+            //Scoreの入力が正常値か確認
             check_input = Update_scorearray();
             if (check_input != 0)
             {
@@ -618,6 +622,27 @@ namespace app2
                     var err = new ErrorRecord(check_input, 99, 99);
                     ErrorList.Add(err);
                 }
+            }
+            //DisplayOrderの入力値が正常値か確認
+            check_input = Check_DisplayOrder(ErrorList);
+
+            //レコード登録時に必要な情報でエラーがあった場合レコード処理の前に処理を終わる
+            if (ErrorList.Count != 0)
+            {
+                //ErrorListにたまったエラーを処理して背景色に反映＋テキストログに残す
+                foreach (var err in ErrorList)
+                {
+                    Error_ColorChange(err);
+                    txtOutSql.Text += $"Errid = {err.ErrorId}  i = {err.i},  j = {err.j} ErrMessage = {ErrorMessage[err.ErrorId]} \r\n";
+                }
+                ////ファイルの行番号取得           
+                string strMsg = "入力値が間違っているため終了します。";
+                //メッセージボックスで行番号を表示
+                MessageBox.Show(strMsg
+                                , "エラー"
+                                , MessageBoxButtons.OK
+                                , MessageBoxIcon.Information);
+                return;
             }
 
             //DisplayOrderに重複がないか確認
@@ -645,6 +670,7 @@ namespace app2
                     }
                 }
             }
+
 
             //入力情報をレコードに変換する
             for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
@@ -838,6 +864,28 @@ namespace app2
                     var err = new ErrorRecord(check_input, 99, 99);
                     ErrorList.Add(err);
                 }
+            }
+
+            //DisplayOrderの入力値が正常値か確認
+            check_input = Check_DisplayOrder(ErrorList);
+
+            //レコード登録時に必要な情報でエラーがあった場合レコード処理の前に処理を終わる
+            if (ErrorList.Count != 0)
+            {
+                //ErrorListにたまったエラーを処理して背景色に反映＋テキストログに残す
+                foreach (var err in ErrorList)
+                {
+                    Error_ColorChange(err);
+                    txtOutSql.Text += $"Errid = {err.ErrorId}  i = {err.i},  j = {err.j} ErrMessage = {ErrorMessage[err.ErrorId]} \r\n";
+                }
+                ////ファイルの行番号取得           
+                string strMsg = "入力値が間違っているため終了します。";
+                //メッセージボックスで行番号を表示
+                MessageBox.Show(strMsg
+                                , "エラー"
+                                , MessageBoxButtons.OK
+                                , MessageBoxIcon.Information);
+                return;
             }
 
             //DisplayOrderに重複がないか確認
@@ -1397,6 +1445,30 @@ namespace app2
             */
         }
 
+        private int Check_DisplayOrder(List<ErrorRecord> list)
+        {
+            int ret = 0;
+            for(int i=0; i<10; i++)
+            {
+                if (_txtDisplayOrder[i].Text == "") continue;
+
+                if (Int32.TryParse(_txtDisplayOrder[i].Text, out int num)){
+                    if( num > 10)
+                    {
+                        var err = new ErrorRecord(14, i, 99);//14 DisplayOrderは10より大きい値を入力出来ません。
+                        list.Add(err);
+                    }
+                    ret = 14;
+                }
+                else
+                {
+                    var err = new ErrorRecord(15, i, 99);//15 DisplayOrderは数値以外の入力は出来ません。
+                    list.Add(err);
+                    ret = 15;
+                }
+            }
+            return ret;
+        }
         /// <summary>
         /// 起動時EwsNameコンボボックスにＤＢからEwsName一覧を取ってきて設定
         /// </summary>
@@ -1409,7 +1481,7 @@ namespace app2
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
 
             SqlConnection con = new SqlConnection(constr);
-            con.Open();
+            con.Open(); 
             try
             {
                 string sqlstr = "SELECT Id, EwsName  FROM M_Ewstype WHERE LogicalDeleted = 0";
@@ -2323,6 +2395,12 @@ namespace app2
                     break;
                 case 13://"DisPlayOrderが重複しています。"
                     _txtDisplayOrder[err.i].BackColor= Color.Red;
+                    break;
+                case 14:
+                    _txtDisplayOrder[err.i].BackColor = Color.Red;
+                    break;
+                case 15:
+                    _txtDisplayOrder[err.i].BackColor = Color.Red;
                     break;
 
             }
