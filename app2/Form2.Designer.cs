@@ -1,4 +1,6 @@
-﻿namespace app2
+﻿using System.Windows.Forms;
+
+namespace app2
 {
     partial class Form2
     {
@@ -4619,6 +4621,7 @@
             this.Name = "Form2";
             this.Text = "Form2";
             this.Load += new System.EventHandler(this.Form2_Load);
+            this.FormClosing += new FormClosingEventHandler(Form2_FormClosing);
             this.panel64.ResumeLayout(false);
             this.panel64.PerformLayout();
             this.panel57.ResumeLayout(false);

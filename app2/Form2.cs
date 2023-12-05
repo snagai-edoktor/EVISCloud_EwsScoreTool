@@ -114,11 +114,45 @@ namespace app2
             InitComboBox();
             InitEwsName();
             InitTxtBoxColor();
-
         }
         private void Form2_Load(object sender, EventArgs e)
         {
+
         }
+        private void Form2_FormClosing(Object sender, FormClosingEventArgs e)
+        {
+            bool fl_Completed = false;
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    if (_txtCriteiaValueA[i, j].Text != "" || _txtCriteiaValueB[i, j].Text != "" || _cmb[i, j].SelectedIndex != -1)
+                    {
+                        fl_Completed = true;
+                        break;
+                    }
+                }
+                if (fl_Completed)
+                {
+                    ////ファイルの行番号取得           
+                    string strMsg = "表に値が書き込まれています、終了しますか？";
+
+                    //メッセージボックスで行番号を表示
+                    var resultMessageBox = MessageBox.Show(strMsg
+                                    , "エラー"
+                                    , MessageBoxButtons.OKCancel
+                                    , MessageBoxIcon.Information);
+
+                    if (resultMessageBox == System.Windows.Forms.DialogResult.Cancel)
+                    {
+                        e.Cancel = true;
+                    }
+                    break;
+                }
+            }
+
+        }
+
         /// <summary>
         /// 入力されたスコアを判定用の配列にコピー、コピー時降順になっているかチェック
         /// </summary>
@@ -827,7 +861,7 @@ namespace app2
                     int Target = record.Target;
                     txtOutSql.Text += string.Format("{0} / {1} /{2} / {3} / {4} / {5} / {6}  \r\n", EwsId, VitalCode, Score, CriteriaValue, CriteriaSign, Target, record.DisplayOrder);
                     //test */
-
+                    
                     //T_EwsScoreCriteriaへレコード追加
                     var sb = new StringBuilder();
                     sb.Append("INSERT INTO T_EwsScoreCriteria(EwsId, SeqNo, VitalCode, Score, CriteriaValue, CriteriaSign, Target, DisplayOrder)");
@@ -1117,7 +1151,7 @@ namespace app2
             {
                 for(int j = 0; j<7; j++)
                 {
-                    if(_txtCriteiaValueA[i, j].Text != "" || _txtCriteiaValueB[i, j].Text != "")
+                    if(_txtCriteiaValueA[i, j].Text != "" || _txtCriteiaValueB[i, j].Text != "" || _cmb[i,j].SelectedIndex != -1 )
                     {
                         fl_Completed = true;
                         break;
@@ -1134,7 +1168,7 @@ namespace app2
                                     , MessageBoxButtons.OKCancel
                                     , MessageBoxIcon.Information);
 
-                    if (resultMessageBox == System.Windows.Forms.DialogResult.No)
+                    if (resultMessageBox == System.Windows.Forms.DialogResult.Cancel)
                     {
                         return;
                     }
