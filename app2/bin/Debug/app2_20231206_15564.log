@@ -1,0 +1,2 @@
+﻿4 13:09:06.806 app2.DB.GetRecords                                                   '=' 付近に不適切な構文があります。
+文字列 'AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = 14)' の後で引用符が閉じていません。

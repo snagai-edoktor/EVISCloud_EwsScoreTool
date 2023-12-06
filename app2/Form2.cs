@@ -36,77 +36,19 @@ namespace app2
         private string[,] Save_TxtB;
         private string[,] Save_Cmb;
         private string[] Save_Score;
-        
+
+        private DB _db;
 
         private int[] _score = new int[7];
         //private TextBox[] _ScoreLv;
         private int[] tarval = new int[] { 0, 0, 0, 1, 1, 1, 1 };
         private SortedDictionary<string, int> EwsName = new SortedDictionary<string, int>();
-        private SortedDictionary<string, int> DicVitalcodeandDisplayOrder = new SortedDictionary<string, int>();
+        public SortedDictionary<string, int> DicVitalcodeandDisplayOrder = new SortedDictionary<string, int>();
 
         //vital配列10、score配列7、リストを作りたい
         List<Record>[,] GetRecords = new List<Record>[11, 7];
         List<string> VitalCodeName = new List<string>();
 
-        public class Record
-        {
-            public int EWSId;
-            public int Score;
-            public int SeqNo;
-            public string VitalCode;
-            public string CriteriaValue;
-            public int CriteriaSign;
-            public int Target;
-            public int DisplayOrder = 0;
-
-            public Record(string ID)
-            {
-                EWSId = int.Parse(ID);
-            }
-
-        }
-        public class ErrorRecord
-        {
-            public int ErrorId;
-            public int i;
-            public int j;
-
-            public ErrorRecord(int errorid, int ind_i, int ind_j)
-            {
-                ErrorId = errorid;
-                i = ind_i;
-                j = ind_j;
-            }
-        }
-
-        private string[] ErrorMessage = new string[]
-        {
-            "正常",//0
-            "スコアが0に向かって降順に設定されていません。",//1
-            "スコアが未設定です",//2
-            "ディスプレイオーダーが設定されていません。",//3
-            "データタイプが設定されていません。",//4
-            "バイタルコードが設定されていません。",//5
-            "入力記号が設定されていません。",//6
-            "入力値に対するスコアがありません。",//7 jが必要
-            "データタイプが数値型の場合文字列の入力は出来ません。",//8 txtA用
-            "数値が連続していません。",//9 j=99
-            "レコードが作成されていません。",//10  i=99,j=99
-            "データタイプが数値型の場合文字列の入力は出来ません。",//11 txtB用
-            "スコアの入力値は数値である必要があります。",//12
-            "DisPlayOrderが重複しています。",//13
-            "DisplayOrderは10より大きい値を入力出来ません。",//14
-            "DisplayOrderは数値以外の入力は出来ません。",//15
-            "EwsNameが未入力です。",//16
-            "WarningThresoldsが未入力です。",//17
-            "",//
-            "",//
-            "",//
-            "",//
-            "",//
-            "",//50 + x スコアは
-            "",//100 A,Bどっちも文字列
-        };
         public Form2()
         {
             InitializeComponent();
@@ -126,7 +68,7 @@ namespace app2
             {
                 for (int j = 0; j < 7; j++)
                 {
-                    if (_txtCriteiaValueA[i, j].Text != "" || _txtCriteiaValueB[i, j].Text != "" || _cmb[i, j].SelectedIndex != -1)
+                    if (_txtCriteiaValueA[i, j].Text != "" || _txtCriteiaValueB[i, j].Text != "" || _cmb[i, j].SelectedIndex != 0)
                     {
                         fl_Completed = true;
                         break;
@@ -1151,7 +1093,7 @@ namespace app2
             {
                 for(int j = 0; j<7; j++)
                 {
-                    if(_txtCriteiaValueA[i, j].Text != "" || _txtCriteiaValueB[i, j].Text != "" || _cmb[i,j].SelectedIndex != -1 )
+                    if(_txtCriteiaValueA[i, j].Text != "" || _txtCriteiaValueB[i, j].Text != "" || _cmb[i,j].SelectedIndex != 0 )
                     {
                         fl_Completed = true;
                         break;
@@ -1207,7 +1149,9 @@ namespace app2
             txtCreateEwsName.Enabled = false;
             txtCreateWarningThresolds.Enabled = false;
 
-
+            var stackrecord = new List<Record>();
+            #region　tmpOff
+            /*
             //EwsNameに対応するEwsidのレコードを取得しtxtに出力する
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
             SqlConnection con = new SqlConnection(constr);
@@ -1218,10 +1162,6 @@ namespace app2
                 string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[SelectedItem]} AND InvalidFlag = 0";
                 sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[SelectedItem]})";
 
-                //shundbg 引っ張ってくるのを3000に固定している
-                //string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId =3000 AND InvalidFlag = 0";
-                //sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = 3000)";
-                //shundbg
                 SqlCommand com = new SqlCommand(sqlstr, con);
                 SqlDataReader sdr = com.ExecuteReader();
                 while (sdr.Read() == true)
@@ -1273,6 +1213,27 @@ namespace app2
             {
                 con.Close();
             }
+            */
+            #endregion
+            this._db = new DB();
+            stackrecord = this._db.GetRecords(EwsName[SelectedItem]);//EwsName[SelectedItem]
+
+            foreach(var record in stackrecord)
+            {
+                //setにScoreに使用されているレベル3種類を保存
+                scoreset.Add(record.Score);
+                if (DicVitalcodeandDisplayOrder.ContainsKey(record.VitalCode))
+                {
+                    if (DicVitalcodeandDisplayOrder[record.VitalCode] <= record.DisplayOrder)
+                    {
+                        DicVitalcodeandDisplayOrder[record.VitalCode] = record.DisplayOrder;
+                    }
+                }
+                else
+                {
+                    DicVitalcodeandDisplayOrder.Add(record.VitalCode, record.DisplayOrder);
+                }
+            }
 
             //setにある要素からtxtScoreLvを更新する
             int cnt = scoreset.Count();
@@ -1313,8 +1274,10 @@ namespace app2
             }
 
             scoreindex = scoreset.ToArray();
+
             //スコアとターゲット,ディスプレイオーダーによって振り分ける
-            foreach(var record in stackrecords)
+            //foreach(var record in stackrecords)元
+            foreach(var record in stackrecord)
             {
                 if (record.Target == 0)
                 {
@@ -2401,79 +2364,6 @@ namespace app2
                         }
                     }
                 }
-            }
-        }
-
-        private void Error_ColorChange(ErrorRecord err)
-        {
-            switch (err.ErrorId)
-            {
-                case 1://"スコアが0に向かって降順に設定されていません。"
-                case 2://"スコアが未設定です"
-                    for (int i= 0; i< 7; i++)
-                    {
-                        if( i != 3)
-                        {
-                            _txtScore[i].BackColor = Color.Red;
-                        }
-                    }
-                    break;
-                case 3://"ディスプレイオーダーが設定されていません。"
-                        _txtDisplayOrder[err.i].BackColor = Color.Red;
-                    break;
-                case 4://"データタイプが設定されていません。"
-                        _cmbDataTypeUP[err.i].BackColor = Color.Red;
-                    break;
-                case 5://"バイタルコードが設定されていません。"
-                        _vitalcode[err.i].BackColor = Color.Red;
-                    break;
-                case 6://"入力記号が設定されていません。"
-                    _cmb[err.i, err.j].BackColor = Color.Red;
-                    break;
-                case 7://"入力値に対するスコアがありません。"
-                    _txtScore[err.j].BackColor = Color.Red;
-                    break;
-                case 8://"データタイプが数値型の場合文字列の入力は出来ません。"
-                    _txtCriteiaValueA[err.i, err.j].BackColor= Color.Red;
-                    break;
-                case 9://"数値が連続していません。" shundbg -> 値が入ってるところだけにしてもいいかも
-                    for(int j=0; j < 7; j++)
-                    {
-                        _txtCriteiaValueA[err.i, j].BackColor = Color.Red;
-                        _txtCriteiaValueB[err.i, j].BackColor = Color.Red;
-                    }
-                    break;
-                case 10:
-                    ////ファイルの行番号取得           
-                    string strMsg = "レコードが作成されていません。";
-                    //メッセージボックスで行番号を表示
-                    MessageBox.Show(strMsg
-                                    , "エラー"
-                                    , MessageBoxButtons.OK
-                                    , MessageBoxIcon.Information);
-                    break;
-                case 11://"データタイプが数値型の場合文字列の入力は出来ません。"
-                    _txtCriteiaValueB[err.i, err.j].BackColor = Color.Red;
-                    break;
-                case 12://"スコアの入力値は数値である必要があります。"
-                    _txtScore[3 + (err.i + 1)].BackColor = Color.Red;
-                    _txtScore[3 - (err.i + 1)].BackColor = Color.Red;
-                    break;
-                case 13://"DisPlayOrderが重複しています。"
-                    _txtDisplayOrder[err.i].BackColor= Color.Red;
-                    break;
-                case 14:
-                    _txtDisplayOrder[err.i].BackColor = Color.Red;
-                    break;
-                case 15:
-                    _txtDisplayOrder[err.i].BackColor = Color.Red;
-                    break;
-                case 16:
-                    txtCreateEwsName.BackColor = Color.Red;
-                    break;
-                case 17:
-                    txtCreateWarningThresolds.BackColor = Color.Red;
-                    break;
             }
         }
 
