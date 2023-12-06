@@ -7,6 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using eDoktor.Taikoban.AppExtension;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace app2
 {
@@ -53,13 +57,9 @@ namespace app2
                         //SQL設定
                         command.CommandType = System.Data.CommandType.Text;
                         command.CommandText = query.ToString();
-                        //パラメータ設定
-                        //command.Parameters.Add();
-                        //command.Parameters.Add(Database.CreateParameter(nameof(App.AuthUserId), System.Data.DbType.String, App.AuthUserId));
                     },
                     (reader) => 
-                    {
-                        //retList.Add(new Record2(reader));  
+                    { 
                         retList.Add(rec.Create(reader));
                     });
             }
@@ -71,5 +71,57 @@ namespace app2
             return retList;
         }
         #endregion
+
+        #region T_EwsScoreCriteriaへレコード追加
+        public int InsertRecord(List<Record> recordlist)
+        {
+            int cnt = 0;
+            int r = 0;
+            foreach(Record record in recordlist)
+            {
+                //T_EwsScoreCriteriaへレコード追加
+                var sb = new StringBuilder();
+                sb.Append("INSERT INTO T_EwsScoreCriteria(EwsId, SeqNo, VitalCode, Score, CriteriaValue, CriteriaSign, Target, DisplayOrder)");
+                sb.Append($"VALUES( {record.EWSId}, {record.SeqNo}, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
+                r = this.Database.ExecuteNonQuery(sb.ToString());
+                if (r == 0)
+                {
+                    MessageBox.Show("T_EwsScoreCriteria to INSERT Failed in CreatButton_Click()");
+                    break;
+                }
+                cnt++;
+            }
+            return cnt;
+        }
+        #endregion
+
+        #region M_EwsTypeへレコード登録,EwdName新規登録
+        public int InsertEwsName(string EwsName, string WarningThresolds)
+        {
+            int r = 0;   
+            var sb = new StringBuilder();
+            sb.Append($"INSERT INTO M_EwsType (EwsName, WarningThresholds) VALUES('{EwsName}','{WarningThresolds}')");
+            r = this.Database.ExecuteNonQuery(sb.ToString());
+            if (r == 0) MessageBox.Show("M_EwsType to INSERT Failed in CreatButton_Click()");
+            
+            return r;
+        }
+        #endregion
+
+        #region T_EwsScoreCriteriaへレコード追加後に以前までのレコードのInvalidFlagをあげておく
+        //SeqNoはフラグを下げたいNoが引数としている
+        public int UpdateInvalidFlag(int EwsId, int SeqNo)
+        {
+            int r = 0;
+            var sb = new StringBuilder();
+            sb.Append($"UPDATE T_EwsScoreCriteria SET InvalidFlag = 1 WHERE EwsId = {EwsId} AND SeqNo = {SeqNo}");
+            r = this.Database.ExecuteNonQuery(sb.ToString());
+
+            return r;
+
+        }
+        #endregion
+
+
     }
 }

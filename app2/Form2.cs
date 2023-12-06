@@ -200,7 +200,7 @@ namespace app2
             return intLineNumber;
         }
         /// <summary>
-        /// SeqNo=1を指定してレコードを作成する
+        /// SeqNo=1を指定してレコードを作成する　create用
         /// 新規追加用
         /// </summary>
         /// <param name="RecList"></param>
@@ -216,7 +216,7 @@ namespace app2
         }
 
         /// <summary>
-        /// レコード作成
+        /// レコード作成　
         /// </summary>
         /// <param name="RecList"></param>
         /// <param name="vitalcode"></param>
@@ -417,23 +417,27 @@ namespace app2
         {
             var RecordList = new List<Record>();
             var ErrorList  = new List<ErrorRecord>();
+            
             //エラーチェック変数 0がエラーなし
             int check_input = 0;
 
+            if(cmbEwsName.SelectedIndex == 0)
+            {
+                //Ewsname,WarnigThreshholdsが入力済みか確認
+                if (txtCreateEwsName.Text == "")
+                {
+                    var err = new ErrorRecord(16, 99, 99);
+                    ErrorList.Add(err);
+                    check_input = 16;
+                }
+                if (txtCreateWarningThresolds.Text == "")
+                {
+                    var err = new ErrorRecord(17, 99, 99);
+                    ErrorList.Add(err);
+                    check_input = 17;
+                }
+            }
 
-            //Ewsname,WarnigThreshholdsが入力済みか確認
-            if(txtCreateEwsName.Text == "")
-            {
-                var err = new ErrorRecord(16, 99, 99);
-                ErrorList.Add(err);
-                check_input = 16;
-            }
-            if(txtCreateWarningThresolds.Text == "")
-            {
-                var err = new ErrorRecord(17, 99, 99);
-                ErrorList.Add(err);
-                check_input = 17;
-            }
             //Scoreの入力が正常値か確認
             check_input = Update_scorearray();
             if (check_input != 0)
@@ -530,7 +534,16 @@ namespace app2
                     else
                     {
                         exrec = true;
-                        check_input = CreatRecord(RecordList, intlist, Convert.ToInt32(txtCreateEWSID.Text) ,_vitalcode[i].Text, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], Convert.ToInt32(_txtDisplayOrder[i].Text), _cmbDataTypeUP[i].SelectedIndex);
+                        //新規登録選択時
+                        if(cmbEwsName.SelectedIndex == 0)
+                        {
+                            check_input = CreatRecord(RecordList, intlist, Convert.ToInt32(txtCreateEWSID.Text), _vitalcode[i].Text, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], Convert.ToInt32(_txtDisplayOrder[i].Text), _cmbDataTypeUP[i].SelectedIndex);
+                        }
+                        //データ更新選択時
+                        else
+                        {
+                            check_input = CreatRecord(RecordList, intlist, Convert.ToInt32(EWSID.Text), _vitalcode[i].Text, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], Convert.ToInt32(_txtDisplayOrder[i].Text), Convert.ToInt32(txtSeqNo.Text), _cmbDataTypeUP[i].SelectedIndex);
+                        }
                     }
                     if (check_input != 0)
                     {
@@ -619,304 +632,52 @@ namespace app2
                                 , MessageBoxIcon.Information);
                 return;
             }
-           
-            //EVISCloudに接続
-            string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
-            SqlConnection con = new SqlConnection(constr);
-            con.Open();
-            int Ewsid = 0;
-            try
-            {
-                //更新後出力用変数
-                
-                //M_EwsTypeへレコード登録
-                string sqlstr = $"INSERT INTO M_EwsType (EwsName, WarningThresholds) VALUES('{txtCreateEwsName.Text}','{txtCreateWarningThresolds.Text}')";
-                SqlCommand createEwsTypecom = new SqlCommand(sqlstr, con);
-                var result1 = createEwsTypecom.ExecuteNonQuery();
-                if (result1 == 0) MessageBox.Show("M_EwsType INSERT Failed in CreatButton_Click()");
-                foreach (var record in RecordList)
-                {
-                    /*test　テキストボックスに登録する情報を出力、確認用 shundbg
-                    int EwsId = record.EWSId;
-                    string VitalCode = record.VitalCode;
-                    int Score = record.Score;
-                    string CriteriaValue = record.CriteriaValue;
-                    int CriteriaSign = record.CriteriaSign;
-                    int Target = record.Target;
-                    txtOutSql.Text += string.Format("{0} / {1} /{2} / {3} / {4} / {5} / {6}  \r\n", EwsId, VitalCode, Score, CriteriaValue, CriteriaSign, Target, record.DisplayOrder);
-                    //test */
-                    
-                    //T_EwsScoreCriteriaへレコード追加
-                    var sb = new StringBuilder();
-                    sb.Append("INSERT INTO T_EwsScoreCriteria(EwsId, SeqNo, VitalCode, Score, CriteriaValue, CriteriaSign, Target, DisplayOrder)");
-                    //seqno=1固定でいいんじゃないか？新規追加だし
-                    sb.Append($"VALUES( {record.EWSId},1, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
-                    SqlCommand com = new SqlCommand(sb.ToString(), con);
-                    Ewsid = record.EWSId;
-                    var result2 = com.ExecuteNonQuery();
-                    if (result2 == 0) MessageBox.Show("T_EwsScoreCriteria to INSERT Failed in CreatButton_Click()");
-                }
-            }
-            finally
-            {
-                MessageBox.Show("INSERT DONE");
-                con.Close();
-            }
+
+            int r;
+            this._db = new DB();
             
-            InitEwsName();
-            //新規登録後すぐに更新出来るようにデータセット
-            EWSID.Text = Ewsid.ToString();
-            txtSeqNo.Text = "1";
-            cmbEwsName.SelectedIndex = cmbEwsName.FindString(txtCreateEwsName.Text);
-            //登録後いったんボックスカラーをもとに戻す
-            InitTxtBoxColor();
+            #region DB登録処理
+            if (cmbEwsName.SelectedIndex == 0)
+            {
+                //M_EwsTypeへレコード登録
+                this._db.InsertEwsName(txtCreateEwsName.Text, txtCreateWarningThresolds.Text);
+                //T_EwsScoreCriteriaへレコード追加
+                r = this._db.InsertRecord(RecordList);
+
+                if (r != 0)
+                {
+                    MessageBox.Show("INSERT DONE");
+                }
+            }
+            else
+            {
+                int EwsId = RecordList.First().EWSId;
+                int SeqNo = RecordList.First().SeqNo;
+                r = this._db.InsertRecord(RecordList);
+                if(r != 0)
+                {
+                    this._db.UpdateInvalidFlag(EwsId, SeqNo-1);
+                    if (r != 0)
+                    {
+                        MessageBox.Show("UPDATE DONE");
+                    }
+                }
+            }
+            #endregion
+
+            #region　登録後画面設定処理
+            if (cmbEwsName.SelectedIndex == 0)
+            {
+                InitEwsName();
+                //新規登録後すぐに更新出来るようにデータセット
+                EWSID.Text = txtCreateEWSID.Text.ToString();//あやしくなった
+                txtSeqNo.Text = "1";
+                cmbEwsName.SelectedIndex = cmbEwsName.FindString(txtCreateEwsName.Text);
+                //登録後いったんボックスカラーをもとに戻す
+                InitTxtBoxColor();
+            }
+            #endregion
         }
-
-        /// <summary>
-        /// btnUPDATEクリック時処理
-        /// 選択されたEwsNameの情報をＤＢから取ってきて表示
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void UPDATE_Click()
-        {
-            var RecordList = new List<Record>();
-            var ErrorList = new List<ErrorRecord>();
-            int check_input = 0;
-            //score配列を入力したscoreLVに更新する
-            check_input = Update_scorearray();
-            if (check_input != 0)
-            {
-                if (check_input > 50)
-                {
-                    int num = check_input % 10;
-                    for (int i = 0; i < 3; i++)
-                    {
-                        //scorelv,３か所のフラグを調べて立っている部分にエラーを出す。
-                        if ((num & (1 << i)) > 0)
-                        {
-                            var err = new ErrorRecord(12, i, 99);
-                            ErrorList.Add(err);
-                        }
-                    }
-                }
-                else
-                {
-                    var err = new ErrorRecord(check_input, 99, 99);
-                    ErrorList.Add(err);
-                }
-            }
-
-            //DisplayOrderの入力値が正常値か確認
-            check_input = Check_DisplayOrder(ErrorList);
-
-            //レコード登録時に必要な情報でエラーがあった場合レコード処理の前に処理を終わる
-            if (ErrorList.Count != 0)
-            {
-                //ErrorListにたまったエラーを処理して背景色に反映＋テキストログに残す
-                foreach (var err in ErrorList)
-                {
-                    Error_ColorChange(err);
-                    txtOutSql.Text += $"Errid = {err.ErrorId}  i = {err.i},  j = {err.j} ErrMessage = {ErrorMessage[err.ErrorId]} \r\n";
-                }
-                ////ファイルの行番号取得           
-                string strMsg = "入力値が間違っているため終了します。";
-                //メッセージボックスで行番号を表示
-                MessageBox.Show(strMsg
-                                , "エラー"
-                                , MessageBoxButtons.OK
-                                , MessageBoxIcon.Information);
-                return;
-            }
-
-            //DisplayOrderに重複がないか確認
-            List<int>[] DispList = new List<int>[10];
-            for (int i = 0; i < 10; i++)
-            {
-                DispList[i] = new List<int>();
-
-            }
-            for (int i = 0; i < 10; i++)
-            {
-                if(_txtDisplayOrder[i].Text != "")
-                {
-                    DispList[Convert.ToInt32(_txtDisplayOrder[i].Text) -1 ].Add(i);
-                }
-            }
-            for (int i = 0; i < 10; i++)
-            {
-                if (DispList[i].Count >= 2)
-                {
-                    foreach (var ii in DispList[i])
-                    {
-                        var err = new ErrorRecord(13, ii, 99);
-                        ErrorList.Add(err);
-                    }
-                }
-            }
-
-
-            for (int i = 0; i < 10; i++)//iは行数 10の部分を定数にしたほうがきれいかも
-            {
-                var intlist = new List<int>();
-                bool exrec = false;
-
-                for (int j = 0; j < 7; j++)//jは列数　７の部分を定数にしたほうがきれいかも
-                {
-                    if (_txtCriteiaValueA[i, j].Text == "" && _txtCriteiaValueB[i, j].Text == "")
-                    {
-                        continue;
-                    }
-                    else if (_cmb[i, j].SelectedIndex == -1)
-                    {
-                        check_input = 6;//入力記号が設定されていません。
-                        var err = new ErrorRecord(check_input, i, j);
-                        ErrorList.Add(err);
-                        continue;
-                    }
-                    else
-                    {
-                        exrec = true;
-                        check_input = CreatRecord(RecordList, intlist, Convert.ToInt32(EWSID.Text), _vitalcode[i].Text, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], Convert.ToInt32(_txtDisplayOrder[i].Text), Convert.ToInt32(txtSeqNo.Text), _cmbDataTypeUP[i].SelectedIndex) ;
-                    }
-                    if (check_input != 0)
-                    {
-                        if (check_input == 100)
-                        {
-                            var errA = new ErrorRecord(8, i, j);
-                            ErrorList.Add(errA);
-                            var errB = new ErrorRecord(11, i, j);
-                            ErrorList.Add(errB);
-                        }
-                        else
-                        {
-                            var err = new ErrorRecord(check_input, i, j);
-                            ErrorList.Add(err);
-                        }
-                    }
-                }
-
-                //その行が未入力ならエラーなしでいい
-                if (exrec)
-                {
-                    if (_txtDisplayOrder[i].Text == "")
-                    {
-                        check_input = 3;//ディスプレイオーダーが設定されていません。
-                        var err = new ErrorRecord(check_input, i, 99);
-                        ErrorList.Add(err);
-                    }
-                    if (_cmbDataTypeUP[i].SelectedIndex == -1)
-                    {
-                        check_input = 4;//データタイプが設定されていません。
-                        var err = new ErrorRecord(check_input, i, 99);
-                        ErrorList.Add(err);
-                    }
-                    if (_vitalcode[i].SelectedIndex == -1)
-                    {
-                        check_input = 5;//バイタルコードが設定されていません。
-                        var err = new ErrorRecord(check_input, i, 99);
-                        ErrorList.Add(err);
-                    }
-                }
-
-                //入力制限判定
-                //int double
-                if (intlist.Count != 0)
-                {
-                    bool fl = true;
-                    for (int s = 0; s < intlist.Count - 1; s++)
-                    {
-                        if (intlist[s + 1] - intlist[s] != 1)
-                        {
-                            fl = false;
-                            check_input = 0;
-                            break;
-                        }
-                    }
-                    //エラー処理
-                    if (!fl)
-                    {
-                        //エラー　数値が連続していません。9
-                        check_input = 9;
-                        var err = new ErrorRecord(check_input, i, 99);
-                        ErrorList.Add(err);
-                    }
-                }
-            }
-
-            if ( RecordList.Count == 0 )
-            {
-                //レコード無し
-                check_input = 10;
-                var err = new ErrorRecord(check_input, 99, 99);
-                ErrorList.Add(err);
-            }
-
-            if (ErrorList.Count != 0)
-            {
-                //ErrorListにたまったエラーを処理して背景色に反映＋テキストログに残す
-                foreach (var err in ErrorList)
-                {
-                    Error_ColorChange(err);
-                    txtOutSql.Text += $"Errid = {err.ErrorId}  i = {err.i},  j = {err.j} ErrMessage = {ErrorMessage[err.ErrorId]} \r\n";
-                }
-                ////ファイルの行番号取得           
-                string strMsg = "入力値が間違っているため終了します。";
-                //メッセージボックスで行番号を表示
-                MessageBox.Show(strMsg
-                                , "エラー"
-                                , MessageBoxButtons.OK
-                                , MessageBoxIcon.Information);
-                return;
-            }
-
-            //EVISCloudに接続
-            string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
-
-            SqlConnection con = new SqlConnection(constr);
-            con.Open();
-            try
-            {
-                bool first = true;
-                foreach (var record in RecordList)
-                {
-                    /*test　テキストボックスに登録する情報を出力、確認用 shundbg
-                    int EwsId = record.EWSId;
-                    string VitalCode = record.VitalCode;
-                    int Score = record.Score;
-                    string CriteriaValue = record.CriteriaValue;
-                    int CriteriaSign = record.CriteriaSign;
-                    int Target = record.Target;
-                    txtOutSql.Text += string.Format("{0} / {1} /{2} / {3} / {4} / {5} / {6}  \r\n", EwsId, VitalCode, Score, CriteriaValue, CriteriaSign, Target, record.DisplayOrder);
-                    //test */
-
-                    var sb = new StringBuilder();
-                    sb.Append("INSERT INTO T_EwsScoreCriteria(EwsId, SeqNo, VitalCode, Score, CriteriaValue, CriteriaSign, Target, DisplayOrder)");
-                    sb.Append($"VALUES( {record.EWSId}, {record.SeqNo}, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
-                    //shundbg
-                    //sb.Append($"VALUES( 3000, {record.SeqNo}, '{record.VitalCode}', {record.Score}, '{record.CriteriaValue}', {record.CriteriaSign}, {record.Target}, {record.DisplayOrder})");
-                    SqlCommand com = new SqlCommand(sb.ToString(), con);
-
-                    var result = com.ExecuteNonQuery();
-                    if (result == 0) MessageBox.Show("T_EwsScoreCriteria to UPDATE Failed in UPDATE_Click()");
-
-                    if (first)
-                    {
-                        //過去分のinvalidflagを立てる必要がある
-                        string sqlreststr = $"UPDATE T_EwsScoreCriteria SET InvalidFlag = 1 WHERE EwsId = {record.EWSId} AND SeqNo = {record.SeqNo - 1}";
-                        SqlCommand comreset = new SqlCommand(sqlreststr, con);
-                        var resultreset = comreset.ExecuteNonQuery();
-                        first = false;
-                    }
-                }
-            }
-            finally
-            {
-                MessageBox.Show("UPDATE Done");
-                con.Close();
-            }
-        }
-
         /// <summary>
         /// DB->app スコア表示用関数 
         /// 変更　btnReadDB_Click -> ReadEwsScoreBoard
@@ -981,7 +742,7 @@ namespace app2
             }
 
             if( SelectedItem == "-新規追加-"){
-                btnInitforCreate_Click();
+                SelectedInitforCreate();
                 cmbEwsName.SelectedIndex = selectindex;
                 return;
             }
@@ -992,71 +753,6 @@ namespace app2
             txtCreateWarningThresolds.Enabled = false;
 
             var stackrecord = new List<Record>();
-            #region　tmpOff
-            /*
-            //EwsNameに対応するEwsidのレコードを取得しtxtに出力する
-            string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
-            SqlConnection con = new SqlConnection(constr);
-            con.Open();
-            try
-            {
-                //SQL文作成:
-                string sqlstr = $"SELECT * FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[SelectedItem]} AND InvalidFlag = 0";
-                sqlstr += $"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = {EwsName[SelectedItem]})";
-
-                SqlCommand com = new SqlCommand(sqlstr, con);
-                SqlDataReader sdr = com.ExecuteReader();
-                while (sdr.Read() == true)
-                {
-                    //EVIS                   
-                    int EwsId = (int)sdr["EwsId"];
-                    int SeqNo = (int)sdr["SeqNo"];
-                    string VitalCode = (string)sdr["VitalCode"];
-                    int Score = (int)sdr["Score"];
-                    string CriteriaValue = (string)sdr["CriteriaValue"];
-                    int CriteriaSign = (int)sdr["CriteriaSign"];
-                    int Target = (int)sdr["Target"];
-                    int Displayorder = (int)sdr["DisplayOrder"];
-
-                    //setにScoreに使用されているレベル3種類を保存
-                    scoreset.Add(Score);
-
-                    var record = new Record(EwsId.ToString());
-                    record.EWSId = EwsId;
-                    record.SeqNo = SeqNo;
-                    record.VitalCode = VitalCode;
-                    record.Score = Score;
-                    record.CriteriaValue = CriteriaValue;
-                    record.CriteriaSign = CriteriaSign;
-                    record.Target = Target;
-                    record.DisplayOrder = Displayorder;
-
-                    //EWSID,SeqNo保存 
-                    EWSID.Text = EwsId.ToString();
-                    txtSeqNo.Text = SeqNo.ToString();
-                    //各VitalTytpeのDisplayOrderを求める
-                    if (DicVitalcodeandDisplayOrder.ContainsKey(VitalCode))
-                    {
-                        if (DicVitalcodeandDisplayOrder[VitalCode] <= Displayorder)
-                        {
-                            DicVitalcodeandDisplayOrder[VitalCode] = Displayorder;
-                        }
-                    }
-                    else
-                    {
-                        DicVitalcodeandDisplayOrder.Add(VitalCode, Displayorder);
-                    }
-                    stackrecords.Add(record);
-                }
-                sdr.Close();
-                com.Dispose();
-            }
-            finally
-            {
-                con.Close();
-            }
-            */
-            #endregion
             this._db = new DB();
             stackrecord = this._db.GetRecords(EwsName[SelectedItem]);//EwsName[SelectedItem]
 
@@ -1303,20 +999,6 @@ namespace app2
             }
 
         }
-        /// <summary>
-        /// txtboxに表示テスト用
-        /// </summary>
-        /// <param name="record"></param>
-        private void OutRecord(Record record)
-        {
-            string outstr = "";
-
-            outstr += string.Format($"EwsId:{record.EWSId}, SeqNo:{record.SeqNo}, VitalCode:{record.VitalCode}, Score:{record.Score}, CriteriaValue:{record.CriteriaValue}, CriteriaSign:{record.CriteriaSign}, Target:{record.Target}, DisplayOrder:{record.DisplayOrder}  \r\n");
-            /*shundbg
-            txtOutSql.Text += outstr;
-            */
-        }
-
         private int Check_DisplayOrder(List<ErrorRecord> list)
         {
             int ret = 0;
@@ -1952,7 +1634,7 @@ namespace app2
 
         }
 
-        private void btnInitforCreate_Click()
+        private void SelectedInitforCreate()
         {
             //表に値が入力済みかチェックして初期化
             bool fl_Completed = false;
@@ -1987,8 +1669,6 @@ namespace app2
             AllClear();//shundbg 入力されているが消してもいいか？って聞く処理がない
             InitTxtBoxColor();
 
-            //登録されているvitalcodeを取ってきてスタックしておく（重複を許していない）
-            var vitalcodes = new HashSet<string>();
             //登録可能なIDをDBからとってくる。登録時に勝手に付けられるから意味ないけど画面で見れたほうがいいかもだから残す
             string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
             SqlConnection con = new SqlConnection(constr);
@@ -2215,15 +1895,15 @@ namespace app2
         private void btnCreateRecord_Click(object sender, EventArgs e)
         {
             txtOutSql.Text = "";
-            if (cmbEwsName.SelectedIndex == 0)
+            /*if (cmbEwsName.SelectedIndex == 0)
             {
                 CreatButton_Click();
             }
             else
             {
                 UPDATE_Click();
-            }
-
+            }*/
+            CreatButton_Click();
         }
 
     }
