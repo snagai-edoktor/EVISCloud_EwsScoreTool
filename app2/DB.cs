@@ -46,7 +46,7 @@ namespace app2
                 query.Append($"AND InvalidFlag = 0 ");
                 query.Append($"AND SeqNo = (SELECT MAX(SeqNo) FROM T_EwsScoreCriteria WHERE EwsId = {EwsNo})");
 
-                var rec = new Record("0");
+                var rec = new Record();
                 this.Database.ExecuteQuery(
                     (command) =>
                     {

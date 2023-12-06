@@ -200,7 +200,7 @@ namespace app2
             return intLineNumber;
         }
         /// <summary>
-        /// 受け取った入力情報からレコードを作りRecListに追加する
+        /// SeqNo=1を指定してレコードを作成する
         /// 新規追加用
         /// </summary>
         /// <param name="RecList"></param>
@@ -210,180 +210,13 @@ namespace app2
         /// <param name="txtB"></param>
         /// <param name="score"></param>
         /// <param name="tarval"></param>
-        public int CreatRecord(List<Record> RecList, List<int> intlist, string vitalcode, string txtA, string symb, string txtB, int score, int tarval, int displayorder,int datatype)
+        public int CreatRecord(List<Record> RecList, List<int> intlist, int EwsId,  string vitalcode, string txtA, string symb, string txtB, int score, int tarval, int displayorder,int datatype)
         {
-            double d;
-            int i;
-            int fl = 0;
-
-            if(score == -1)
-            {
-                //エラー　入力値に対するスコアがありません。
-                return 7;
-            }
-            
-            switch (symb)
-            {
-                case ""://未選択
-                    //エラー 記号コンボボックスが未設定です。ここには来ないが
-                    fl = 6;
-                    break;
-                case "=":// =  memo 1つのレコード作成
-                    var record0 = new Record(txtCreateEWSID.Text);
-                    record0.Score = score;
-                    record0.VitalCode = vitalcode;
-                    record0.CriteriaValue = txtA;
-                    record0.CriteriaSign = 2;
-                    record0.Target = tarval;
-                    record0.DisplayOrder = displayorder;
-
-                    RecList.Add(record0);
-                    break;
-                case ",":// , memo レコード数に限りない
-                    string[] words = txtA.Split(',');
-                    foreach (var word in words)
-                    {
-                        var record1 = new Record(txtCreateEWSID.Text);
-                        record1.Score = score;
-                        record1.VitalCode = vitalcode;
-                        record1.CriteriaValue = word;
-                        record1.CriteriaSign = 2;
-                        record1.Target = tarval;
-                        record1.DisplayOrder = displayorder;
-
-                        RecList.Add(record1);
-                    }
-                    break;
-                case "～":// ~ memo 2つレコードを作ればいい
-                    //入力制限判定用
-                    //double入力
-                    if ( double.TryParse(txtB, out d) && txtB.Contains('.') )
-                    {
-                        double da;
-                        double.TryParse(txtB, out d);
-                        double.TryParse(txtA, out da);
-                        int a = (int)(da * 10);
-                        int b = (int)(d * 10);
-                        for (int k = a; k <= b; k++)
-                        {
-                            intlist.Add(k);
-                        }
-                    }//int入力
-                    else if (int.TryParse(txtB, out i))
-                    {
-                        int ia;
-                        int.TryParse(txtB, out i);
-                        int.TryParse(txtA, out ia);
-                        for (int start = ia; start <= i; start++)
-                        {
-                            intlist.Add(start);
-                        }
-                    }
-                    else
-                    {
-                        if (!(double.TryParse(txtA, out d) && txtA.Contains('.')) && !(int.TryParse(txtA, out i)))//shundbg 少し不安な条件式かも
-                        {
-                            //エラー　データタイプが数値型の場合文字列の入力は出来ません。
-                            fl = 100;
-                            break;
-                        }
-                        //エラー　データタイプが数値型の場合文字列の入力は出来ません。
-                        fl = 11; 
-                        break;
-                    }
-
-                    if( !(double.TryParse(txtA, out d) && txtA.Contains('.')) && !(int.TryParse(txtA, out i)))//shundbg 少し不安な条件式かも
-                    {
-                        //エラー　データタイプが数値型の場合文字列の入力は出来ません。
-                        fl = 8;
-                        break;
-                    }
-
-                    var record21 = new Record(txtCreateEWSID.Text);
-                    record21.Score = score;
-                    record21.VitalCode = vitalcode;
-                    record21.CriteriaValue = txtA;
-                    record21.CriteriaSign = 1;
-                    record21.Target = tarval;
-                    record21.DisplayOrder = displayorder;
-
-                    RecList.Add(record21);
-
-                    var record22 = new Record(txtCreateEWSID.Text);
-                    record22.Score = score;
-                    record22.VitalCode = vitalcode;
-                    record22.CriteriaValue = txtB;
-                    record22.CriteriaSign = 0;
-                    record22.Target = tarval;
-                    record22.DisplayOrder = displayorder;
-
-                    RecList.Add(record22);
-
-                    break;
-                case "≦":// <= memo １つレコード：
-                    //入力制限用
-                    //double
-                    if ( double.TryParse(txtB, out d) && txtB.Contains('.') )
-                    {
-                        intlist.Add((int)(d * 10));
-                    }//int
-                    else if ( int.TryParse(txtB, out i) )
-                    {
-                        intlist.Add(i);
-                    }
-                    else
-                    {
-                        //エラー　データタイプが数値型の場合文字列の入力は出来ません。
-                        fl = 11;
-                        break;
-                    }
-
-                    var record3 = new Record(txtCreateEWSID.Text);
-                    record3.Score = score;
-                    record3.VitalCode = vitalcode;
-                    record3.CriteriaValue = txtB;
-                    record3.CriteriaSign = 0;
-                    record3.Target = tarval;
-                    record3.DisplayOrder = displayorder;
-
-                    RecList.Add(record3);
-
-
-                    break;
-                case "≧":// >= memo １つレコード：
-                    //入力制限用
-                    //double
-                    if (double.TryParse(txtB, out d) && txtB.Contains('.'))
-                    {
-                        intlist.Add((int)(d * 10));
-                    }//int
-                    else if (int.TryParse(txtB, out i))
-                    {
-                        intlist.Add(i);
-                    }
-                    else
-                    {
-                        //エラー　データタイプが数値型の場合文字列の入力は出来ません。
-                        fl = 11;
-                        break;
-                    }
-
-                    var record4 = new Record(txtCreateEWSID.Text);
-                    record4.Score = score;
-                    record4.VitalCode = vitalcode;
-                    record4.CriteriaValue = txtB;
-                    record4.CriteriaSign = 1;
-                    record4.Target = tarval;
-                    record4.DisplayOrder = displayorder;
-
-                    RecList.Add(record4);
-                    break;
-            }
-            return fl;
+            return CreatRecord(RecList,intlist, EwsId, vitalcode, txtA, symb, txtB, score, tarval, displayorder, 1, datatype);
         }
 
         /// <summary>
-        /// UPDATE用レコード作成
+        /// レコード作成
         /// </summary>
         /// <param name="RecList"></param>
         /// <param name="vitalcode"></param>
@@ -394,7 +227,7 @@ namespace app2
         /// <param name="tarval"></param>
         /// <param name="displayorder"></param>
         /// <param name="seqno"></param>
-        public int CreatRecord_Update(List<Record> RecList, List<int> intlist, string vitalcode, string txtA, string symb, string txtB, int score, int tarval, int displayorder, int seqno, int datatype)
+        public int CreatRecord(List<Record> RecList, List<int> intlist, int EwsId, string vitalcode, string txtA, string symb, string txtB, int score, int tarval, int displayorder, int seqno, int datatype)
         {
             double d;
             int i;
@@ -413,8 +246,9 @@ namespace app2
                     fl = 6;
                     break;
                 case "="://   "="memo 1つのレコード作成
-                    var record0 = new Record(EWSID.Text);
+                    var record0 = new Record();
 
+                    record0.EWSId = EwsId;
                     record0.Score = score;
                     record0.VitalCode = vitalcode;
                     record0.CriteriaValue = txtA;
@@ -429,7 +263,9 @@ namespace app2
                     string[] words = txtA.Split(',');
                     foreach (var word in words)
                     {
-                        var record1 = new Record(EWSID.Text);
+                        var record1 = new Record();
+
+                        record1.EWSId = EwsId;
                         record1.Score = score;
                         record1.VitalCode = vitalcode;
                         record1.CriteriaValue = word;
@@ -486,7 +322,9 @@ namespace app2
                         break;
                     }
 
-                    var record21 = new Record(EWSID.Text);
+                    var record21 = new Record();
+
+                    record21.EWSId = EwsId;
                     record21.Score = score;
                     record21.VitalCode = vitalcode;
                     record21.CriteriaValue = txtA;
@@ -497,7 +335,9 @@ namespace app2
 
                     RecList.Add(record21);
 
-                    var record22 = new Record(EWSID.Text);
+                    var record22 = new Record();
+
+                    record22.EWSId = EwsId;
                     record22.Score = score;
                     record22.VitalCode = vitalcode;
                     record22.CriteriaValue = txtB;
@@ -526,7 +366,8 @@ namespace app2
                         fl = 8;
                         break;
                     }
-                    var record3 = new Record(EWSID.Text);
+                    var record3 = new Record();
+                    record3.EWSId = EwsId;
                     record3.Score = score;
                     record3.VitalCode = vitalcode;
                     record3.CriteriaValue = txtB;
@@ -555,7 +396,8 @@ namespace app2
                         fl = 11;
                         break;
                     }
-                    var record4 = new Record(EWSID.Text);
+                    var record4 = new Record();
+                    record4.EWSId = EwsId;
                     record4.Score = score;
                     record4.VitalCode = vitalcode;
                     record4.CriteriaValue = txtB;
@@ -688,7 +530,7 @@ namespace app2
                     else
                     {
                         exrec = true;
-                        check_input = CreatRecord(RecordList, intlist, _vitalcode[i].Text, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], Convert.ToInt32(_txtDisplayOrder[i].Text), _cmbDataTypeUP[i].SelectedIndex);
+                        check_input = CreatRecord(RecordList, intlist, Convert.ToInt32(txtCreateEWSID.Text) ,_vitalcode[i].Text, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], Convert.ToInt32(_txtDisplayOrder[i].Text), _cmbDataTypeUP[i].SelectedIndex);
                     }
                     if (check_input != 0)
                     {
@@ -935,7 +777,7 @@ namespace app2
                     else
                     {
                         exrec = true;
-                        check_input = CreatRecord_Update(RecordList, intlist, _vitalcode[i].Text, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], Convert.ToInt32(_txtDisplayOrder[i].Text), Convert.ToInt32(txtSeqNo.Text), _cmbDataTypeUP[i].SelectedIndex) ;
+                        check_input = CreatRecord(RecordList, intlist, Convert.ToInt32(EWSID.Text), _vitalcode[i].Text, _txtCriteiaValueA[i, j].Text, _cmb[i, j].Text, _txtCriteiaValueB[i, j].Text, _score[j], tarval[j], Convert.ToInt32(_txtDisplayOrder[i].Text), Convert.ToInt32(txtSeqNo.Text), _cmbDataTypeUP[i].SelectedIndex) ;
                     }
                     if (check_input != 0)
                     {
@@ -1220,6 +1062,9 @@ namespace app2
 
             foreach(var record in stackrecord)
             {
+                //EWSID,SeqNo保存 
+                EWSID.Text = record.EWSId.ToString();
+                txtSeqNo.Text = record.SeqNo.ToString();
                 //setにScoreに使用されているレベル3種類を保存
                 scoreset.Add(record.Score);
                 if (DicVitalcodeandDisplayOrder.ContainsKey(record.VitalCode))

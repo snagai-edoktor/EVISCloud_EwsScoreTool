@@ -20,23 +20,9 @@ namespace app2
         public int Target;
         public int DisplayOrder = 0;
 
-        public Record(string ID)
-        {
-            /*EWSId = (int)reader["EwsId"];
-            SeqNo = (int)reader["SeqNo"];
-            VitalCode = (string)reader["VitalCode"];
-            Score = (int)reader["Score"];
-            CriteriaValue = (string)reader["CriteriaValue"];
-            CriteriaSign = (int)reader["CriteriaSign"];
-            Target = (int)reader["Target"];
-            DisplayOrder = (int)reader["DisplayOrder"];*/
-
-            EWSId = int.Parse(ID);
-
-        }
         public Record Create(DbDataReader reader)
         {
-            var ret = new Record("0");
+            var ret = new Record();
             ret.EWSId = (int)reader["EwsId"];
             ret.SeqNo = (int)reader["SeqNo"];
             ret.VitalCode = (string)reader["VitalCode"];
