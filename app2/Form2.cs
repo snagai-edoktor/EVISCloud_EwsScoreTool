@@ -61,7 +61,8 @@ namespace app2
         {
 
         }
-        private void Form2_FormClosing(Object sender, FormClosingEventArgs e)
+
+        private bool Check_Completed()
         {
             bool fl_Completed = false;
             for (int i = 0; i < 10; i++)
@@ -74,22 +75,27 @@ namespace app2
                         break;
                     }
                 }
-                if (fl_Completed)
+            }
+            return fl_Completed;
+        }
+
+        private void Form2_FormClosing(Object sender, FormClosingEventArgs e)
+        {
+            
+            if (Check_Completed())
+            {
+                ////ファイルの行番号取得           
+                string strMsg = "表に値が書き込まれています、終了しますか？";
+
+                //メッセージボックスで行番号を表示
+                var resultMessageBox = MessageBox.Show(strMsg
+                                , "エラー"
+                                , MessageBoxButtons.OKCancel
+                                , MessageBoxIcon.Information);
+
+                if (resultMessageBox == System.Windows.Forms.DialogResult.Cancel)
                 {
-                    ////ファイルの行番号取得           
-                    string strMsg = "表に値が書き込まれています、終了しますか？";
-
-                    //メッセージボックスで行番号を表示
-                    var resultMessageBox = MessageBox.Show(strMsg
-                                    , "エラー"
-                                    , MessageBoxButtons.OKCancel
-                                    , MessageBoxIcon.Information);
-
-                    if (resultMessageBox == System.Windows.Forms.DialogResult.Cancel)
-                    {
-                        e.Cancel = true;
-                    }
-                    break;
+                    e.Cancel = true;
                 }
             }
 
@@ -691,35 +697,23 @@ namespace app2
             var stackrecords = new List<Record>();
             int[] scoreindex = new int[4];
             //表に値が入力済みかチェック
-            bool fl_Completed = false;
-            for (int i= 0; i< 10; i++)
+            if (Check_Completed())
             {
-                for(int j = 0; j<7; j++)
-                {
-                    if(_txtCriteiaValueA[i, j].Text != "" || _txtCriteiaValueB[i, j].Text != "" || _cmb[i,j].SelectedIndex != 0 )
-                    {
-                        fl_Completed = true;
-                        break;
-                    }
-                }
-                if (fl_Completed)
-                {
-                    ////ファイルの行番号取得           
-                    string strMsg = "表に値が書き込まれています、更新しますか？";
+                ////ファイルの行番号取得           
+                string strMsg = "表に値が書き込まれています、更新しますか？";
 
-                    //メッセージボックスで行番号を表示
-                    var resultMessageBox = MessageBox.Show(strMsg
-                                    , "エラー"
-                                    , MessageBoxButtons.OKCancel
-                                    , MessageBoxIcon.Information);
+                //メッセージボックスで行番号を表示
+                var resultMessageBox = MessageBox.Show(strMsg
+                                , "エラー"
+                                , MessageBoxButtons.OKCancel
+                                , MessageBoxIcon.Information);
 
-                    if (resultMessageBox == System.Windows.Forms.DialogResult.Cancel)
-                    {
-                        return;
-                    }
-                    break;
+                if (resultMessageBox == System.Windows.Forms.DialogResult.Cancel)
+                {
+                    return;
                 }
             }
+            
             int selectindex = cmbEwsName.SelectedIndex;
             string SelectedItem;
             if ( selectindex != -1)
