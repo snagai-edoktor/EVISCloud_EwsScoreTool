@@ -867,25 +867,10 @@ namespace app2
                 }
 
             }
-
-            //shundbg 振り分けたレコードが正しいか確認
-            for (int i = 1; i < 11; i++)
-            {
-                for (int j = 0; j < 7; j++)
-                {
-                    foreach (var s in GetRecords[i, j])
-                    {
-                        OutRecord(s);
-                    }
-                }
-            }
-            //shundbg
-
             //レコード表示処理
             OutScore();
             cmbEwsName.SelectedIndex = selectindex;
             InitTxtBoxColor();
-
         }
 
         /// <summary>
@@ -1032,32 +1017,8 @@ namespace app2
             cmbEwsName.Items.Clear();
             cmbEwsName.Items.Add("-新規追加-");
 
-            string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
-
-            SqlConnection con = new SqlConnection(constr);
-            con.Open(); 
-            try
-            {
-                string sqlstr = "SELECT Id, EwsName  FROM M_Ewstype WHERE LogicalDeleted = 0";
-                SqlCommand com = new SqlCommand(sqlstr, con);
-                SqlDataReader sdr = com.ExecuteReader();
-
-                while (sdr.Read() == true)
-                {
-                    EwsName.Add((string)sdr["EwsName"], (int)sdr["Id"]);
-                    string str = (string)sdr["EwsName"];
-                    /*shundbg
-                    txtOutSql.Text += string.Format($"name{str},id{EwsName[str]} \r\n");
-                    */
-                    cmbEwsName.Items.Add(str);
-                }
-                sdr.Close();
-                com.Dispose();
-            }
-            finally
-            {
-                con.Close();
-            }
+            this._db = new DB();
+            _db.SetEwsName(EwsName, cmbEwsName);
         }
         /// <summary>
         /// VitalName,各記号の初期化
@@ -1082,37 +1043,12 @@ namespace app2
                 _vitalcode[i].SelectedIndex = 0;
                 _vitalcode[i].Items.Clear();
             }
-            /*shundbg
-            foreach (string s in VitalCodeName)
-            {
-                txtOutSql.Text += s + "\r\n";
-            }*/
 
             //登録されているvitalcodeを取ってきてスタックしておく（重複を許していない）
+            this._db = new DB();
             var vitalcodes = new HashSet<string>();
-            string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
-            SqlConnection con = new SqlConnection(constr);
-            con.Open();
-            try
-            {
-                //vitalcode一覧取得
-                string sqlstr = $"SELECT vital_code FROM M_VitalType WHERE vital_code IS NOT NULL";
-                SqlCommand com = new SqlCommand(sqlstr, con);
-                SqlDataReader sdr = com.ExecuteReader();
-                while (sdr.Read() == true)
-                {
+            vitalcodes = _db.GetVitalCode();
 
-                    string vitalcode = (string)sdr["vital_code"];
-                    vitalcodes.Add(vitalcode);
-                }
-                sdr.Close();
-                com.Dispose();
-
-            }
-            finally
-            {
-                con.Close();
-            }
 
             //_vitalcode[]にaddしておく
             for (int i = 0; i < 10; i++)
@@ -1636,6 +1572,7 @@ namespace app2
 
         private void SelectedInitforCreate()
         {
+
             //表に値が入力済みかチェックして初期化
             bool fl_Completed = false;
             for (int i = 0; i < 10; i++)
@@ -1666,34 +1603,13 @@ namespace app2
                     break;
                 }
             }
-            AllClear();//shundbg 入力されているが消してもいいか？って聞く処理がない
+            //画面初期化
+            AllClear();
             InitTxtBoxColor();
 
-            //登録可能なIDをDBからとってくる。登録時に勝手に付けられるから意味ないけど画面で見れたほうがいいかもだから残す
-            string constr = @"Data Source=192.168.1.174;Initial Catalog=EVISCloud;Integrated Security=False;User ID=sa;Password=P@ssw0rd";
-            SqlConnection con = new SqlConnection(constr);
-            con.Open();
-            try
-            {
-
-                string sqlstr = $"SELECT Id FROM M_EwsType WHERE Id = (SELECT MAX(Id) FROM M_EwsType)";
-                //string sqlstr = $"SELECT MAX(Id) FROM M_EwsType";
-                SqlCommand com = new SqlCommand(sqlstr, con);
-                SqlDataReader sdr = com.ExecuteReader();
-
-                while (sdr.Read() == true)
-                {
-                    //EVIS                   
-                    int Id = (int)sdr["Id"];
-                    txtCreateEWSID.Text = (Id + 1).ToString();
-                }
-                sdr.Close();
-                com.Dispose();
-            }
-            finally
-            {
-                con.Close();
-            }
+            //登録可能なIDをDBからとってくる。登録時に勝手に付けられるから意味ないけど画面で見れたほうがいいので取得する
+            this._db = new DB();
+            txtCreateEWSID.Text = _db.GetEwsId().ToString();
 
             //UPDATE時に必要のなかったテキストボックスを表示
             txtCreateEWSID.Enabled = true;

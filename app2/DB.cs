@@ -122,6 +122,91 @@ namespace app2
         }
         #endregion
 
+        #region M_EwsTypeから登録可能な最新のIDを取得する
+        //<returns>IDを返す</returns>
+        public int GetEwsId()
+        {
+            int r = 0;
+            try
+            {
+                var query = new StringBuilder();
+                query.Append($"SELECT Id FROM M_EwsType WHERE Id = (SELECT MAX(Id) FROM M_EwsType)");
+                this.Database.ExecuteQuery(
+                    (command) =>
+                    {
+                        //SQL設定
+                        command.CommandType = System.Data.CommandType.Text;
+                        command.CommandText = query.ToString();
+                    },
+                    (reader) =>
+                    {
+                        int Id = (int)reader["Id"];
+                        r = (Id + 1);
+                    });
+            }
+            catch (Exception ex)
+            {
+                eDoktor.Common.Trace.OutputExceptionTrace(ex);
+            }
 
+            return r;
+        }
+        #endregion
+
+        #region M_VitalTypeからバイタルコードを取得する
+        public HashSet<string> GetVitalCode()
+        {
+            var vitalcode = new HashSet<string>();
+            try
+            {
+                var query = new StringBuilder();
+                query.Append($"SELECT vital_code FROM M_VitalType WHERE vital_code IS NOT NULL");
+                this.Database.ExecuteQuery(
+                    (command) =>
+                    {
+                        //SQL設定
+                        command.CommandType = System.Data.CommandType.Text;
+                        command.CommandText = query.ToString();
+                    },
+                    (reader) =>
+                    {
+                        vitalcode.Add((string)reader["vital_code"]);
+                    });
+            }
+            catch (Exception ex)
+            {
+                eDoktor.Common.Trace.OutputExceptionTrace(ex);
+            }
+
+            return vitalcode;
+        }
+        #endregion
+
+        #region M_EwstypeからEwsNameを取得しディクショナリとコンボボックスにセットする
+        public void SetEwsName(SortedDictionary<string, int> dic, ComboBox cmb)
+        {
+            try
+            {
+                var query = new StringBuilder();
+                query.Append($"SELECT Id, EwsName  FROM M_Ewstype WHERE LogicalDeleted = 0");
+                this.Database.ExecuteQuery(
+                    (command) =>
+                    {
+                        //SQL設定
+                        command.CommandType = System.Data.CommandType.Text;
+                        command.CommandText = query.ToString();
+                    },
+                    (reader) =>
+                    {
+                        dic.Add((string)reader["EwsName"], (int)reader["Id"]);
+                        cmb.Items.Add((string)reader["EwsName"]);
+                    });
+            }
+            catch (Exception ex)
+            {
+                eDoktor.Common.Trace.OutputExceptionTrace(ex);
+            }
+        }
+        #endregion
     }
 }
