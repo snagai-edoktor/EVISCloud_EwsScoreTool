@@ -40,17 +40,16 @@ namespace app2
         private DB _db;
 
         private int[] _score = new int[7];
-        //private TextBox[] _ScoreLv;
         private int[] tarval = new int[] { 0, 0, 0, 1, 1, 1, 1 };
         private SortedDictionary<string, int> EwsName = new SortedDictionary<string, int>();
         public SortedDictionary<string, int> DicVitalcodeandDisplayOrder = new SortedDictionary<string, int>();
 
         //vital配列10、score配列7、リストを作りたい
         List<Record>[,] GetRecords = new List<Record>[11, 7];
-        List<string> VitalCodeName = new List<string>();
 
         public Form2()
         {
+            this._db = new DB();
             InitializeComponent();
             InitControl();
             InitComboBox();
@@ -200,11 +199,6 @@ namespace app2
             return 0;           
         }
 
-        //行番号取得用メソッド
-        private int GetLineNumber([CallerLineNumber] int intLineNumber = 0)
-        {
-            return intLineNumber;
-        }
         /// <summary>
         /// SeqNo=1を指定してレコードを作成する　create用
         /// 新規追加用
@@ -521,7 +515,6 @@ namespace app2
             {
                 var RecordList_Vital = new List<Record>();
                 var intlist = new List<int>();
-
                 bool exrec = false;
 
                 for (int j = 0; j < 7; j++)//jは列数　７の部分を定数にしたほうがきれいかも
@@ -640,7 +633,7 @@ namespace app2
             }
 
             int r;
-            this._db = new DB();
+       
             
             #region DB登録処理
             if (cmbEwsName.SelectedIndex == 0)
@@ -690,7 +683,7 @@ namespace app2
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cmbEwsName_DropDownClosed(object sender, EventArgs e)
+        private void CmbEwsName_DropDownClosed(object sender, EventArgs e)
         {
             var scoreset = new SortedSet<int>();
             scoreset.Add(0);
@@ -747,7 +740,6 @@ namespace app2
             txtCreateWarningThresolds.Enabled = false;
 
             var stackrecord = new List<Record>();
-            this._db = new DB();
             stackrecord = this._db.GetRecords(EwsName[SelectedItem]);//EwsName[SelectedItem]
 
             foreach(var record in stackrecord)
@@ -811,7 +803,6 @@ namespace app2
             scoreindex = scoreset.ToArray();
 
             //スコアとターゲット,ディスプレイオーダーによって振り分ける
-            //foreach(var record in stackrecords)元
             foreach(var record in stackrecord)
             {
                 if (record.Target == 0)
@@ -950,13 +941,6 @@ namespace app2
                             datatype = 0;
                         }
                     }
-                    //error
-                    else
-                    {
-                        /*shundbg
-                        txtOutSql.Text += string.Format($"OutScore error {i} {j} \r\n");
-                        */
-                    }
                     Save_TxtA[i, j] = _txtCriteiaValueA[i, j].Text;
                     Save_TxtB[i, j] = _txtCriteiaValueB[i, j].Text;
                     Save_Cmb[i, j] = _cmb[i, j].Text;
@@ -1011,7 +995,6 @@ namespace app2
             cmbEwsName.Items.Clear();
             cmbEwsName.Items.Add("-新規追加-");
 
-            this._db = new DB();
             _db.SetEwsName(EwsName, cmbEwsName);
         }
         /// <summary>
@@ -1039,7 +1022,6 @@ namespace app2
             }
 
             //登録されているvitalcodeを取ってきてスタックしておく（重複を許していない）
-            this._db = new DB();
             var vitalcodes = new HashSet<string>();
             vitalcodes = _db.GetVitalCode();
 
@@ -1567,34 +1549,20 @@ namespace app2
         private void SelectedInitforCreate()
         {
 
-            //表に値が入力済みかチェックして初期化
-            bool fl_Completed = false;
-            for (int i = 0; i < 10; i++)
+            if (Check_Completed())
             {
-                for (int j = 0; j < 7; j++)
-                {
-                    if (_txtCriteiaValueA[i, j].Text != "" || _txtCriteiaValueB[i, j].Text != "")
-                    {
-                        fl_Completed = true;
-                        break;
-                    }
-                }
-                if (fl_Completed)
-                {
-                    ////ファイルの行番号取得           
-                    string strMsg = "入力中の値は保存されませんが初期化しますか？";
+                ////ファイルの行番号取得           
+                string strMsg = "表に値が書き込まれています、更新しますか？";
 
-                    //メッセージボックスで行番号を表示
-                    var resultMessageBox = MessageBox.Show(strMsg
-                                    , "エラー"
-                                    , MessageBoxButtons.OKCancel
-                                    , MessageBoxIcon.Information);
+                //メッセージボックスで行番号を表示
+                var resultMessageBox = MessageBox.Show(strMsg
+                                , "エラー"
+                                , MessageBoxButtons.OKCancel
+                                , MessageBoxIcon.Information);
 
-                    if (resultMessageBox == System.Windows.Forms.DialogResult.No)
-                    {
-                        return;
-                    }
-                    break;
+                if (resultMessageBox == System.Windows.Forms.DialogResult.Cancel)
+                {
+                    return;
                 }
             }
             //画面初期化
@@ -1602,7 +1570,6 @@ namespace app2
             InitTxtBoxColor();
 
             //登録可能なIDをDBからとってくる。登録時に勝手に付けられるから意味ないけど画面で見れたほうがいいので取得する
-            this._db = new DB();
             txtCreateEWSID.Text = _db.GetEwsId().ToString();
 
             //UPDATE時に必要のなかったテキストボックスを表示
@@ -1718,7 +1685,6 @@ namespace app2
                 _txtCriteiaValueA[ind.i, ind.j].Enabled = true;
             }
 
-            //前回値と違っていれば色を変える＊今は全部変わる
             if (Save_Cmb[ind.i, ind.j] != _cmb[ind.i, ind.j].Text)
             {
                 _cmb[ind.i, ind.j].BackColor = Color.Yellow;

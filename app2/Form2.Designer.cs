@@ -819,7 +819,7 @@ namespace app2
             this.cmbEwsName.Name = "cmbEwsName";
             this.cmbEwsName.Size = new System.Drawing.Size(101, 20);
             this.cmbEwsName.TabIndex = 310;
-            this.cmbEwsName.DropDownClosed += new System.EventHandler(this.cmbEwsName_DropDownClosed);
+            this.cmbEwsName.DropDownClosed += new System.EventHandler(this.CmbEwsName_DropDownClosed);
             // 
             // panel64
             // 
