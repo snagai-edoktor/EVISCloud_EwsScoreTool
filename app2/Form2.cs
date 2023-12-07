@@ -1895,14 +1895,6 @@ namespace app2
         private void btnCreateRecord_Click(object sender, EventArgs e)
         {
             txtOutSql.Text = "";
-            /*if (cmbEwsName.SelectedIndex == 0)
-            {
-                CreatButton_Click();
-            }
-            else
-            {
-                UPDATE_Click();
-            }*/
             CreatButton_Click();
         }
 
