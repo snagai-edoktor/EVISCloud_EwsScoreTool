@@ -545,7 +545,7 @@ namespace app2
             this.txtScoreLv3R.Size = new System.Drawing.Size(40, 19);
             this.txtScoreLv3R.TabIndex = 319;
             this.txtScoreLv3R.TextChanged += new System.EventHandler(this.txtScoreLv3R_TextChanged);
-            this.txtScoreLv3R.KeyPress += new KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
+            this.txtScoreLv3R.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
             // 
             // txtScoreLv2R
             // 
@@ -554,7 +554,7 @@ namespace app2
             this.txtScoreLv2R.Size = new System.Drawing.Size(40, 19);
             this.txtScoreLv2R.TabIndex = 318;
             this.txtScoreLv2R.TextChanged += new System.EventHandler(this.txtScoreLv2R_TextChanged);
-            this.txtScoreLv2R.KeyPress += new KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
+            this.txtScoreLv2R.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
             // 
             // txtScoreLv1R
             // 
@@ -563,7 +563,7 @@ namespace app2
             this.txtScoreLv1R.Size = new System.Drawing.Size(40, 19);
             this.txtScoreLv1R.TabIndex = 317;
             this.txtScoreLv1R.TextChanged += new System.EventHandler(this.txtScoreLv1R_TextChanged);
-            this.txtScoreLv1R.KeyPress += new KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
+            this.txtScoreLv1R.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
             // 
             // txtScoreLv1L
             // 
@@ -572,7 +572,7 @@ namespace app2
             this.txtScoreLv1L.Size = new System.Drawing.Size(40, 19);
             this.txtScoreLv1L.TabIndex = 316;
             this.txtScoreLv1L.TextChanged += new System.EventHandler(this.txtScoreLv1L_TextChanged);
-            this.txtScoreLv1L.KeyPress += new KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
+            this.txtScoreLv1L.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
             // 
             // txtScoreLv2L
             // 
@@ -581,7 +581,7 @@ namespace app2
             this.txtScoreLv2L.Size = new System.Drawing.Size(40, 19);
             this.txtScoreLv2L.TabIndex = 315;
             this.txtScoreLv2L.TextChanged += new System.EventHandler(this.txtScoreLv2L_TextChanged);
-            this.txtScoreLv2L.KeyPress += new KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
+            this.txtScoreLv2L.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
             // 
             // txtScoreLv3L
             // 
@@ -590,10 +590,11 @@ namespace app2
             this.txtScoreLv3L.Size = new System.Drawing.Size(40, 19);
             this.txtScoreLv3L.TabIndex = 314;
             this.txtScoreLv3L.TextChanged += new System.EventHandler(this.txtScoreLv3L_TextChanged);
-            this.txtScoreLv3L.KeyPress += new KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
+            this.txtScoreLv3L.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
             // 
             // txtSeqNo
             // 
+            this.txtSeqNo.Enabled = false;
             this.txtSeqNo.Location = new System.Drawing.Point(95, 49);
             this.txtSeqNo.Name = "txtSeqNo";
             this.txtSeqNo.Size = new System.Drawing.Size(30, 19);
@@ -610,6 +611,7 @@ namespace app2
             // 
             // EWSID
             // 
+            this.EWSID.Enabled = false;
             this.EWSID.Location = new System.Drawing.Point(54, 49);
             this.EWSID.Name = "EWSID";
             this.EWSID.Size = new System.Drawing.Size(35, 19);
@@ -4392,7 +4394,7 @@ namespace app2
             this.txtDisplayOrder1.Name = "txtDisplayOrder1";
             this.txtDisplayOrder1.Size = new System.Drawing.Size(41, 19);
             this.txtDisplayOrder1.TabIndex = 342;
-            this.txtDisplayOrder1.KeyPress += new KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
+            this.txtDisplayOrder1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
             // 
             // txtDisplayOrder2
             // 
@@ -4400,7 +4402,7 @@ namespace app2
             this.txtDisplayOrder2.Name = "txtDisplayOrder2";
             this.txtDisplayOrder2.Size = new System.Drawing.Size(41, 19);
             this.txtDisplayOrder2.TabIndex = 343;
-            this.txtDisplayOrder2.KeyPress += new KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
+            this.txtDisplayOrder2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
             // 
             // txtDisplayOrder3
             // 
@@ -4408,7 +4410,7 @@ namespace app2
             this.txtDisplayOrder3.Name = "txtDisplayOrder3";
             this.txtDisplayOrder3.Size = new System.Drawing.Size(41, 19);
             this.txtDisplayOrder3.TabIndex = 344;
-            this.txtDisplayOrder3.KeyPress += new KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
+            this.txtDisplayOrder3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
             // 
             // txtDisplayOrder4
             // 
@@ -4416,7 +4418,7 @@ namespace app2
             this.txtDisplayOrder4.Name = "txtDisplayOrder4";
             this.txtDisplayOrder4.Size = new System.Drawing.Size(41, 19);
             this.txtDisplayOrder4.TabIndex = 345;
-            this.txtDisplayOrder4.KeyPress += new KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
+            this.txtDisplayOrder4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
             // 
             // txtDisplayOrder5
             // 
@@ -4424,7 +4426,7 @@ namespace app2
             this.txtDisplayOrder5.Name = "txtDisplayOrder5";
             this.txtDisplayOrder5.Size = new System.Drawing.Size(41, 19);
             this.txtDisplayOrder5.TabIndex = 346;
-            this.txtDisplayOrder5.KeyPress += new KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
+            this.txtDisplayOrder5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
             // 
             // txtDisplayOrder6
             // 
@@ -4432,7 +4434,7 @@ namespace app2
             this.txtDisplayOrder6.Name = "txtDisplayOrder6";
             this.txtDisplayOrder6.Size = new System.Drawing.Size(41, 19);
             this.txtDisplayOrder6.TabIndex = 347;
-            this.txtDisplayOrder6.KeyPress += new KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
+            this.txtDisplayOrder6.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
             // 
             // txtDisplayOrder7
             // 
@@ -4440,7 +4442,7 @@ namespace app2
             this.txtDisplayOrder7.Name = "txtDisplayOrder7";
             this.txtDisplayOrder7.Size = new System.Drawing.Size(41, 19);
             this.txtDisplayOrder7.TabIndex = 348;
-            this.txtDisplayOrder7.KeyPress += new KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
+            this.txtDisplayOrder7.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
             // 
             // txtDisplayOrder8
             // 
@@ -4448,7 +4450,7 @@ namespace app2
             this.txtDisplayOrder8.Name = "txtDisplayOrder8";
             this.txtDisplayOrder8.Size = new System.Drawing.Size(41, 19);
             this.txtDisplayOrder8.TabIndex = 349;
-            this.txtDisplayOrder8.KeyPress += new KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
+            this.txtDisplayOrder8.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
             // 
             // txtDisplayOrder9
             // 
@@ -4456,7 +4458,7 @@ namespace app2
             this.txtDisplayOrder9.Name = "txtDisplayOrder9";
             this.txtDisplayOrder9.Size = new System.Drawing.Size(41, 19);
             this.txtDisplayOrder9.TabIndex = 350;
-            this.txtDisplayOrder9.KeyPress += new KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
+            this.txtDisplayOrder9.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
             // 
             // txtDisplayOrder10
             // 
@@ -4464,7 +4466,7 @@ namespace app2
             this.txtDisplayOrder10.Name = "txtDisplayOrder10";
             this.txtDisplayOrder10.Size = new System.Drawing.Size(41, 19);
             this.txtDisplayOrder10.TabIndex = 351;
-            this.txtDisplayOrder10.KeyPress += new KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
+            this.txtDisplayOrder10.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDisplayOrder_KeyPress);
             // 
             // label3
             // 
@@ -4636,8 +4638,8 @@ namespace app2
             this.Controls.Add(this.lb_ewsid);
             this.Name = "Form2";
             this.Text = "Form2";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form2_FormClosing);
             this.Load += new System.EventHandler(this.Form2_Load);
-            this.FormClosing += new FormClosingEventHandler(Form2_FormClosing);
             this.panel64.ResumeLayout(false);
             this.panel64.PerformLayout();
             this.panel57.ResumeLayout(false);
