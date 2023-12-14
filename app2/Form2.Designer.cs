@@ -519,6 +519,7 @@ namespace app2
             // 
             // txtCreateEWSID
             // 
+            this.txtCreateEWSID.Enabled = false;
             this.txtCreateEWSID.Location = new System.Drawing.Point(270, 49);
             this.txtCreateEWSID.Name = "txtCreateEWSID";
             this.txtCreateEWSID.Size = new System.Drawing.Size(35, 19);
