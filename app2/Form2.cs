@@ -1774,5 +1774,14 @@ namespace app2
             CreatButton_Click();
         }
 
+        private void txtDisplayOrder_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if ((e.KeyChar < '0' || '9' < e.KeyChar) && e.KeyChar != '\b')
+            {
+                //押されたキーが 0～9  でない場合は、イベントをキャンセルする
+                e.Handled = true;
+            }
+        }
+
     }
 }
