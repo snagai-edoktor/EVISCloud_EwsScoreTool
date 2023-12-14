@@ -28,6 +28,7 @@ namespace app2
         private TextBox[] _txtScore;
         private ComboBox[] _cmbDataTypeUP;
 
+        private int SelectedEwsNameIndex;
         //DB読込時の値保存用
         private string[] Save_DisplayOrder;
         private int[] Save_DataType;
@@ -672,6 +673,7 @@ namespace app2
                 EWSID.Text = txtCreateEWSID.Text.ToString();//あやしくなった
                 txtSeqNo.Text = "1";
                 cmbEwsName.SelectedIndex = cmbEwsName.FindString(txtCreateEwsName.Text);
+                SelectedEwsNameIndex = cmbEwsName.SelectedIndex;
                 //登録後いったんボックスカラーをもとに戻す
                 InitTxtBoxColor();
             }
@@ -703,11 +705,13 @@ namespace app2
 
                 if (resultMessageBox == System.Windows.Forms.DialogResult.Cancel)
                 {
+                    cmbEwsName.SelectedIndex = SelectedEwsNameIndex;
                     return;
                 }
             }
             
             int selectindex = cmbEwsName.SelectedIndex;
+            SelectedEwsNameIndex = selectindex;
             string SelectedItem;
             if ( selectindex != -1)
             {
@@ -996,6 +1000,7 @@ namespace app2
             cmbEwsName.Items.Add("-新規追加-");
 
             _db.SetEwsName(EwsName, cmbEwsName);
+            SelectedEwsNameIndex = cmbEwsName.SelectedIndex;
         }
         /// <summary>
         /// VitalName,各記号の初期化
@@ -1776,7 +1781,7 @@ namespace app2
 
         private void txtDisplayOrder_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if ((e.KeyChar < '0' || '9' < e.KeyChar) && e.KeyChar != '\b')
+            if (e.KeyChar < '0' || '9' < e.KeyChar)
             {
                 //押されたキーが 0～9  でない場合は、イベントをキャンセルする
                 e.Handled = true;

@@ -17,7 +17,6 @@ namespace app2
     public class DB
     {
         #region 暗号化用
-        private static CryptoParams CryptoParams;
         private static bool gettingCryptParms = false;
         #endregion
 
